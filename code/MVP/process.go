@@ -4,6 +4,7 @@ import (
 	"./imageprocessing"
 	"gocv.io/x/gocv"
 	"fmt"
+
 )
 
 /**
@@ -13,13 +14,13 @@ import (
  */
 func main() {
 
-	fmt.Println("oi1")
-	testcolor := gocv.NewMat() //mat for histogram equalization
-	testgray := gocv.NewMat()
-	fmt.Println("oi2")
+	var images []gocv.Mat
+	for i := 0; i < 50; i++ {
+		fmt.Println(i)
+		images[i] = gocv.NewMat()
+	}
 
-	testcolor = imageprocessing.ReadImage(testcolor, "./imageprocessing/Images/danger/danger_08.png", true, false, true)
-	testgray = imageprocessing.ReadImage(testgray, "./imageprocessing/Images/danger/danger_08.png", true, false, false)
+	imageprocessing.ReadFolder(&images,"./imageprocessing/Images/danger",true,true,true)
 
 
 }
