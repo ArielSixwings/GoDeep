@@ -56,7 +56,7 @@ func SaveImage(Name string, Image gocv.Mat) {
  * @param      Image     The image
  * @param      time      The time of the window
  *
- * @return     { An image os the type gocv.Ma }
+ * @return     { An image os the type gocv.Mat }
  */
 func ShowImage(Menssage string, Image gocv.Mat, time int) {
 	window := gocv.NewWindow(Menssage) //basic window
@@ -81,11 +81,19 @@ func visit(files *[]string) filepath.WalkFunc {
 	}
 }
 
-func ReadFolder(Images *[]gocv.Mat, folder string, print bool, show bool, colorfull bool) {
+/**
+ * [ReadFolder description]
+ * @param {[type]} Images    *[]gocv.Mat [An Array of gocv.Mat that will be used to contain the images of the folder]
+ * @param {[type]} folder    string      [folder name]
+ * @param {[type]} print     bool        [if its true, print the names]
+ * @param {[type]} show      bool        [if its true, show the images]
+ * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
+ */
+func ReadFolder(Images []gocv.Mat, folder string, print bool, show bool, colorfull bool) {
 	var files []string
 	var name string
 	var firtst bool = true
-		
+	var i int
 	nametemp := []string{"\"./","\""}
 	
 	
@@ -97,10 +105,12 @@ func ReadFolder(Images *[]gocv.Mat, folder string, print bool, show bool, colorf
 		panic(err)
 	}
 
+
 	for _, file := range files {
 		
 		if( firtst){
 			firtst = false
+			i = 0 
 			continue
 		}
 		
@@ -112,5 +122,22 @@ func ReadFolder(Images *[]gocv.Mat, folder string, print bool, show bool, colorf
 		}
 		
 		tempimage = ReadImage(tempimage, file, show, false, colorfull)
+		Images[i] = tempimage
+		i++
 	}
+}
+/**
+ * @param {[type]} folder    string      [folder name]
+ *
+ * @return     { Folder length }
+ */
+func FolderLength(folder string) int{
+	var files []string
+
+	err := filepath.Walk(folder, visit(&files))
+
+	if err != nil {
+		panic(err)
+	}
+	return 	((len(files) - 1)) 
 }
