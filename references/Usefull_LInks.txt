@@ -1,0 +1,8 @@
+Golang Documentation:
+
+https://golang.org/doc/install
+
+Gocv Documentation:
+
+https://pkg.go.dev/gocv.io/x/gocv
+
