@@ -6,3 +6,6 @@ Gocv Documentation:
 
 https://pkg.go.dev/gocv.io/x/gocv
 
+Reading Folders
+
+https://flaviocopes.com/go-list-files/
