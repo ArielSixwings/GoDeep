@@ -3,7 +3,7 @@ package main
 import (
 	"./imageprocessing"
 	"gocv.io/x/gocv"
-	"fmt"
+	// "fmt"
 
 )
 
@@ -15,12 +15,7 @@ import (
 func main() {
 
 	var images []gocv.Mat
-	for i := 0; i < 50; i++ {
-		fmt.Println(i)
-		images[i] = gocv.NewMat()
-	}
-
-	imageprocessing.ReadFolder(&images,"./imageprocessing/Images/danger",true,true,true)
+	imageprocessing.ReadFolder(&images,"./imageprocessing/Images/danger",true,false,true)
 
 
 }
