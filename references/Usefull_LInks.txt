@@ -9,3 +9,7 @@ https://pkg.go.dev/gocv.io/x/gocv
 Reading Folders
 
 https://flaviocopes.com/go-list-files/
+
+Hough transform
+
+https://en.wikipedia.org/wiki/Hough_transform
