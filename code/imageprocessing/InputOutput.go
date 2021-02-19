@@ -126,6 +126,7 @@ func ReadFolder(Images []gocv.Mat, folder string, print bool, show bool, colorfu
 		i++
 	}
 }
+
 /**
  * @param {[type]} folder    string      [folder name]
  *

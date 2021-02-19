@@ -39,22 +39,12 @@ func main() {
 
 	Images := make([]gocv.Mat,size)
 
-	GLCM := gocv.NewMat()
+	GLCMs := make([]gocv.Mat,size)
 
-	mean := gocv.NewMat()
+	means := make([]gocv.Mat,size)
 
 	imageprocessing.ReadFolder(Images,"./imageprocessing/Images/danger",true,false,false)
-
-	window := gocv.NewWindow("Images[2]")
 	
-	//CalcCovarMatrix(samples Mat, covar *Mat, mean *Mat, flags CovarFlags, ctype MatType)
-	for i := 0; i < size; i++ {
-		gocv.CalcCovarMatrix(Images[i], &GLCM, &mean, gocv.CovarCols, Images[2].Type())
-
-		window.IMShow(Images[i])
-		window.WaitKey(150)
-
-		window.IMShow(GLCM)
-		window.WaitKey(150)
-	}
+	//GroupGLCM(Images []gocv.Mat, GLCMs []gocv.Mat, means []gocv.Mat, show bool)
+	imageprocessing.GroupGLCM(Images, GLCMs, means, true)
 }
