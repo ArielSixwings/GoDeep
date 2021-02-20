@@ -3,7 +3,7 @@ package main
 import (
 	"./imageprocessing"
 	"gocv.io/x/gocv"
-	"fmt"
+	//"fmt"
 	//"math"
 )
 /** CovarFlags
@@ -49,6 +49,8 @@ func main() {
 
 	GLCMs := make([]gocv.Mat,size)
 
+	// Energys := make([]float64,size)
+
 	//normalizedGLCMs := make([]gocv.Mat,size)
 
 	means := make([]gocv.Mat,size)
@@ -56,22 +58,27 @@ func main() {
 	imageprocessing.ReadFolder(Images,"./imageprocessing/Images/danger",true,false,false)
 	
 	//GroupGLCM(Images []gocv.Mat, GLCMs []gocv.Mat, means []gocv.Mat, show bool)
-	imageprocessing.GroupGLCM(Images, GLCMs, means, false)
+	imageprocessing.GroupGLCM(Images, &GLCMs, &means, true)
+	for i := 0; i < size; i++ {
+		
+		imageprocessing.ShowImage("GLCMs", GLCMs[i], 100)
+	}
 	// var Energy float64 =  imageprocessing.Energy(GLCMs[1]) 
 	// fmt.Println("Energy:    ", Energy)
 	
-	Energys := make([]float64,size)
-	imageprocessing.GroupEnergy(GLCMs,Energys)
-	for i := 0; i < size; i++ {
-		fmt.Println("Energy:   ", Energys[i])
-	}
-
 	//func Normalize(src Mat, dst *Mat, alpha float64, beta float64, typ NormType)
 	//min value of dst is alpha and max value of dst is beta
 	// for i := 0; i < size; i++ {
 	// 	gocv.Normalize(GLCMs[i], &normalizedGLCMs[i], 0.0, 255.0, normtype )
 	// 	//imageprocessing.ShowImage("normalizedGLCMs", normalizedGLCMs[i], 100)
 	// }
+
+	// imageprocessing.GroupEnergy(GLCMs,Energys)
+
+	// for i := 0; i < size; i++ {
+	// 	fmt.Println("Energy:   ", Energys[i])
+	// }
+
 	
 	 
 	

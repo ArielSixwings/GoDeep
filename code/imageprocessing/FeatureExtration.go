@@ -3,7 +3,7 @@ package imageprocessing
 import (
 	"gocv.io/x/gocv"
 	"fmt"
-	"math"
+	//"math"
 	
 
 )
@@ -15,21 +15,29 @@ import (
  * @param {[type]} means  []gocv.Mat [description]
  * @param {[type]} show   bool       [description]
  */
-func GroupGLCM(Images []gocv.Mat, GLCMs []gocv.Mat, means []gocv.Mat, show bool) {
+func GroupGLCM(Images []gocv.Mat, GLCMs *[]gocv.Mat, means *[]gocv.Mat, show bool) {
 	
 	GLCM := gocv.NewMat()
 
 	mean := gocv.NewMat()
+
+	Energys := make([]float64,len(*GLCMs))
 	
 	for i := 0; i < len(Images); i++ {
-		fmt.Println("Calculating GLCM   ", i, "of ", len(Images))
+		fmt.Println("Calculating GLCM   ", (i+1), "of ", len(Images))
 		gocv.CalcCovarMatrix(Images[i], &GLCM, &mean, gocv.CovarCols, Images[2].Type())
 
-		GLCMs[i] = GLCM
-		means[i] = mean
+		(*GLCMs)[i] = GLCM
+		(*means)[i] = mean
 		if show {
-			ShowImage("And this is yout image", GLCMs[i], 100)
+			ShowImage("And this is yout image", (*GLCMs)[i], 100)
 		}
+	}
+
+	GroupEnergy(*GLCMs,Energys)
+
+	for i := 0; i < len(*GLCMs); i++ {
+		fmt.Println("Energy:   ", Energys[i])
 	}
 }
 
@@ -42,7 +50,9 @@ func Energy(GLCM gocv.Mat) float64{
 	var Energy float64 = 0
 	for r := 0; r < GLCM.Rows()	; r++ {
 		for c := 0; c < GLCM.Cols(); c++ {
-			Energy += float64(math.Pow(float64(GLCM.GetUCharAt(r,c)),2))
+			//Energy += float64(math.Pow(float64(GLCM.GetUCharAt(r,c)),2))
+			Energy += float64( GLCM.GetUCharAt(r,c) )
+			//fmt.Println("Internal calculation of Energy------------->  ", Energy)
 		}
 	}
 	return Energy
@@ -51,7 +61,7 @@ func Energy(GLCM gocv.Mat) float64{
 func GroupEnergy(GLCMs []gocv.Mat, Energys []float64){
 
 	for i := 0; i < len(GLCMs); i++ {
-		fmt.Println("Calculating Energy:  ",i, "of ",len(GLCMs))
+		fmt.Println("Calculating Energy:  ",(i+1), "of ",len(GLCMs))
 		Energys[i] = Energy(GLCMs[i])	
 	}
 
