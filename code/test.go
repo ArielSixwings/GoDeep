@@ -3,7 +3,7 @@ package main
 import (
 	"./imageprocessing"
 	"gocv.io/x/gocv"
-	//"fmt"
+	"fmt"
 	//"math"
 )
 /** CovarFlags
@@ -41,43 +41,45 @@ func main() {
 	
 	var size int
 	
-	//var normtype gocv.NormType = gocv.NormMinMax
+	var normtype gocv.NormType = gocv.NormMinMax
 
 	size  = imageprocessing.FolderLength("./imageprocessing/Images/danger")
 
-	Images := make([]gocv.Mat,size)
+	Images 			:= make([]gocv.Mat,size)
 
-	GLCMs := make([]gocv.Mat,size)
+	GLCMs 			:= make([]gocv.Mat,size)
 
-	// Energys := make([]float64,size)
+	means			:= make([]gocv.Mat,size)
+	
+	normalizedGLCMs	:= make([]gocv.Mat,size)
+	
+	Energys			:= make([]float64,size)
+	
+	for i := 0; i < size; i++ {
+		GLCMs[i]			= gocv.NewMat()	
+		means[i]			= gocv.NewMat()
+		normalizedGLCMs[i]	= gocv.NewMat()
+	}
 
-	//normalizedGLCMs := make([]gocv.Mat,size)
 
-	means := make([]gocv.Mat,size)
+
 
 	imageprocessing.ReadFolder(Images,"./imageprocessing/Images/danger",true,false,false)
 	
-	//GroupGLCM(Images []gocv.Mat, GLCMs []gocv.Mat, means []gocv.Mat, show bool)
-	imageprocessing.GroupGLCM(Images, &GLCMs, &means, true)
-	for i := 0; i < size; i++ {
-		
-		imageprocessing.ShowImage("GLCMs", GLCMs[i], 100)
-	}
-	// var Energy float64 =  imageprocessing.Energy(GLCMs[1]) 
-	// fmt.Println("Energy:    ", Energy)
-	
+	imageprocessing.GroupGLCM(Images, &GLCMs, &means, true, true)
+
 	//func Normalize(src Mat, dst *Mat, alpha float64, beta float64, typ NormType)
 	//min value of dst is alpha and max value of dst is beta
-	// for i := 0; i < size; i++ {
-	// 	gocv.Normalize(GLCMs[i], &normalizedGLCMs[i], 0.0, 255.0, normtype )
-	// 	//imageprocessing.ShowImage("normalizedGLCMs", normalizedGLCMs[i], 100)
-	// }
+	for i := 0; i < size; i++ {
+		gocv.Normalize(GLCMs[i], &normalizedGLCMs[i], 0.0, 255.0, normtype )
 
-	// imageprocessing.GroupEnergy(GLCMs,Energys)
+	}
 
-	// for i := 0; i < size; i++ {
-	// 	fmt.Println("Energy:   ", Energys[i])
-	// }
+	imageprocessing.GroupEnergy(&normalizedGLCMs,Energys,true)
+
+	for i := 0; i < size; i++ {
+		fmt.Println("Energy:   ", Energys[i])
+	}
 
 	
 	 
