@@ -3,8 +3,7 @@ package imageprocessing
 import (
 	"gocv.io/x/gocv"
 	"fmt"
-	"math"
-	
+	"math"	
 
 )
 
