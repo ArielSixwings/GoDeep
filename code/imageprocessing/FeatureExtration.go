@@ -69,6 +69,19 @@ func GroupEnergy(GLCMs *[]gocv.Mat, Energys []float64, print bool){
 
 }
 
+func GroupCorrelation(GLCMs *[]gocv.Mat, Correlations []float64, print bool){
+
+	for i := 0; i < len(*GLCMs); i++ {
+		
+		if print{
+			fmt.Println("Calculating Correlation:  ",(i+1), "of ",len(*GLCMs))
+		}
+
+		Correlations[i] = Correlation((*GLCMs)[i])	
+	}
+
+}
+
 func Contrast(GLCM gocv.Mat) float64{
 	var Contrast float64 = 0
 
@@ -85,12 +98,14 @@ func Correlation(GLCM gocv.Mat) float64{
 
 	muRow,muCol := getMu(GLCM)
 	
+	sigmaRow,sigmaCol := getSigma(GLCM,muRow,muCol)
+
 	for r := 0; r < GLCM.Rows()	; r++ {
 		for c := 0; c < GLCM.Cols(); c++ {
-			Correlation += float64((r*c)*GLCM.GetUCharAt(r,c)) - (muRow*muCol)
+			Correlation += (float64(r)*float64(c))*float64(GLCM.GetUCharAt(r,c)) - (muRow*muCol)
 		}
 	}
-	Correlation = Correlation/()
+	Correlation = Correlation/(sigmaRow*sigmaCol)
 	return Correlation
 }
 
@@ -108,16 +123,16 @@ func getMu(GLCM gocv.Mat) (float64,float64){
 	return muRow,muCol
 }
 
-func getx(GLCM gocv.Mat) (float64,float64){
+func getSigma(GLCM gocv.Mat, muRow float64, muCol float64) (float64,float64){
 	
-	var muRow float64 = 0
-	var muCol float64 = 0
+	var sigmaRow float64 = 0
+	var sigmaCol float64 = 0
 
 	for r := 0; r < GLCM.Rows()	; r++ {
 		for c := 0; c < GLCM.Cols(); c++ {
-			muRow += float64(r) * float64(GLCM.GetUCharAt(r,c))
-			muCol += float64(c) * float64(GLCM.GetUCharAt(r,c))
+			sigmaRow += math.Pow(float64(r) - muRow,2) * float64(GLCM.GetUCharAt(r,c))
+			sigmaCol += math.Pow(float64(c) - muCol,2) * float64(GLCM.GetUCharAt(r,c))
 		}
 	}
-	return muRow,muCol
+	return sigmaRow,sigmaCol
 }

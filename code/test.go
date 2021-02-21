@@ -54,6 +54,8 @@ func main() {
 	normalizedGLCMs	:= make([]gocv.Mat,size)
 	
 	Energys			:= make([]float64,size)
+
+	Correlations	:= make([]float64,size)
 	
 	for i := 0; i < size; i++ {
 		GLCMs[i]			= gocv.NewMat()	
@@ -77,11 +79,15 @@ func main() {
 
 	imageprocessing.GroupEnergy(&normalizedGLCMs,Energys,true)
 
+	imageprocessing.GroupCorrelation(&normalizedGLCMs,Correlations,true)
+
 	for i := 0; i < size; i++ {
 		fmt.Println("Energy:   ", Energys[i])
 	}
 
 	
-	 
+	for i := 0; i < size; i++ {
+		fmt.Println("Correlation:   ", Correlations[i])
+	}	 
 	
 }
