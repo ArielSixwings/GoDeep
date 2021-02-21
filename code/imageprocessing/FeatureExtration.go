@@ -8,6 +8,31 @@ import (
 
 )
 
+type FeatureType int
+
+const (
+
+	EnergyFeature FeatureType = 0
+
+	ContrastFeature FeatureType = 1
+
+	CorrelationFeature FeatureType = 2
+
+	// CovarUseAvg FeatureType = 4
+
+	// CovarRows FeatureType = 8
+
+	// CovarCols FeatureType = 16
+)
+
+/**
+ * [getGLCM description]
+ * @param  {[type]} Image   gocv.Mat      [description]
+ * @param  {[type]} GLCM    *gocv.Mat     [description]
+ * @param  {[type]} delta_r int           [description]
+ * @param  {[type]} delta_c int           [description]
+ * @return {[type]}         [description]
+ */
 func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 	
 	auxGLCM			:= make([][]float64,256)
@@ -27,9 +52,6 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 	var GLCM_row uint8 = 0
 	var GLCM_col uint8 = 0
 
-	/*Percorre a imagem calculando a ocorrência de cada padrão
-	Não é necessário borda pois Delta_y e Delta_x limitam até que pixel se acessa a imagem*/
-
 	for r := 0; r < (Image.Rows()-delta_r)	; r++ {
 		for c := 0; c < (Image.Cols()-delta_c); c++ {
 			GLCM_row = Image.GetUCharAt(r,c)
@@ -41,7 +63,7 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 	for r := 0; r < 256	; r++ {
 		for c := 0; c < 256; c++ {
 			if auxGLCM[r][c] > max{
-				max =auxGLCM[r][c]
+				max = auxGLCM[r][c]
 			}
 		}
 	}	
@@ -49,11 +71,8 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 	for r := 0; r < (*GLCM).Rows()	; r++ {
 		for c := 0; c < (*GLCM).Cols(); c++ {
 			(*GLCM).SetUCharAt(r,c,uint8(255*(auxGLCM[r][c]/max)))
-			//fmt.Print(auxGLCM[r][c],"  ")
 		}
-		//fmt.Println(" ")
 	}
-	//fmt.Println("max:                                                          ",max)
 }
 	
 /**
@@ -104,34 +123,23 @@ func Energy(GLCM gocv.Mat) float64{
  * @param {[type]} Energys []float64   [Respectives Energys]
  * @param {[type]} print   bool        [if its true, print progress]
  */
-func GroupEnergy(GLCMs *[]gocv.Mat, Energys []float64, print bool){
+func GroupFeature(GLCMs *[]gocv.Mat, Features []float64,featuretype FeatureType, print bool){
 
 	for i := 0; i < len(*GLCMs); i++ {
-		
+
 		if print{
-			fmt.Println("Calculating Energy:  ",(i+1), "of ",len(*GLCMs))
+			fmt.Println("Calculating Contrast:  ",(i+1), "of ",len(*GLCMs))
 		}
+		switch featuretype {
+		case EnergyFeature :
+			Features[i] = Energy((*GLCMs)[i])	
 
-		Energys[i] = Energy((*GLCMs)[i])	
-	}
+		case ContrastFeature :
+			Features[i] = Contrast((*GLCMs)[i])
 
-}
-
-/**
- * [GroupCorrelation description]
- * @param {[type]} GLCMs        *[]gocv.Mat [description]
- * @param {[type]} Correlations []float64   [description]
- * @param {[type]} print        bool        [description]
- */
-func GroupCorrelation(GLCMs *[]gocv.Mat, Correlations []float64, print bool){
-
-	for i := 0; i < len(*GLCMs); i++ {
-		
-		if print{
-			fmt.Println("Calculating Correlation:  ",(i+1), "of ",len(*GLCMs))
+		case CorrelationFeature :
+			Features[i] = Correlation((*GLCMs)[i])			
 		}
-
-		Correlations[i] = Correlation((*GLCMs)[i])	
 	}
 
 }
@@ -196,14 +204,14 @@ func getSigma(GLCM gocv.Mat, muRow float64, muCol float64) (float64,float64){
 	return sigmaRow,sigmaCol
 }
 
-func Contrast(GLCM gocv.Mat) float64{
+func Contrast(GLCM gocv.Mat)float64{
 
 	var Contrast float64 = 0
 
 	for g := 0; g < 256; g++ {
 		for r := 0; r < GLCM.Rows()	; r++ {
 			for c := 0; c < GLCM.Cols(); c++ {
-				Contrast += float64(GLCM.GetUCharAt(r,c))
+				Contrast += math.Pow(float64(r-c),2) * float64(GLCM.GetUCharAt(r,c))
 			}
 		}
 	}
