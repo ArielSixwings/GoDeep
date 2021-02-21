@@ -48,8 +48,6 @@ func main() {
 	Images 			:= make([]gocv.Mat,size)
 
 	GLCMs 			:= make([]gocv.Mat,size)
-
-	means			:= make([]gocv.Mat,size)
 	
 	normalizedGLCMs	:= make([]gocv.Mat,size)
 	
@@ -58,8 +56,7 @@ func main() {
 	Correlations	:= make([]float64,size)
 	
 	for i := 0; i < size; i++ {
-		GLCMs[i]			= gocv.NewMat()	
-		means[i]			= gocv.NewMat()
+		GLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
 		normalizedGLCMs[i]	= gocv.NewMat()
 	}
 
@@ -68,8 +65,11 @@ func main() {
 
 	imageprocessing.ReadFolder(Images,"./imageprocessing/Images/danger",true,false,false)
 	
-	imageprocessing.GroupGLCM(Images, &GLCMs, &means, true, true)
+	imageprocessing.GroupGLCM(Images, &GLCMs, true, true)
 
+	for i := 0; i < GLCMs[0].Rows(); i++ {
+		fmt.Println(GLCMs[0].GetUCharAt(i,0))
+	}
 	//func Normalize(src Mat, dst *Mat, alpha float64, beta float64, typ NormType)
 	//min value of dst is alpha and max value of dst is beta
 	for i := 0; i < size; i++ {
