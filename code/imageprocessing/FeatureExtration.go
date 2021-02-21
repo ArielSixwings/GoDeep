@@ -68,3 +68,56 @@ func GroupEnergy(GLCMs *[]gocv.Mat, Energys []float64, print bool){
 	}
 
 }
+
+func Contrast(GLCM gocv.Mat) float64{
+	var Contrast float64 = 0
+
+	for r := 0; r < GLCM.Rows()	; r++ {
+		for c := 0; c < GLCM.Cols(); c++ {
+			Contrast += float64(GLCM.GetUCharAt(r,c))
+		}
+	}
+	return Contrast
+}
+
+func Correlation(GLCM gocv.Mat) float64{
+	var Correlation float64 = 0
+
+	muRow,muCol := getMu(GLCM)
+	
+	for r := 0; r < GLCM.Rows()	; r++ {
+		for c := 0; c < GLCM.Cols(); c++ {
+			Correlation += float64((r*c)*GLCM.GetUCharAt(r,c)) - (muRow*muCol)
+		}
+	}
+	Correlation = Correlation/()
+	return Correlation
+}
+
+func getMu(GLCM gocv.Mat) (float64,float64){
+	
+	var muRow float64 = 0
+	var muCol float64 = 0
+
+	for r := 0; r < GLCM.Rows()	; r++ {
+		for c := 0; c < GLCM.Cols(); c++ {
+			muRow += float64(r) * float64(GLCM.GetUCharAt(r,c))
+			muCol += float64(c) * float64(GLCM.GetUCharAt(r,c))
+		}
+	}
+	return muRow,muCol
+}
+
+func getx(GLCM gocv.Mat) (float64,float64){
+	
+	var muRow float64 = 0
+	var muCol float64 = 0
+
+	for r := 0; r < GLCM.Rows()	; r++ {
+		for c := 0; c < GLCM.Cols(); c++ {
+			muRow += float64(r) * float64(GLCM.GetUCharAt(r,c))
+			muCol += float64(c) * float64(GLCM.GetUCharAt(r,c))
+		}
+	}
+	return muRow,muCol
+}
