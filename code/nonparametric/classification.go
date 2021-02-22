@@ -77,5 +77,4 @@ func KNN(LabelFeatures *labelfeatures, result *map[string]int,k int){
 		
 	}
 
-
 }

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"./imageprocessing"
-	"./nonparametric"
+	"../code/imageprocessing"
+	//"./nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
@@ -10,52 +10,127 @@ import (
 
 func main() {
 	
+	/*size of train and know groups*/
 	var size int
+	var knowsize int
+	var trainsize int
 	
+	/*normalize flags*/
 	var normtype gocv.NormType = gocv.NormMinMax
 
-	size  = imageprocessing.FolderLength(".././code/imageprocessing/Images/danger")
+	/*calc sizes*/
+	size  = imageprocessing.FolderLength("../code/imageprocessing/Images/danger")
+	trainsize = 20 //int(size/2.5)
+	knowsize = size - trainsize
 
-	Images 			:= make([]gocv.Mat,size)
-
-	GLCMs 			:= make([]gocv.Mat,size)
+	/* Know images and features allocation*/
+	knowImages 			:= make([]gocv.Mat,3*knowsize)	// 	images
 	
-	normalizedGLCMs	:= make([]gocv.Mat,size)
-	
-	Energys			:= make([]float64,size)
+	knowGLCMs 			:= make([]gocv.Mat,3*knowsize)	// 	GLCMs
+	normalizedknow	 	:= make([]gocv.Mat,3*knowsize)	// 	normalizedGLCMs
+	/*Know gclm and normalized glcm internal allocation*/
+	for i := 0; i < knowsize; i++ {
+		knowGLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
+		normalizedknow[i]		= gocv.NewMat()
+	}
+	/*Know Features*/
+	knowEnergys			:= make([]float64,3*knowsize)	// 	Energy
+	knowCorrelations	:= make([]float64,3*knowsize)	// 	Correlation
+	knowContrasts		:= make([]float64,3*knowsize)	// 	Contrast
 
-	Correlations	:= make([]float64,size)
+	/* Train images and features allocation*/
+	trainImages 		:= make([]gocv.Mat,3*trainsize)	// 	images
+	
+	trainGLCMs 			:= make([]gocv.Mat,3*trainsize)	// 	GLCMs
+	normalizedtrain		:= make([]gocv.Mat,3*trainsize)	// 	normalizedGLCMs
+	/*Train gclm and normalized glcm internal allocation*/
+	for i := 0; i < trainsize; i++ {
+		trainGLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
+		normalizedtrain[i]		= gocv.NewMat()
+	}
+	/*Train Features*/
+	trainEnergys		:= make([]float64,3*trainsize)	// 	Energy
+	trainCorrelations	:= make([]float64,3*trainsize)	// 	Correlation
+	trainContrasts		:= make([]float64,3*trainsize)	// 	Contrast	
+	
+	/*temporary set of images that will be used to read each folder*/
+	auxImages 			:= make([]gocv.Mat,size)
+
+	/*read and separe each group of images*/
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",true,false,false)
 	
 	for i := 0; i < size; i++ {
-		GLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
-		normalizedGLCMs[i]	= gocv.NewMat()
+		if i < trainsize{
+			trainImages[i] = auxImages[i]
+		} else{
+			knowImages[i-trainsize] = auxImages[i]
+		}
 	}
-
-	imageprocessing.ReadFolder(Images,".././code/imageprocessing/Images/danger",true,false,false)
 	
-	imageprocessing.GroupGLCM(Images, &GLCMs, true, true)
-
-	for i := 0; i < GLCMs[0].Rows(); i++ {
-		fmt.Println(GLCMs[0].GetUCharAt(i,0))
-	}
-	//func Normalize(src Mat, dst *Mat, alpha float64, beta float64, typ NormType)
-	//min value of dst is alpha and max value of dst is beta
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",true,false,false)
 	for i := 0; i < size; i++ {
-		gocv.Normalize(GLCMs[i], &normalizedGLCMs[i], 0.0, 255.0, normtype )
-
+		if i < trainsize{
+			trainImages[i+size] = auxImages[i]
+		} else{
+			knowImages[((i-knowsize)+size)] = auxImages[i]
+		}
 	}
-
-	imageprocessing.GroupFeature(&normalizedGLCMs,Energys,imageprocessing.EnergyFeature, true)
-
-	imageprocessing.GroupFeature(&normalizedGLCMs,Correlations,imageprocessing.CorrelationFeature, true)
-
+	
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",true,false,false)
 	for i := 0; i < size; i++ {
-		fmt.Println("Energy:   ", Energys[i])
+		if i < trainsize{
+			trainImages[i+(2*size)] = auxImages[i]
+		} else{
+			knowImages[((i-(2*knowsize))+(2*size))] = auxImages[i]
+		}
+	}	
+
+	/*compute GLCMs and them the normalized GLCM*/
+	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, true, true)
+	for i := 0; i < knowsize; i++ {
+		gocv.Normalize(knowGLCMs[i], &normalizedknow[i], 0.0, 255.0, normtype )		
 	}
 
 	
-	for i := 0; i < size; i++ {
-		fmt.Println("Correlation:   ", Correlations[i])
+	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, true, true)
+	for i := 0; i < trainsize; i++ {
+		gocv.Normalize(trainGLCMs[i], &normalizedtrain[i], 0.0, 255.0, normtype )
+
+	}
+
+	/*Extract the features*/
+	imageprocessing.GroupFeature(&normalizedknow,knowEnergys,imageprocessing.EnergyFeature, true)
+	imageprocessing.GroupFeature(&normalizedknow,knowCorrelations,imageprocessing.CorrelationFeature, true)
+	imageprocessing.GroupFeature(&normalizedknow,knowContrasts,imageprocessing.ContrastFeature, true)
+
+	imageprocessing.GroupFeature(&normalizedtrain,trainEnergys,imageprocessing.EnergyFeature, true)
+	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, true)
+	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, true)
+
+	for i := 0; i < trainsize; i++ {
+		fmt.Println("Energy:   ", trainEnergys[i])
+	}
+
+	
+	for i := 0; i < trainsize; i++ {
+		fmt.Println("Correlation:   ", trainCorrelations[i])
+	}
+
+	for i := 0; i < trainsize; i++ {
+		fmt.Println("Contrast:   ", trainContrasts[i])
 	}	 
 	
+
+	for i := 0; i < knowsize; i++ {
+		fmt.Println("Energy:   ", knowEnergys[i])
+	}
+
+	
+	for i := 0; i < knowsize; i++ {
+		fmt.Println("Correlation:   ", knowCorrelations[i])
+	}
+
+	for i := 0; i < knowsize; i++ {
+		fmt.Println("Contrast:   ", knowContrasts[i])
+	}
 }
