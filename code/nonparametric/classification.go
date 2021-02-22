@@ -74,6 +74,9 @@ func KNN(LabelFeatures *labelfeatures, result *map[string]int,k int){
 		for j := 0; j < k; j++ {
 			(*result)[(*LabelFeatures).distance[j].label]++
 		}
+		for j := 0; j < k; j++ {
+			
+		}
 		
 	}
 

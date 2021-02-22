@@ -126,17 +126,23 @@ func GroupFeature(GLCMs *[]gocv.Mat, Features []float64,featuretype FeatureType,
 
 	for i := 0; i < len(*GLCMs); i++ {
 
-		if print{
-			fmt.Println("Calculating Contrast:  ",(i+1), "of ",len(*GLCMs))
-		}
 		switch featuretype {
 		case EnergyFeature :
+			if print{
+				fmt.Println("Calculating Energy:  ",(i+1), "of ",len(*GLCMs))
+			}
 			Features[i] = Energy((*GLCMs)[i])	
 
 		case ContrastFeature :
+			if print{
+				fmt.Println("Calculating Contrast:  ",(i+1), "of ",len(*GLCMs))
+			}
 			Features[i] = Contrast((*GLCMs)[i])
 
 		case CorrelationFeature :
+			if print{
+				fmt.Println("Calculating Correlation:  ",(i+1), "of ",len(*GLCMs))
+			}
 			Features[i] = Correlation((*GLCMs)[i])			
 		}
 	}

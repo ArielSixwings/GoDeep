@@ -29,7 +29,7 @@ func main() {
 	knowGLCMs 			:= make([]gocv.Mat,3*knowsize)	// 	GLCMs
 	normalizedknow	 	:= make([]gocv.Mat,3*knowsize)	// 	normalizedGLCMs
 	/*Know gclm and normalized glcm internal allocation*/
-	for i := 0; i < knowsize; i++ {
+	for i := 0; i < 3*knowsize; i++ {
 		knowGLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
 		normalizedknow[i]		= gocv.NewMat()
 	}
@@ -44,7 +44,7 @@ func main() {
 	trainGLCMs 			:= make([]gocv.Mat,3*trainsize)	// 	GLCMs
 	normalizedtrain		:= make([]gocv.Mat,3*trainsize)	// 	normalizedGLCMs
 	/*Train gclm and normalized glcm internal allocation*/
-	for i := 0; i < trainsize; i++ {
+	for i := 0; i < 3*trainsize; i++ {
 		trainGLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
 		normalizedtrain[i]		= gocv.NewMat()
 	}
@@ -107,30 +107,30 @@ func main() {
 	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, true)
 	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, true)
 
-	for i := 0; i < trainsize; i++ {
+	for i := 0; i < 3*trainsize; i++ {
 		fmt.Println("Energy:   ", trainEnergys[i])
 	}
 
 	
-	for i := 0; i < trainsize; i++ {
+	for i := 0; i < 3*trainsize; i++ {
 		fmt.Println("Correlation:   ", trainCorrelations[i])
 	}
 
-	for i := 0; i < trainsize; i++ {
+	for i := 0; i < 3*trainsize; i++ {
 		fmt.Println("Contrast:   ", trainContrasts[i])
 	}	 
 	
 
-	for i := 0; i < knowsize; i++ {
+	for i := 0; i < 3*knowsize; i++ {
 		fmt.Println("Energy:   ", knowEnergys[i])
 	}
 
 	
-	for i := 0; i < knowsize; i++ {
+	for i := 0; i < 3*knowsize; i++ {
 		fmt.Println("Correlation:   ", knowCorrelations[i])
 	}
 
-	for i := 0; i < knowsize; i++ {
+	for i := 0; i < 3*knowsize; i++ {
 		fmt.Println("Contrast:   ", knowContrasts[i])
 	}
 }
