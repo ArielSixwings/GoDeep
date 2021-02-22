@@ -13,6 +13,8 @@ type labeldist struct{
 	dist []float64
 
 	learnedlabel string
+
+	greatestoccurrence int
 }
 
 type features struct {
@@ -29,7 +31,7 @@ type labelfeatures struct {
 
 	know 		[]features
 	
-	distance 	[]labeldist
+	result 	[]labeldist
 }
 
 /**
@@ -54,28 +56,37 @@ func (lf *labelfeatures) calcdistance() {
 			for f := 0; f < 3; f++ {
 				sum += (math.Pow((*lf).know[j].features[f] - (*lf).study[j].features[f],2))
 			}			
-			(*lf).distance[i].dist[j] = math.Sqrt(sum)
-			(*lf).distance[i].learnedlabel[j] = (*lf).know[j].label
+			(*lf).result[i].dist[j] = math.Sqrt(sum)
+			(*lf).result[i].learnedlabel[j] = (*lf).know[j].label
 		}
 	}
 
 }
 
-func KNN(LabelFeatures *labelfeatures, result *map[string]int,k int){
-	
+func KNN(LabelFeatures *labelfeatures, auxresult *map[string]int,k int){
+
 	(*LabelFeatures).calcdistance()
 
 	for i := 0; i < len((*LabelFeatures).know); i++ {
-		(*result)[(*LabelFeatures).distance[i].label] = 0
+		(*auxresult)[(*LabelFeatures).result[i].label] = 0
 	}
 
-	for i := 0; i < len((*LabelFeatures).distance); i++ {
-		sort.Sort(Bydist((*LabelFeatures).distance[i]))
+	for i := 0; i < len((*LabelFeatures).result); i++ {
+		
+		sort.Sort(Bydist((*LabelFeatures).result[i]))
+		
 		for j := 0; j < k; j++ {
-			(*result)[(*LabelFeatures).distance[j].label]++
+			(*auxresult)[(*LabelFeatures).result[j].label]++
 		}
+		
+		(*LabelFeatures).result[i].greatestoccurrence = (*auxresult)[(*LabelFeatures).result[0]
+		(*LabelFeatures).result[i].learnedlabel = (*LabelFeatures).result[0].label
+
 		for j := 0; j < k; j++ {
-			
+			if (*LabelFeatures).result[i].greatestoccurrence < (*auxresult)[(*LabelFeatures).result[j].label]{
+				(*LabelFeatures).result[i].greatestoccurrence = (*auxresult)[(*LabelFeatures).result[j].label]
+				(*LabelFeatures).result[i].learnedlabel = (*LabelFeatures).result[j].label
+			}
 		}
 		
 	}
