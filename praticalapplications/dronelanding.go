@@ -2,29 +2,11 @@ package main
 
 import (
 	"./imageprocessing"
+	"./nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
 )
-/** CovarFlags
-	// CovarScrambled indicates to scramble the results.
-	CovarScrambled CovarFlags = 0
-
-	// CovarNormal indicates to use normal covariation.
-	CovarNormal CovarFlags = 1
-
-	// CovarUseAvg indicates to use average covariation.
-	CovarUseAvg CovarFlags = 2
-
-	// CovarScale indicates to use scaled covariation.
-	CovarScale CovarFlags = 4
-
-	// CovarRows indicates to use covariation on rows.
-	CovarRows CovarFlags = 8
-
-	// CovarCols indicates to use covariation on columns.
-	CovarCols CovarFlags = 16
-**/
 
 func main() {
 	
@@ -32,7 +14,7 @@ func main() {
 	
 	var normtype gocv.NormType = gocv.NormMinMax
 
-	size  = imageprocessing.FolderLength("./imageprocessing/Images/danger")
+	size  = imageprocessing.FolderLength(".././code/imageprocessing/Images/danger")
 
 	Images 			:= make([]gocv.Mat,size)
 
@@ -49,10 +31,7 @@ func main() {
 		normalizedGLCMs[i]	= gocv.NewMat()
 	}
 
-
-
-
-	imageprocessing.ReadFolder(Images,"./imageprocessing/Images/danger",true,false,false)
+	imageprocessing.ReadFolder(Images,".././code/imageprocessing/Images/danger",true,false,false)
 	
 	imageprocessing.GroupGLCM(Images, &GLCMs, true, true)
 
