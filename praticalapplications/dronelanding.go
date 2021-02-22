@@ -70,18 +70,18 @@ func main() {
 	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",true,false,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
-			trainImages[i+size] = auxImages[i]
+			trainImages[i+trainsize] = auxImages[i]
 		} else{
-			knowImages[((i-knowsize)+size)] = auxImages[i]
+			knowImages[i+(knowsize-trainsize)] = auxImages[i]
 		}
 	}
 	
 	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",true,false,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
-			trainImages[i+(2*size)] = auxImages[i]
+			trainImages[i+(2*trainsize)] = auxImages[i]
 		} else{
-			knowImages[((i-(2*knowsize))+(2*size))] = auxImages[i]
+			knowImages[i+((2*knowsize)-trainsize)] = auxImages[i]
 		}
 	}	
 
