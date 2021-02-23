@@ -107,30 +107,5 @@ func main() {
 	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, true)
 	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, true)
 
-	for i := 0; i < 3*trainsize; i++ {
-		fmt.Println("Energy:   ", trainEnergys[i])
-	}
 
-	
-	for i := 0; i < 3*trainsize; i++ {
-		fmt.Println("Correlation:   ", trainCorrelations[i])
-	}
-
-	for i := 0; i < 3*trainsize; i++ {
-		fmt.Println("Contrast:   ", trainContrasts[i])
-	}	 
-	
-
-	for i := 0; i < 3*knowsize; i++ {
-		fmt.Println("Energy:   ", knowEnergys[i])
-	}
-
-	
-	for i := 0; i < 3*knowsize; i++ {
-		fmt.Println("Correlation:   ", knowCorrelations[i])
-	}
-
-	for i := 0; i < 3*knowsize; i++ {
-		fmt.Println("Contrast:   ", knowContrasts[i])
-	}
 }
