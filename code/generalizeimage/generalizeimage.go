@@ -70,7 +70,7 @@ func (lf *Labelfeatures) Calcdistance() {
 		for j := 0; j < len((*lf).know); j++ {
 			sum = 0.0
 			for f := 0; f < 3; f++ {
-				sum += (math.Pow((*lf).know[j].features[f] - (*lf).train[j].features[f],2))
+				sum += (math.Pow((*lf).train[i].features[f] - (*lf).know[j].features[f],2))
 			}			
 			(*lf).result[i].dist[j] = math.Sqrt(sum)
 			(*lf).result[i].learnedlabel = (*lf).know[j].label
@@ -120,13 +120,27 @@ func (lf *Labelfeatures) SetResult(i int, l_label string, g_ocurrence int){
 func (lf Labelfeatures) GetResultstring(i int, getflag Groupflag) string{
 	switch getflag {
 	case Statusflag:
-		return lf.result[i].learnedlabel
+		return lf.result[i].status
 
 	case Labelflag:
-		return lf.result[i].status			
+		return lf.result[i].learnedlabel			
 	}
 	return "default"
 }
+
+/**
+ * [func description]
+ * @param  {[type]} lf Labelfeatures) GetKnowstring(i int [description]
+ * @return {[type]}    [description]
+ */
+func (lf Labelfeatures) GetKnowstring(i int) string{ return lf.know[i].label}
+
+/**
+ * [func description]
+ * @param  {[type]} lf Labelfeatures) GetTrainstring(i int [description]
+ * @return {[type]}    [description]
+ */
+func (lf Labelfeatures) GetTrainstring(i int) string{ return lf.know[i].label}
 
 /**
  * [func description]
@@ -162,7 +176,7 @@ func (lf Labelfeatures) Printresults(){
 
 	fmt.Println("These are the results")
 	for i := 0; i < len(lf.result); i++ {
-		fmt.Println(lf.know[i])	
+		fmt.Println(lf.result[i].learnedlabel)	
 	}
 }
 /**
@@ -176,7 +190,7 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) int{
 		return len(lf.know)
 
 	case Trainflag:
-		return len(lf.train)			
+		return len(lf.train)
 	}
 	return 0
 
@@ -210,8 +224,10 @@ func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, featur
 
 	if group == Knowflag{
 		(*lf).Allocate(Knowflag,size)
+		fmt.Println("using Allocate at know with size:   ", size)
 	} else{
 		(*lf).Allocate(Trainflag,size)
+		fmt.Println("using Allocate at train with size:   ", size)
 	}
 
 	var j int = 0 
@@ -244,4 +260,3 @@ func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, featur
 		}	
 	}
 }
-

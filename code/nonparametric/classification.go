@@ -1,7 +1,7 @@
 package nonparametric
 
 import (
-	//"fmt"
+	"fmt"
 	"../generalizeimage"
 
 )
@@ -23,27 +23,28 @@ func KNN(LabelFeatures *generalizeimage.Labelfeatures,k int){
 
 	(*LabelFeatures).Calcdistance()
 
-	for i := 0; i < (*LabelFeatures).Getlen(generalizeimage.Knowflag); i++ {
-		auxresult[(*LabelFeatures).GetResultstring(i,generalizeimage.Labelflag)] = 0
+	for i := 0; i < (*LabelFeatures).Getlen(generalizeimage.Trainflag); i++ {
+		auxresult[(*LabelFeatures).GetKnowstring(i)] = 0
 	}
 
-	for i := 0; i < (*LabelFeatures).Getlen(generalizeimage.Resultflag); i++ {
+	for i := 0; i < (*LabelFeatures).Getlen(generalizeimage.Trainflag); i++ {
 		
 		(*LabelFeatures).Sortdist(i)
 		
 		for j := 0; j < k; j++ {
-			auxresult[(*LabelFeatures).GetResultstring(j,generalizeimage.Labelflag)]++
+			fmt.Println("current label", (*LabelFeatures).GetKnowstring(j))
+			auxresult[(*LabelFeatures).GetKnowstring(j)]++
 		}
-		aux_ocurrence = auxresult[(*LabelFeatures).GetResultstring(0,generalizeimage.Labelflag)]
-		aux_label = (*LabelFeatures).GetResultstring(0,generalizeimage.Labelflag)
+		aux_ocurrence = auxresult[(*LabelFeatures).GetKnowstring(0)]
+		aux_label = (*LabelFeatures).GetKnowstring(0)
 				
 		(*LabelFeatures).SetResult(i,aux_label,aux_ocurrence)
 
 		for g := 0; g < k; g++ {
-			if (*LabelFeatures).GetResultint(i) < auxresult[(*LabelFeatures).GetResultstring(g,generalizeimage.Labelflag)]{
+			if (*LabelFeatures).GetResultint(i) < auxresult[(*LabelFeatures).GetKnowstring(g)]{
 				
-				aux_ocurrence = auxresult[(*LabelFeatures).GetResultstring(g,generalizeimage.Labelflag)]
-				aux_label = (*LabelFeatures).GetResultstring(g,generalizeimage.Labelflag)
+				aux_ocurrence = auxresult[(*LabelFeatures).GetKnowstring(g)]
+				aux_label = (*LabelFeatures).GetKnowstring(g)
 				
 				(*LabelFeatures).SetResult(i,aux_label,aux_ocurrence)
 			}
