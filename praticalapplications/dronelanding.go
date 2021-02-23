@@ -3,7 +3,7 @@ package main
 import (
 	"../code/imageprocessing"
 	"../code/generalizeimage"
-	//"./nonparametric"
+	//"../code/nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
@@ -108,13 +108,13 @@ func main() {
 
 	/*compute GLCMs and them the normalized GLCM*/
 	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, true, true)
-	for i := 0; i < knowsize; i++ {
+	for i := 0; i < 3*knowsize; i++ {
 		gocv.Normalize(knowGLCMs[i], &normalizedknow[i], 0.0, 255.0, normtype )		
 	}
 
 	
 	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, true, true)
-	for i := 0; i < trainsize; i++ {
+	for i := 0; i < 3*trainsize; i++ {
 		gocv.Normalize(trainGLCMs[i], &normalizedtrain[i], 0.0, 255.0, normtype )
 
 	}
@@ -136,4 +136,6 @@ func main() {
 	generalizeimage.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizeimage.Trainflag,60)
 
 	dataset.Printfeatures()
+
+	//nonparametric.KNN(&dataset)
 }

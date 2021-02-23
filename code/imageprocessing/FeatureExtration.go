@@ -92,7 +92,6 @@ func GroupGLCM(Images []gocv.Mat, GLCMs *[]gocv.Mat, print bool ,show bool) {
 		getGLCM(Images[i], &(*GLCMs)[i], 1,0)
 
 		if show {
-			fmt.Println((i+1))
 			ShowImage("GLCMs", (*GLCMs)[i], 100)
 		}
 
@@ -213,9 +212,10 @@ func Contrast(GLCM gocv.Mat)float64{
 
 	var Contrast float64 = 0
 
-	for g := 0; g < 256; g++ {
-		for r := 0; r < GLCM.Rows()	; r++ {
-			for c := 0; c < GLCM.Cols(); c++ {
+	var r, c int = 0,0
+	for g := int(math.Abs(float64(r-c))); g < 256; g++ {
+		for r = 0; r < GLCM.Rows()	; r++ {
+			for c = 0; c < GLCM.Cols(); c++ {
 				Contrast += math.Pow(float64(r-c),2) * float64(GLCM.GetUCharAt(r,c))
 			}
 		}

@@ -96,7 +96,8 @@ func Generalize_for_nonparametric(LabelFeatures *Labelfeatures, feature_X []floa
 	} else{
 		(*LabelFeatures).train = make([]features,size)
 	}
-	fmt.Println(len(ls))
+
+	var j int = 0 
 	for i := 0; i < size; i++ {
 		if group == Knowflag{
 			
@@ -104,21 +105,24 @@ func Generalize_for_nonparametric(LabelFeatures *Labelfeatures, feature_X []floa
 			(*LabelFeatures).know[i].features[1] = feature_Y[i]
 			(*LabelFeatures).know[i].features[2] = feature_Z[i]
 			
-			for j := 0; j < len(ls); j++ {
-				for s := i; s < ls[j].Size_l; s++ {
-					(*LabelFeatures).know[s].label = ls[j].Label
-				}
+			if i < (1+j)*ls[j].Size_l{
+				(*LabelFeatures).know[i].label = ls[j].Label
+			} else {
+				j++
+				(*LabelFeatures).know[i].label = ls[j].Label
 			}
+
 		} else{
 
 			(*LabelFeatures).train[i].features[0] = feature_X[i]
 			(*LabelFeatures).train[i].features[1] = feature_Y[i]
 			(*LabelFeatures).train[i].features[2] = feature_Z[i]
 			
-			for j := 0; j < len(ls); j++ {
-				for s := i; s < ls[j].Size_l; s++ {
-					(*LabelFeatures).train[s].label = ls[j].Label
-				}
+			if i < (1+j)*ls[j].Size_l{
+				(*LabelFeatures).train[i].label = ls[j].Label
+			} else {
+				j++
+				(*LabelFeatures).train[i].label = ls[j].Label
 			}
 		}	
 	}
