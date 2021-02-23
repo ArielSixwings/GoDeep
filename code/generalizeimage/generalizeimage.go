@@ -1,5 +1,9 @@
 package generalizeimage
 
+import(
+	"math"
+	"fmt"
+)
 type labeldist struct{
 
 	dist []float64
@@ -17,9 +21,9 @@ type features struct {
 }
 
 
-type labelfeatures struct {
+type Labelfeatures struct {
 
-	study 		[]features
+	train 		[]features
 
 	know 		[]features
 	
@@ -32,76 +36,88 @@ type labelfeatures struct {
  * @return {[type]}    [description]
  */
 
-type ByDistance []labeldist
+type ByDist []float64
 
-func (d Bydist) Len() int { return len(d) }
-func (d Bydist) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
-func (d Bydist) Less(i, j int) bool { return d.dist[i] < d.dist[j] }
+func (d ByDist) Len() int { return len(d) }
+func (d ByDist) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
+func (d ByDist) Less(i, j int) bool { return d[i] < d[j] }
 
-func (lf *labelfeatures) calcdistance() { 
+func (lf *Labelfeatures) calcdistance() { 
 
 	var sum float64 = 0.0
 
-	for i := 0; i < len((*lf).study); i++ {
+	for i := 0; i < len((*lf).train); i++ {
 		for j := 0; j < len((*lf).know); j++ {
 			sum = 0.0
 			for f := 0; f < 3; f++ {
-				sum += (math.Pow((*lf).know[j].features[f] - (*lf).study[j].features[f],2))
+				sum += (math.Pow((*lf).know[j].features[f] - (*lf).train[j].features[f],2))
 			}			
 			(*lf).result[i].dist[j] = math.Sqrt(sum)
-			(*lf).result[i].learnedlabel[j] = (*lf).know[j].label
+			(*lf).result[i].learnedlabel = (*lf).know[j].label
 		}
 	}
 
 }
 
-type labelsize struct{
-	label 	string
-	size 	int
+func (lf Labelfeatures) Printfeatures(){
+	
+	fmt.Println("These are the know features")
+	for i := 0; i < len(lf.know); i++ {
+	
+		fmt.Println(lf.know[i])	
+	
+	}
+	
+	fmt.Println("These are the train features")
+	for i := 0; i < len(lf.train); i++ {
+		fmt.Println(lf.train[i])
+	}
 }
 
-type groupflag int
+type Sizelabel struct{
+	Label 	string
+	Size_l 	int
+}
+
+type Groupflag int
 
 const (
 
-	knowflag groupflag = 0
+	Knowflag Groupflag = 0
 
-	trainflag groupflag = 1
+	Trainflag Groupflag = 1
 
 )
 
-func generalize_for_nonparametric(LabelFeatures *labelfeatures, feature_X []float64, feature_Y []float64, feature_Z []float64,ls []labelsize,group groupflag){
+func Generalize_for_nonparametric(LabelFeatures *Labelfeatures, feature_X []float64, feature_Y []float64, feature_Z []float64,ls []Sizelabel,group Groupflag,size int){
 
-	var size int
-	if group == know{
-		size len((*LabelFeatures).know)
+	if group == Knowflag{
+		(*LabelFeatures).know = make([]features,size)
 	} else{
-		size len((*LabelFeatures).train)
+		(*LabelFeatures).train = make([]features,size)
 	}
-
+	fmt.Println(len(ls))
 	for i := 0; i < size; i++ {
-		if group == knowflag{
-			(*LabelFeatures).know[i] = make([]features,size)
+		if group == Knowflag{
 			
 			(*LabelFeatures).know[i].features[0] = feature_X[i]
 			(*LabelFeatures).know[i].features[1] = feature_Y[i]
 			(*LabelFeatures).know[i].features[2] = feature_Z[i]
 			
 			for j := 0; j < len(ls); j++ {
-				for s := 0; s < ls[j].size; s++ {
-					(*LabelFeatures).know[i].label = ls[s].label
+				for s := i; s < ls[j].Size_l; s++ {
+					(*LabelFeatures).know[s].label = ls[j].Label
 				}
 			}
 		} else{
-			(*LabelFeatures).train[i] = make([]features,size)
 
 			(*LabelFeatures).train[i].features[0] = feature_X[i]
 			(*LabelFeatures).train[i].features[1] = feature_Y[i]
 			(*LabelFeatures).train[i].features[2] = feature_Z[i]
 			
 			for j := 0; j < len(ls); j++ {
-				for s := 0; s < ls[j].size; s++ {
-					(*LabelFeatures).train[i].label = ls[s].label
+				for s := i; s < ls[j].Size_l; s++ {
+					(*LabelFeatures).train[s].label = ls[j].Label
 				}
 			}
 		}	

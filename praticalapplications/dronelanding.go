@@ -2,6 +2,7 @@ package main
 
 import (
 	"../code/imageprocessing"
+	"../code/generalizeimage"
 	//"./nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
@@ -9,6 +10,8 @@ import (
 )
 
 func main() {
+	
+	var dataset generalizeimage.Labelfeatures
 	
 	/*size of train and know groups*/
 	var size int
@@ -22,6 +25,24 @@ func main() {
 	size  = imageprocessing.FolderLength("../code/imageprocessing/Images/danger")
 	trainsize = 20 //int(size/2.5)
 	knowsize = size - trainsize
+
+	/*set labelsizes*/
+	knowls := make([]generalizeimage.Sizelabel,3)
+	trainls := make([]generalizeimage.Sizelabel,3)
+
+	for i := 0; i < 3; i++ {
+		knowls[i].Size_l  = knowsize
+		trainls[i].Size_l = trainsize	
+	}
+
+	knowls[0].Label  = "danger"
+	trainls[0].Label = "danger"
+
+	knowls[1].Label  = "asphalt"
+	trainls[1].Label = "asphalt"
+
+	knowls[2].Label  = "grass"
+	trainls[2].Label = "grass"
 
 	/* Know images and features allocation*/
 	knowImages 			:= make([]gocv.Mat,3*knowsize)	// 	images
@@ -108,4 +129,11 @@ func main() {
 	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, true)
 
 
+	fmt.Println("generalizing know data set")
+	generalizeimage.Generalize_for_nonparametric(&dataset, knowEnergys, knowCorrelations, knowContrasts,knowls,generalizeimage.Knowflag,90)
+	
+	fmt.Println("generalizing train data set")
+	generalizeimage.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizeimage.Trainflag,60)
+
+	dataset.Printfeatures()
 }
