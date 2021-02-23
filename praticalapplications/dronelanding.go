@@ -3,7 +3,7 @@ package main
 import (
 	"../code/imageprocessing"
 	"../code/generalizeimage"
-	//"../code/nonparametric"
+	"../code/nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
@@ -137,5 +137,7 @@ func main() {
 
 	dataset.Printfeatures()
 
-	//nonparametric.KNN(&dataset)
+	nonparametric.KNN(&dataset,5)
+
+	dataset.Printresults()
 }

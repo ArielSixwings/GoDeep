@@ -17,11 +17,6 @@ const (
 
 	CorrelationFeature FeatureType = 2
 
-	// CovarUseAvg FeatureType = 4
-
-	// CovarRows FeatureType = 8
-
-	// CovarCols FeatureType = 16
 )
 
 /**
@@ -208,17 +203,20 @@ func getSigma(GLCM gocv.Mat, muRow float64, muCol float64) (float64,float64){
 	return sigmaRow,sigmaCol
 }
 
-func Contrast(GLCM gocv.Mat)float64{
+/**
+ * [Contrast description]
+ * @param {[type]} GLCM gocv.Mat [description]
+ * @return {[type]}       [description]
+ */
+func Contrast(GLCM gocv.Mat) float64{
 
 	var Contrast float64 = 0
 
-	var r, c int = 0,0
-	for g := int(math.Abs(float64(r-c))); g < 256; g++ {
-		for r = 0; r < GLCM.Rows()	; r++ {
-			for c = 0; c < GLCM.Cols(); c++ {
-				Contrast += math.Pow(float64(r-c),2) * float64(GLCM.GetUCharAt(r,c))
-			}
+	for r := 0; r < GLCM.Rows()	; r++ {
+		for c := 0; c < GLCM.Cols(); c++ {
+			Contrast += math.Pow(float64(r-c),2) * float64(GLCM.GetUCharAt(r,c))
 		}
 	}
+
 	return Contrast
 }
