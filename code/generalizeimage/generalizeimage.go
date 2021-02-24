@@ -31,10 +31,13 @@ type interest struct{
 	interestdist 	[]float64
 }
 
+type featurepoint struct{
+	dist float64
+	distlabel string
+}
 type labeldist struct{
 
-	dist 				[]float64
-	distlabel 			[]string
+	f_point				[]featurepoint
 	learnedlabel 		string
 	status 				string
 	greatestoccurrence 	int
@@ -63,14 +66,25 @@ type Labelfeatures struct {
  */
 
 
-type LabelDist []*labeldist
+type ByDist []featurepoint
 
-func (l LabelDist) Len() int { return len(l) }
-func (l LabelDist) Swap(i, j int) { l[i], l[j] = l[j], l[i] }
+func (d ByDist) Len() int { return len(d) }
+func (d ByDist) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
+func (d ByDist) Less(i, j int) bool { return d[i].dist < d[j].dist }
 
-type ByDist struct{ LabelDist }
-
-func (d ByDist) Less(i, j int) bool { return d.dist[i] < d.dist[j] }
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) Sortdist(i int [description]
+ * @return {[type]}    [description]
+ */
+func (lf *Labelfeatures) Sortdist(i int){
+	if (*lf).is_sorted[i] {
+		fmt.Println("the distance set of this images are already sorted")
+		return
+	}
+	sort.Sort(ByDist((*lf).result[i].f_point))
+	(*lf).is_sorted[i] = true
+}
 
 /**
  * [func description]
@@ -92,8 +106,8 @@ func (lf *Labelfeatures) Calcdistance() {
 			for f := 0; f < 3; f++ {
 				sum += (math.Pow((*lf).train[i].features[f] - (*lf).know[j].features[f],2))
 			}			
-			(*lf).result[i].dist[j] = math.Sqrt(sum)
-			(*lf).result[i].distlabel[j] = (*lf).know[j].label
+			(*lf).result[i].f_point[j].dist = math.Sqrt(sum)
+			(*lf).result[i].f_point[j].distlabel = (*lf).know[j].label
 		} 
 	}
 
@@ -110,8 +124,7 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...i
 		(*lf).result = make([]labeldist,allsize)
 		for i := 0; i < allsize; i++ {
 			if len(secondsize) > 0 {
-				(*lf).result[i].dist = make([]float64,secondsize[0])
-				(*lf).result[i].distlabel = make([]string,secondsize[0])
+				(*lf).result[i].f_point = make([]featurepoint,secondsize[0])
 			}
 		}
 	case Knowflag:
@@ -152,8 +165,8 @@ func (lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64){
 func (lf *Labelfeatures) AddInterest(t_size int ,k int){
 	for i := 0; i < t_size; i++ {
 		for j := 0; j < k; j++ {
-			(*lf).interestgroup[i].interestlabel[j] = (*lf).result[i].distlabel[j]
-			(*lf).interestgroup[i].interestdist[j] = (*lf).result[i].dist[j]
+			(*lf).interestgroup[i].interestlabel[j] = (*lf).result[i].f_point[j].distlabel
+			(*lf).interestgroup[i].interestdist[j] = (*lf).result[i].f_point[j].dist
 		}
 	}
 
@@ -165,26 +178,22 @@ func (lf *Labelfeatures) AddInterest(t_size int ,k int){
  * @return {[type]}    [description]
  */
 func (lf *Labelfeatures) GetGreatestOcorrence(k int){
-	fmt.Println("Inside getgreatestoccurrence")
-	ocorrence := make(map[string]int)
 	
+	ocorrence := make(map[string]int)
 
 	for i := 0; i < len((*lf).train); i++ {
 		(*lf).result[i].greatestoccurrence = 0
 		for j := 0; j < k; j++ {
 			ocorrence[(*lf).interestgroup[i].interestlabel[j]] = 0
 		}
-		fmt.Println("the length of the map is: ", len(ocorrence))
 		for j := 0; j < k; j++ {
 			ocorrence[(*lf).interestgroup[i].interestlabel[j]]++
 		}
 		for j := 0; j < k; j++ {
-			fmt.Println("the ocorrence of each label is:  ",ocorrence[(*lf).interestgroup[i].interestlabel[j]])
 			if (*lf).result[i].greatestoccurrence < ocorrence[(*lf).interestgroup[i].interestlabel[j]]{
 				(*lf).result[i].greatestoccurrence = ocorrence[(*lf).interestgroup[i].interestlabel[j]]
 				(*lf).result[i].learnedlabel = (*lf).interestgroup[i].interestlabel[j]
 			}
-			fmt.Println("the decided label is:   ", (*lf).result[i].learnedlabel)
 		}		
 	}
 }
@@ -235,10 +244,18 @@ func (lf Labelfeatures) Printfeatures(){
  */
 func (lf Labelfeatures) Printresults(){
 
+	var total , right float64
+
+	right = 0
+	total = float64( len(lf.result))
 	fmt.Println("These are the results")
 	for i := 0; i < len(lf.result); i++ {
-		fmt.Println(lf.result[i].learnedlabel)	
+		fmt.Println(lf.result[i].learnedlabel,"and that label status is:", (lf.result[i].learnedlabel == lf.train[i].label))
+		if lf.result[i].learnedlabel == lf.train[i].label {
+			right++ 
+		}
 	}
+	fmt.Println("Success rate = ",100*(right/total),"%")
 }
 
 /**
@@ -279,21 +296,6 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) int{
 	}
 	return 0
 
-}
-
-/**
- * [func description]
- * @param  {[type]} lf *Labelfeatures) Sortdist(i int [description]
- * @return {[type]}    [description]
- */
-func (lf *Labelfeatures) Sortdist(i int){
-	if (*lf).is_sorted[i] {
-		fmt.Println("the distance set of this images are already sorted")
-		return
-	}
-	sort.Sort(ByDist{(*lf).result[i]})
-	//sort.Sort(ByDist((*lf).result[i]))
-	(*lf).is_sorted[i] = true
 }
 
 type Sizelabel struct{

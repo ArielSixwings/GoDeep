@@ -145,5 +145,5 @@ func main() {
 	fmt.Println("Caling KNN")
 	nonparametric.KNN(&dataset,5)
 
-	//dataset.Printresults()
+	dataset.Printresults()
 }

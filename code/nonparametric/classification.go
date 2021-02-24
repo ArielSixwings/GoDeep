@@ -27,6 +27,6 @@ func KNN(dataset *generalizeimage.Labelfeatures,k int){
 
 		(*dataset).AddInterest(i,k)
 	}
-	//(*dataset).GetGreatestOcorrence(k)
-	(*dataset).Printinterest()
+	(*dataset).GetGreatestOcorrence(k)
+	//(*dataset).Printinterest()
 }

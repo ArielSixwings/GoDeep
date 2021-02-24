@@ -1,0 +1,73 @@
+Reading danger folder
+Reading asphalt folder
+Reading grass folder
+Computing know GLCMs
+Computing train GLCMs
+Computing know features
+Computing train features
+Generalizing know data set
+Generalizing train data set
+Caling KNN
+Computing distances
+These are the results
+grass and that label status is: false
+grass and that label status is: false
+asphalt and that label status is: false
+grass and that label status is: false
+asphalt and that label status is: false
+asphalt and that label status is: false
+asphalt and that label status is: false
+danger and that label status is: true
+danger and that label status is: true
+danger and that label status is: true
+grass and that label status is: false
+grass and that label status is: false
+grass and that label status is: false
+danger and that label status is: true
+danger and that label status is: true
+danger and that label status is: true
+danger and that label status is: true
+danger and that label status is: true
+asphalt and that label status is: false
+grass and that label status is: false
+danger and that label status is: false
+asphalt and that label status is: true
+grass and that label status is: false
+asphalt and that label status is: true
+asphalt and that label status is: true
+asphalt and that label status is: true
+asphalt and that label status is: true
+asphalt and that label status is: true
+danger and that label status is: false
+asphalt and that label status is: true
+asphalt and that label status is: true
+danger and that label status is: false
+danger and that label status is: false
+grass and that label status is: false
+asphalt and that label status is: true
+danger and that label status is: false
+asphalt and that label status is: true
+asphalt and that label status is: true
+asphalt and that label status is: true
+asphalt and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+asphalt and that label status is: false
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+asphalt and that label status is: false
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+grass and that label status is: true
+asphalt and that label status is: false
+ and that label status is: false
+Success rate =  61.66666666666667 %
