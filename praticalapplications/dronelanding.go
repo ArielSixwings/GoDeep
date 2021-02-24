@@ -141,7 +141,7 @@ func main() {
 	fmt.Println("generalizing train data set")
 	generalizeimage.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizeimage.Trainflag,60)
 
-	dataset.Printfeatures()
+	//dataset.Printfeatures()
 
 	nonparametric.KNN(&dataset,5)
 

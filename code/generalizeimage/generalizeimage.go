@@ -133,8 +133,8 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...i
 func (lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64){
 	for i := 0; i < t_size; i++ {
 		for j := 0; j < k; j++ {
-			(*lf).interestgroup[i].interestlabel[k] = "default"
-			(*lf).interestgroup[i].interestocurrence[k] = val
+			(*lf).interestgroup[i].interestlabel[j] = "default"
+			(*lf).interestgroup[i].interestocurrence[j] = val
 		}
 	}
 }
@@ -147,8 +147,8 @@ func (lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64){
 func (lf *Labelfeatures) AddInterest(t_size int ,k int){
 	for i := 0; i < t_size; i++ {
 		for j := 0; j < k; j++ {
-			(*lf).interestgroup[i].interestlabel[k] = (*lf).result[i].learnedlabel[k]
-			(*lf).interestgroup[i].interestocurrence[k] = (*lf).result[i].dist[k]
+			(*lf).interestgroup[i].interestlabel[j] = (*lf).result[i].learnedlabel[j]
+			(*lf).interestgroup[i].interestocurrence[j] = (*lf).result[i].dist[j]
 		}
 	}
 }
