@@ -78,7 +78,8 @@ func main() {
 	auxImages 			:= make([]gocv.Mat,size)
 
 	/*read and separe each group of images*/
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",true,false,false)
+	fmt.Println("Reading danger folder")
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",false,false,false)
 	
 	for i := 0; i < size; i++ {
 		if i < trainsize{
@@ -88,7 +89,8 @@ func main() {
 		}
 	}
 	
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",true,false,false)
+	fmt.Println("Reading asphalt folder")
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",false,false,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+trainsize] = auxImages[i]
@@ -97,7 +99,8 @@ func main() {
 		}
 	}
 	
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",true,false,false)
+	fmt.Println("Reading grass folder")
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",false,false,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+(2*trainsize)] = auxImages[i]
@@ -107,26 +110,29 @@ func main() {
 	}	
 
 	/*compute GLCMs and them the normalized GLCM*/
-	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, true, true)
+	fmt.Println("computing know GLCMs")
+	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, false, false)
 	for i := 0; i < 3*knowsize; i++ {
 		gocv.Normalize(knowGLCMs[i], &normalizedknow[i], 0.0, 255.0, normtype )		
 	}
 
-	
-	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, true, true)
+	fmt.Println("computing train GLCMs")
+	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, false, false)
 	for i := 0; i < 3*trainsize; i++ {
 		gocv.Normalize(trainGLCMs[i], &normalizedtrain[i], 0.0, 255.0, normtype )
 
 	}
 
 	/*Extract the features*/
-	imageprocessing.GroupFeature(&normalizedknow,knowEnergys,imageprocessing.EnergyFeature, true)
-	imageprocessing.GroupFeature(&normalizedknow,knowCorrelations,imageprocessing.CorrelationFeature, true)
-	imageprocessing.GroupFeature(&normalizedknow,knowContrasts,imageprocessing.ContrastFeature, true)
+	fmt.Println("computing know features")
+	imageprocessing.GroupFeature(&normalizedknow,knowEnergys,imageprocessing.EnergyFeature, false)
+	imageprocessing.GroupFeature(&normalizedknow,knowCorrelations,imageprocessing.CorrelationFeature, false)
+	imageprocessing.GroupFeature(&normalizedknow,knowContrasts,imageprocessing.ContrastFeature, false)
 
-	imageprocessing.GroupFeature(&normalizedtrain,trainEnergys,imageprocessing.EnergyFeature, true)
-	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, true)
-	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, true)
+	fmt.Println("computing train features")
+	imageprocessing.GroupFeature(&normalizedtrain,trainEnergys,imageprocessing.EnergyFeature, false)
+	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, false)
+	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, false)
 
 
 	fmt.Println("generalizing know data set")
@@ -139,5 +145,5 @@ func main() {
 
 	nonparametric.KNN(&dataset,5)
 
-	dataset.Printresults()
+	//dataset.Printresults()
 }

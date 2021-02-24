@@ -21,12 +21,20 @@ const (
 
 	Statusflag Groupflag = 5
 
+	Interestflag Groupflag = 6
+
 )
+
+type interest struct{
+
+	interestlabel 		[]string
+	interestocurrence 	[]float64
+}
 
 type labeldist struct{
 
 	dist 				[]float64
-	learnedlabel 		string
+	learnedlabel 		[]string
 	status 				string
 	greatestoccurrence 	int
 }
@@ -40,9 +48,11 @@ type features struct {
 
 type Labelfeatures struct {
 
-	train 		[]features
-	know 		[]features	
-	result 		[]labeldist
+	train 			[]features
+	know 			[]features	
+	result 			[]labeldist
+	interestgroup 	[]interest
+	is_sorted 		[]bool
 }
 
 /**
@@ -65,15 +75,20 @@ func (d ByDist) Less(i, j int) bool { return d[i] < d[j] }
 func (lf *Labelfeatures) Calcdistance() { 
 
 	var sum float64 = 0.0
+	
+	(*lf).is_sorted = make([]bool,len((*lf).train))
 
 	for i := 0; i < len((*lf).train); i++ {
+
+		//(*lf).is_sorted[i] = false
+		
 		for j := 0; j < len((*lf).know); j++ {
 			sum = 0.0
 			for f := 0; f < 3; f++ {
 				sum += (math.Pow((*lf).train[i].features[f] - (*lf).know[j].features[f],2))
 			}			
 			(*lf).result[i].dist[j] = math.Sqrt(sum)
-			(*lf).result[i].learnedlabel = (*lf).know[j].label
+			(*lf).result[i].learnedlabel[j] = (*lf).know[j].label
 		}
 	}
 
@@ -81,52 +96,77 @@ func (lf *Labelfeatures) Calcdistance() {
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,sizedist ...int [description]
+ * @param  {[type]} lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
  * @return {[type]}    [description]
  */
-func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,sizedist ...int){
+func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int){
 	switch allflag {
 	case Resultflag:
 		(*lf).result = make([]labeldist,allsize)
 		for i := 0; i < allsize; i++ {
-			if len(sizedist) > 0 {
-				(*lf).result[i].dist = make([]float64,sizedist[0])
+			if len(secondsize) > 0 {
+				(*lf).result[i].dist = make([]float64,secondsize[0])
+				(*lf).result[i].learnedlabel = make([]string,secondsize[0])
 			}
-		}	
-
+		}
 	case Knowflag:
 		(*lf).know = make([]features,allsize)
 
 	case Trainflag:
-		(*lf).train = make([]features,allsize)			
+		(*lf).train = make([]features,allsize)
+	case Interestflag:
+		(*lf).interestgroup = make([]interest,allsize)
+		for i := 0; i < allsize; i++ {
+			if len(secondsize) > 0 {
+				(*lf).interestgroup[i].interestocurrence = make([]float64,secondsize[0])
+				(*lf).interestgroup[i].interestlabel = make([]string,secondsize[0])
+			}
+		}					
 	}
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) SetResult(i int, l_label string, g_ocurrence int [description]
+ * @param  {[type]} lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64 [description]
  * @return {[type]}    [description]
  */
-func (lf *Labelfeatures) SetResult(i int, l_label string, g_ocurrence int){
-	(*lf).result[i].learnedlabel = l_label
-	(*lf).result[i].greatestoccurrence = g_ocurrence
+func (lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64){
+	for i := 0; i < t_size; i++ {
+		for j := 0; j < k; j++ {
+			(*lf).interestgroup[i].interestlabel[k] = "default"
+			(*lf).interestgroup[i].interestocurrence[k] = val
+		}
+	}
 }
 
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) AddInterest(t_size int ,k int [description]
+ * @return {[type]}    [description]
+ */
+func (lf *Labelfeatures) AddInterest(t_size int ,k int){
+	for i := 0; i < t_size; i++ {
+		for j := 0; j < k; j++ {
+			(*lf).interestgroup[i].interestlabel[k] = (*lf).result[i].learnedlabel[k]
+			(*lf).interestgroup[i].interestocurrence[k] = (*lf).result[i].dist[k]
+		}
+	}
+}
 /**
  * [func description]
  * @param  {[type]} lf Labelfeatures) GetResultstring(i int, getflag Groupflag [description]
  * @return {[type]}    [description]
  */
-func (lf Labelfeatures) GetResultstring(i int, getflag Groupflag) string{
-	switch getflag {
-	case Statusflag:
-		return lf.result[i].status
+// func (lf Labelfeatures) GetResultstring(i int, getflag Groupflag) string{
+// 	switch getflag {
+// 	case Statusflag:
+// 		return lf.result[i].status
 
-	case Labelflag:
-		return lf.result[i].learnedlabel			
-	}
-	return "default"
-}
+// 	case Labelflag:
+// 		return lf.result[i].learnedlabel			
+// 	}
+// 	return "default"
+// }
 
 /**
  * [func description]
@@ -179,6 +219,25 @@ func (lf Labelfeatures) Printresults(){
 		fmt.Println(lf.result[i].learnedlabel)	
 	}
 }
+
+/**
+ * [func description]
+ * @param  {[type]} lf Labelfeatures) Printdists( [description]
+ * @return {[type]}    [description]
+ */
+func (lf Labelfeatures) Printdists(){
+	fmt.Println("These are the results")
+	for i := 0; i < len(lf.result); i++ {
+		fmt.Println("results: ", i)
+		fmt.Println(lf.result[i])	
+	}	
+}
+
+func (lf Labelfeatures) Printinterest(){
+	for i := 0; i < len(lf.interestgroup); i++ {
+		fmt.Println(lf.interestgroup[i])
+	}
+}
 /**
  * [func description]
  * @param  {[type]} lf Labelfeatures) Getlen(lenflag Groupflag [description]
@@ -201,8 +260,13 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) int{
  * @param  {[type]} lf *Labelfeatures) Sortdist(i int [description]
  * @return {[type]}    [description]
  */
-func (lf *Labelfeatures) Sortdist(i int){ 
+func (lf *Labelfeatures) Sortdist(i int){
+	if (*lf).is_sorted[i] {
+		fmt.Println("the distance set of this images are already sorted")
+		return
+	} 
 	sort.Sort(ByDist((*lf).result[i].dist))
+	(*lf).is_sorted[i] = true
 }
 
 type Sizelabel struct{

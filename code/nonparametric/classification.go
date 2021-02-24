@@ -1,53 +1,35 @@
 package nonparametric
 
 import (
-	"fmt"
+	//"fmt"
 	"../generalizeimage"
 
 )
 
 /**
  * [KNN description]
- * @param {[type]} LabelFeatures *generalizeimage.Labelfeatures [description]
+ * @param {[type]} dataset *generalizeimage.Labelfeatures [description]
  * @param {[type]} k             int                            [description]
  */
-func KNN(LabelFeatures *generalizeimage.Labelfeatures,k int){
-
-	auxresult := make(map[string]int)
+func KNN(dataset *generalizeimage.Labelfeatures,k int){
 	
-	var aux_ocurrence int
+	// var aux_ocurrence int
 
-	var aux_label string
+	// var aux_label string
 
-	(*LabelFeatures).Allocate(generalizeimage.Resultflag,(*LabelFeatures).Getlen(generalizeimage.Trainflag),(*LabelFeatures).Getlen(generalizeimage.Knowflag))
+	(*dataset).Allocate(generalizeimage.Resultflag,(*dataset).Getlen(generalizeimage.Trainflag),(*dataset).Getlen(generalizeimage.Knowflag))
 
-	(*LabelFeatures).Calcdistance()
+	(*dataset).Allocate(generalizeimage.Interestflag,(*dataset).Getlen(generalizeimage.Trainflag),k)
 
-	for i := 0; i < (*LabelFeatures).Getlen(generalizeimage.Trainflag); i++ {
-		auxresult[(*LabelFeatures).GetKnowstring(i)] = 0
+	(*dataset).Calcdistance()
+
+	for i := 0; i < (*dataset).Getlen(generalizeimage.Trainflag); i++ {
+		(*dataset).Sortdist(i)
+		/*          new territory          */
+		(*dataset).SetInterest(i,k,0)
+
+		(*dataset).AddInterest(i,k)
 	}
 
-	for i := 0; i < (*LabelFeatures).Getlen(generalizeimage.Trainflag); i++ {
-		
-		(*LabelFeatures).Sortdist(i)
-		
-		for j := 0; j < k; j++ {
-			fmt.Println("current label", (*LabelFeatures).GetKnowstring(j))
-			auxresult[(*LabelFeatures).GetKnowstring(j)]++
-		}
-		aux_ocurrence = auxresult[(*LabelFeatures).GetKnowstring(0)]
-		aux_label = (*LabelFeatures).GetKnowstring(0)
-				
-		(*LabelFeatures).SetResult(i,aux_label,aux_ocurrence)
-
-		for g := 0; g < k; g++ {
-			if (*LabelFeatures).GetResultint(i) < auxresult[(*LabelFeatures).GetKnowstring(g)]{
-				
-				aux_ocurrence = auxresult[(*LabelFeatures).GetKnowstring(g)]
-				aux_label = (*LabelFeatures).GetKnowstring(g)
-				
-				(*LabelFeatures).SetResult(i,aux_label,aux_ocurrence)
-			}
-		}
-	}
+	(*dataset).Printinterest()
 }
