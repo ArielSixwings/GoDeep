@@ -1,7 +1,7 @@
 package nonparametric
 
 import (
-	//"fmt"
+	"fmt"
 	"../generalizeimage"
 
 )
@@ -12,15 +12,12 @@ import (
  * @param {[type]} k             int                            [description]
  */
 func KNN(dataset *generalizeimage.Labelfeatures,k int){
-	
-	// var aux_ocurrence int
-
-	// var aux_label string
 
 	(*dataset).Allocate(generalizeimage.Resultflag,(*dataset).Getlen(generalizeimage.Trainflag),(*dataset).Getlen(generalizeimage.Knowflag))
 
 	(*dataset).Allocate(generalizeimage.Interestflag,(*dataset).Getlen(generalizeimage.Trainflag),k)
 
+	fmt.Println("Computing distances")
 	(*dataset).Calcdistance()
 
 	for i := 0; i < (*dataset).Getlen(generalizeimage.Trainflag); i++ {
@@ -30,6 +27,6 @@ func KNN(dataset *generalizeimage.Labelfeatures,k int){
 
 		(*dataset).AddInterest(i,k)
 	}
-
+	//(*dataset).GetGreatestOcorrence(k)
 	(*dataset).Printinterest()
 }

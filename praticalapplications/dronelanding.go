@@ -110,13 +110,13 @@ func main() {
 	}	
 
 	/*compute GLCMs and them the normalized GLCM*/
-	fmt.Println("computing know GLCMs")
+	fmt.Println("Computing know GLCMs")
 	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, false, false)
 	for i := 0; i < 3*knowsize; i++ {
 		gocv.Normalize(knowGLCMs[i], &normalizedknow[i], 0.0, 255.0, normtype )		
 	}
 
-	fmt.Println("computing train GLCMs")
+	fmt.Println("Computing train GLCMs")
 	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, false, false)
 	for i := 0; i < 3*trainsize; i++ {
 		gocv.Normalize(trainGLCMs[i], &normalizedtrain[i], 0.0, 255.0, normtype )
@@ -124,25 +124,25 @@ func main() {
 	}
 
 	/*Extract the features*/
-	fmt.Println("computing know features")
+	fmt.Println("Computing know features")
 	imageprocessing.GroupFeature(&normalizedknow,knowEnergys,imageprocessing.EnergyFeature, false)
 	imageprocessing.GroupFeature(&normalizedknow,knowCorrelations,imageprocessing.CorrelationFeature, false)
 	imageprocessing.GroupFeature(&normalizedknow,knowContrasts,imageprocessing.ContrastFeature, false)
 
-	fmt.Println("computing train features")
+	fmt.Println("Computing train features")
 	imageprocessing.GroupFeature(&normalizedtrain,trainEnergys,imageprocessing.EnergyFeature, false)
 	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, false)
 	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, false)
 
 
-	fmt.Println("generalizing know data set")
+	fmt.Println("Generalizing know data set")
 	generalizeimage.Generalize_for_nonparametric(&dataset, knowEnergys, knowCorrelations, knowContrasts,knowls,generalizeimage.Knowflag,90)
 	
-	fmt.Println("generalizing train data set")
+	fmt.Println("Generalizing train data set")
 	generalizeimage.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizeimage.Trainflag,60)
 
 	//dataset.Printfeatures()
-
+	fmt.Println("Caling KNN")
 	nonparametric.KNN(&dataset,5)
 
 	//dataset.Printresults()
