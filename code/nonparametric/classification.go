@@ -1,7 +1,6 @@
 package nonparametric
 
 import (
-	"fmt"
 	"../generalizeimage"
 
 )
@@ -17,16 +16,15 @@ func KNN(dataset *generalizeimage.Labelfeatures,k int){
 
 	(*dataset).Allocate(generalizeimage.Interestflag,(*dataset).Getlen(generalizeimage.Trainflag),k)
 
-	fmt.Println("Computing distances")
 	(*dataset).Calcdistance()
 
 	for i := 0; i < (*dataset).Getlen(generalizeimage.Trainflag); i++ {
 		(*dataset).Sortdist(i)
-		/*          new territory          */
+
 		(*dataset).SetInterest(i,k,0)
 
 		(*dataset).AddInterest(i,k)
 	}
 	(*dataset).GetGreatestOcorrence(k)
-	//(*dataset).Printinterest()
 }
+

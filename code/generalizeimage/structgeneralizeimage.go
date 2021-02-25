@@ -51,7 +51,8 @@ type Labelfeatures struct {
 	know 			[]features	
 	result 			[]labeldist
 	interestgroup 	[]interest
-	is_sorted 		[]bool
+	is_sortedbydist []bool
+	centroid 		[3]float64 
 }
 
 type ByDist []featurepoint

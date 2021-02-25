@@ -146,4 +146,6 @@ func main() {
 	nonparametric.KNN(&dataset,5)
 
 	dataset.Printresults()
+
+	dataset.Centroid()
 }

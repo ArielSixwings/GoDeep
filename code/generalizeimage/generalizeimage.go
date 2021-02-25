@@ -16,12 +16,12 @@ func (d ByDist) Less(i, j int) bool { return d[i].dist < d[j].dist }
  * @return {[type]}    [description]
  */
 func (lf *Labelfeatures) Sortdist(i int){
-	if (*lf).is_sorted[i] {
+	if (*lf).is_sortedbydist[i] {
 		fmt.Println("the distance set of this images are already sorted")
 		return
 	}
 	sort.Sort(ByDist((*lf).result[i].f_point))
-	(*lf).is_sorted[i] = true
+	(*lf).is_sortedbydist[i] = true
 }
 
 /**
@@ -33,11 +33,11 @@ func (lf *Labelfeatures) Calcdistance() {
 
 	var sum float64 = 0.0
 	
-	(*lf).is_sorted = make([]bool,len((*lf).train))
+	(*lf).is_sortedbydist = make([]bool,len((*lf).train))
 
 	for i := 0; i < len((*lf).train); i++ {
 
-		//(*lf).is_sorted[i] = false
+		(*lf).is_sortedbydist[i] = false
 		
 		for j := 0; j < len((*lf).know); j++ {
 			sum = 0.0
@@ -239,4 +239,23 @@ func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, featur
 			}
 		}	
 	}
+}
+
+func (lf *Labelfeatures) Centroid(){
+
+	var sun [3]float64
+	sun[0] = 0.0
+	sun[1] = 0.0
+	sun[2] = 0.0	
+
+	for i := 0; i < len((*lf).know); i++ {
+		sun[0]+= (*lf).know[i].features[0]
+		sun[1]+= (*lf).know[i].features[1]
+		sun[2]+= (*lf).know[i].features[2]
+	}
+	(*lf).centroid[0] = (sun[0]/float64(len((*lf).know)))
+	(*lf).centroid[1] = (sun[1]/float64(len((*lf).know)))
+	(*lf).centroid[2] = (sun[2]/float64(len((*lf).know)))
+
+	fmt.Println("general centroid:   ", (*lf).centroid )
 }
