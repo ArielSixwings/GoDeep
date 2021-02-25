@@ -7,18 +7,6 @@ import (
 
 )
 
-type FeatureType int
-
-const (
-
-	EnergyFeature FeatureType = 0
-
-	ContrastFeature FeatureType = 1
-
-	CorrelationFeature FeatureType = 2
-
-)
-
 /**
  * [getGLCM description]
  * @param  {[type]} Image   gocv.Mat      [description]
@@ -110,6 +98,17 @@ func Energy(GLCM gocv.Mat) float64{
 	return Energy
 }
 
+func Homogeneity(GLCM gocv.Mat) float64{
+
+	var Homogeneity float64 = 0
+
+	for r := 0; r < GLCM.Rows()	; r++ {
+		for c := 0; c < GLCM.Cols(); c++ {
+			Homogeneity += (1/(1+math.Pow(float64(r-c),2)))*float64(GLCM.GetUCharAt(r,c))
+		}
+	}
+	return Homogeneity
+}
 /**
  * [Calculate the energy of some group of images]
  * @param {[type]} GLCMs   *[]gocv.Mat [Group of images GLCMs]
@@ -137,7 +136,12 @@ func GroupFeature(GLCMs *[]gocv.Mat, Features []float64,featuretype FeatureType,
 			if print{
 				fmt.Println("Calculating Correlation:  ",(i+1), "of ",len(*GLCMs))
 			}
-			Features[i] = Correlation((*GLCMs)[i])			
+			Features[i] = Correlation((*GLCMs)[i])
+		case HomogeneityFeature :
+			if print{
+				fmt.Println("Calculating Homogeneity:  ",(i+1), "of ",len(*GLCMs))
+			}
+			Features[i] = Homogeneity((*GLCMs)[i])			
 		}
 	}
 

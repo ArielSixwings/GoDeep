@@ -5,68 +5,6 @@ import(
 	"fmt"
 	"sort"
 )
-type Groupflag int
-
-const (
-
-	Knowflag Groupflag = 0
-
-	Trainflag Groupflag = 1
-
-	Resultflag Groupflag = 2
-
-	GreatestOccurrence Groupflag = 3
-
-	Labelflag Groupflag = 4
-
-	Statusflag Groupflag = 5
-
-	Interestflag Groupflag = 6
-
-)
-
-type interest struct{
-
-	interestlabel 		[]string
-	interestdist 	[]float64
-}
-
-type featurepoint struct{
-	dist float64
-	distlabel string
-}
-type labeldist struct{
-
-	f_point				[]featurepoint
-	learnedlabel 		string
-	status 				string
-	greatestoccurrence 	int
-}
-
-type features struct {
-
-	features 	[3]float64 
-	label 		string
-}
-
-
-type Labelfeatures struct {
-
-	train 			[]features
-	know 			[]features	
-	result 			[]labeldist
-	interestgroup 	[]interest
-	is_sorted 		[]bool
-}
-
-/**
- * [func description]
- * @param  {[type]} lf *labelfeatures) calcdistance( [description]
- * @return {[type]}    [description]
- */
-
-
-type ByDist []featurepoint
 
 func (d ByDist) Len() int { return len(d) }
 func (d ByDist) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
@@ -239,50 +177,6 @@ func (lf Labelfeatures) Printfeatures(){
 
 /**
  * [func description]
- * @param  {[type]} lf Labelfeatures) Printresults( [description]
- * @return {[type]}    [description]
- */
-func (lf Labelfeatures) Printresults(){
-
-	var total , right float64
-
-	right = 0
-	total = float64( len(lf.result))
-	fmt.Println("These are the results")
-	for i := 0; i < len(lf.result); i++ {
-		fmt.Println(lf.result[i].learnedlabel,"and that label status is:", (lf.result[i].learnedlabel == lf.train[i].label))
-		if lf.result[i].learnedlabel == lf.train[i].label {
-			right++ 
-		}
-	}
-	fmt.Println("Success rate = ",100*(right/total),"%")
-}
-
-/**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printdists( [description]
- * @return {[type]}    [description]
- */
-func (lf Labelfeatures) Printdists(){
-	fmt.Println("These are the results")
-	for i := 0; i < len(lf.result); i++ {
-		fmt.Println("results: ", i)
-		fmt.Println(lf.result[i])	
-	}	
-}
-
-/**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printinterest( [description]
- * @return {[type]}    [description]
- */
-func (lf Labelfeatures) Printinterest(){
-	for i := 0; i < len(lf.interestgroup); i++ {
-		fmt.Println(lf.interestgroup[i])
-	}
-}
-/**
- * [func description]
  * @param  {[type]} lf Labelfeatures) Getlen(lenflag Groupflag [description]
  * @return {[type]}    [description]
  */
@@ -296,11 +190,6 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) int{
 	}
 	return 0
 
-}
-
-type Sizelabel struct{
-	Label 	string
-	Size_l 	int
 }
 
 /**
