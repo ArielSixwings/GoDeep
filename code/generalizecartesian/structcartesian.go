@@ -1,4 +1,4 @@
-package generalizeimage
+package generalizecartesian
 
 type Groupflag int
 
@@ -17,6 +17,10 @@ const (
 	Statusflag Groupflag = 5
 
 	Interestflag Groupflag = 6
+
+	Centroidflag Groupflag = 7
+
+	Centerdistflag Groupflag = 8 
 
 )
 
@@ -45,6 +49,11 @@ type features struct {
 	label 		string
 }
 
+type Sizelabel struct{
+	Label 	string
+	Size_l 	int
+}
+
 type Labelfeatures struct {
 
 	train 			[]features
@@ -52,12 +61,11 @@ type Labelfeatures struct {
 	result 			[]labeldist
 	interestgroup 	[]interest
 	is_sortedbydist []bool
-	centroid 		[3]float64 
+	centroid 		[]features
+	centerdist 		[]featurepoint
+	sizelabel 		[]Sizelabel
+
 }
 
 type ByDist []featurepoint
 
-type Sizelabel struct{
-	Label 	string
-	Size_l 	int
-}

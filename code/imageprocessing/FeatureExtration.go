@@ -19,6 +19,11 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 	
 	auxGLCM			:= make([][]float64,256)
 	
+	//var sum float64 = 0
+	var max float64 = 0.0
+
+	var GLCM_row uint8 = 0
+	var GLCM_col uint8 = 0
 	for i := 0; i < 256; i++ {
 
 		auxGLCM[i] = make([]float64,256)
@@ -29,10 +34,6 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 
 	}
 	
-	var max float64 = 0.0
-
-	var GLCM_row uint8 = 0
-	var GLCM_col uint8 = 0
 
 	for r := 0; r < (Image.Rows()-delta_r)	; r++ {
 		for c := 0; c < (Image.Cols()-delta_c); c++ {
@@ -47,12 +48,14 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int){
 			if auxGLCM[r][c] > max{
 				max = auxGLCM[r][c]
 			}
+			//sum+= auxGLCM[r][c]
 		}
 	}	
 
 	for r := 0; r < (*GLCM).Rows()	; r++ {
 		for c := 0; c < (*GLCM).Cols(); c++ {
 			(*GLCM).SetUCharAt(r,c,uint8(255*(auxGLCM[r][c]/max)))
+			// auxGLCM[GLCM_row][GLCM_col] = auxGLCM[GLCM_row][GLCM_col]/sum
 		}
 	}
 }
@@ -72,7 +75,7 @@ func GroupGLCM(Images []gocv.Mat, GLCMs *[]gocv.Mat, print bool ,show bool) {
 
 		}
 
-		getGLCM(Images[i], &(*GLCMs)[i], 1,0)
+		getGLCM(Images[i], &(*GLCMs)[i], 0,1)
 
 		if show {
 			ShowImage("GLCMs", (*GLCMs)[i], 100)

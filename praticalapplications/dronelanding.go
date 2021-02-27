@@ -2,7 +2,7 @@ package main
 
 import (
 	"../code/imageprocessing"
-	"../code/generalizeimage"
+	"../code/generalizecartesian"
 	"../code/nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 func main() {
 	
-	var dataset generalizeimage.Labelfeatures
+	var dataset generalizecartesian.Labelfeatures
 	
 	/*size of train and know groups*/
 	var size int
@@ -23,12 +23,12 @@ func main() {
 
 	/*calc sizes*/
 	size  = imageprocessing.FolderLength("../code/imageprocessing/Images/danger")
-	trainsize = 20//int(size/2.5)
+	trainsize = 25//int(size/2.5)
 	knowsize = size - trainsize
 
 	/*set labelsizes*/
-	knowls := make([]generalizeimage.Sizelabel,3)
-	trainls := make([]generalizeimage.Sizelabel,3)
+	knowls := make([]generalizecartesian.Sizelabel,3)
+	trainls := make([]generalizecartesian.Sizelabel,3)
 
 	for i := 0; i < 3; i++ {
 		knowls[i].Size_l  = knowsize
@@ -56,7 +56,7 @@ func main() {
 	}
 	/*Know Features*/
 	knowEnergys			:= make([]float64,3*knowsize)	// 	Energy
-	knowHomogeneitys	:= make([]float64,3*knowsize)	// 	Homogeneity
+	knowCorrelations	:= make([]float64,3*knowsize)	// 	Correlation
 	knowContrasts		:= make([]float64,3*knowsize)	// 	Contrast
 
 	/* Train images and features allocation*/
@@ -71,7 +71,7 @@ func main() {
 	}
 	/*Train Features*/
 	trainEnergys		:= make([]float64,3*trainsize)	// 	Energy
-	trainHomogeneitys	:= make([]float64,3*trainsize)	// 	Homogeneity
+	trainCorrelations	:= make([]float64,3*trainsize)	// 	Correlation
 	trainContrasts		:= make([]float64,3*trainsize)	// 	Contrast	
 	
 	/*temporary set of images that will be used to read each folder*/
@@ -126,20 +126,20 @@ func main() {
 	/*Extract the features*/
 	fmt.Println("Computing know features")
 	imageprocessing.GroupFeature(&normalizedknow,knowEnergys,imageprocessing.EnergyFeature, false)
-	imageprocessing.GroupFeature(&normalizedknow,knowHomogeneitys,imageprocessing.HomogeneityFeature, false)
+	imageprocessing.GroupFeature(&normalizedknow,knowCorrelations,imageprocessing.CorrelationFeature, false)
 	imageprocessing.GroupFeature(&normalizedknow,knowContrasts,imageprocessing.ContrastFeature, false)
 
 	fmt.Println("Computing train features")
 	imageprocessing.GroupFeature(&normalizedtrain,trainEnergys,imageprocessing.EnergyFeature, false)
-	imageprocessing.GroupFeature(&normalizedtrain,trainHomogeneitys,imageprocessing.HomogeneityFeature, false)
+	imageprocessing.GroupFeature(&normalizedtrain,trainCorrelations,imageprocessing.CorrelationFeature, false)
 	imageprocessing.GroupFeature(&normalizedtrain,trainContrasts,imageprocessing.ContrastFeature, false)
 
 
 	fmt.Println("Generalizing know data set")
-	generalizeimage.Generalize_for_nonparametric(&dataset, knowEnergys, knowHomogeneitys, knowContrasts,knowls,generalizeimage.Knowflag,3*knowsize)
+	generalizecartesian.Generalize_for_nonparametric(&dataset, knowEnergys, knowCorrelations, knowContrasts,knowls,generalizecartesian.Knowflag,3*knowsize)
 	
 	fmt.Println("Generalizing train data set")
-	generalizeimage.Generalize_for_nonparametric(&dataset, trainEnergys, trainHomogeneitys, trainContrasts,trainls,generalizeimage.Trainflag,3*trainsize)
+	generalizecartesian.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizecartesian.Trainflag,3*trainsize)
 
 	//dataset.Printfeatures()
 	fmt.Println("Caling KNN")
@@ -148,4 +148,6 @@ func main() {
 	dataset.Printresults()
 
 	dataset.Centroid()
+
+	dataset.Centerdists()
 }

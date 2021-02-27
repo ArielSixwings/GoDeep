@@ -1,4 +1,4 @@
-package generalizeimage
+package generalizecartesian
 
 import (
 	"fmt"

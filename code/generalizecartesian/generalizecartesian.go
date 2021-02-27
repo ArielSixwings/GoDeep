@@ -1,4 +1,4 @@
-package generalizeimage
+package generalizecartesian
 
 import(
 	"math"
@@ -77,7 +77,11 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...i
 				(*lf).interestgroup[i].interestdist = make([]float64,secondsize[0])
 				(*lf).interestgroup[i].interestlabel = make([]string,secondsize[0])
 			}
-		}					
+		}
+	case Centroidflag:
+		(*lf).centroid = make([]features,3)
+	case Centerdistflag:
+		(*lf).centerdist = make([]featurepoint,3)		
 	}
 }
 
@@ -204,13 +208,15 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) int{
  */
 func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, feature_Y []float64, feature_Z []float64,ls []Sizelabel,group Groupflag,size int){
 
+	var j int = 0 
+
 	if group == Knowflag{
 		(*lf).Allocate(Knowflag,size)
 	} else{
 		(*lf).Allocate(Trainflag,size)
 	}
 
-	var j int = 0 
+	(*lf).sizelabel = ls
 	for i := 0; i < size; i++ {
 		if group == Knowflag{
 			
@@ -241,21 +247,61 @@ func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, featur
 	}
 }
 
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) Centroid( [description]
+ * @return {[type]}    [description]
+ */
 func (lf *Labelfeatures) Centroid(){
 
-	var sun [3]float64
-	sun[0] = 0.0
-	sun[1] = 0.0
-	sun[2] = 0.0	
-
-	for i := 0; i < len((*lf).know); i++ {
-		sun[0]+= (*lf).know[i].features[0]
-		sun[1]+= (*lf).know[i].features[1]
-		sun[2]+= (*lf).know[i].features[2]
+	if len((*lf).centroid) == 0{
+		(*lf).Allocate(Centroidflag,1)
 	}
-	(*lf).centroid[0] = (sun[0]/float64(len((*lf).know)))
-	(*lf).centroid[1] = (sun[1]/float64(len((*lf).know)))
-	(*lf).centroid[2] = (sun[2]/float64(len((*lf).know)))
+	var sun [3]float64
+
+	for i := 0; i < len((*lf).sizelabel); i++ {
+		sun[0] = 0.0
+		sun[1] = 0.0
+		sun[2] = 0.0
+		for j := 0; j < (*lf).sizelabel[i].Size_l; j++ {
+			sun[0]+= (*lf).know[i].features[0]
+			sun[1]+= (*lf).know[i].features[1]
+			sun[2]+= (*lf).know[i].features[2]
+		}
+		(*lf).centroid[i].features[0] = (sun[0]/float64((*lf).sizelabel[i].Size_l))
+		(*lf).centroid[i].features[1] = (sun[1]/float64((*lf).sizelabel[i].Size_l))
+		(*lf).centroid[i].features[2] = (sun[2]/float64((*lf).sizelabel[i].Size_l))
+
+		(*lf).centroid[i].label = (*lf).sizelabel[i].Label
+	}
 
 	fmt.Println("general centroid:   ", (*lf).centroid )
+}
+
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) Centerdists( [description]
+ * @return {[type]}    [description]
+ */
+func (lf *Labelfeatures) Centerdists(){
+	
+	var sum float64 = 0
+	var j = 0
+
+	if len((*lf).centerdist) == 0{
+		(*lf).Allocate(Centerdistflag,1)
+	}
+	
+	for i := 0; i < 2; i++ {
+		for j = i+1; j < 3; j++ {
+			sum = math.Pow(((*lf).centroid[i].features[0] - (*lf).centroid[j].features[0]),2)
+			sum += math.Pow(((*lf).centroid[i].features[1] - (*lf).centroid[j].features[1]),2)
+			sum += math.Pow(((*lf).centroid[i].features[2] - (*lf).centroid[j].features[2]),2)		
+		
+			(*lf).centerdist[i+j-1].dist = math.Sqrt(sum)
+			(*lf).centerdist[i+j-1].distlabel = (*lf).centroid[i].label + " to " + (*lf).centroid[j].label
+		}
+	}
+
+	fmt.Println("Cernter distances: ",(*lf).centerdist)
 }

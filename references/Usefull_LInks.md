@@ -18,6 +18,6 @@ https://en.wikipedia.org/wiki/Hough_transform
 
 https://talks.godoc.org/github.com/biogo/talks/illumination/illumina.article
 
-#Using and extending types in bíogo
+#Using and extending types in bíogo 
 
 https://talks.godoc.org/github.com/biogo/talks/types/types.article

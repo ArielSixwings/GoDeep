@@ -1,24 +1,24 @@
 package nonparametric
 
 import (
-	"../generalizeimage"
+	"../generalizecartesian"
 
 )
 
 /**
  * [KNN description]
- * @param {[type]} dataset *generalizeimage.Labelfeatures [description]
+ * @param {[type]} dataset *generalizecartesian.Labelfeatures [description]
  * @param {[type]} k             int                            [description]
  */
-func KNN(dataset *generalizeimage.Labelfeatures,k int){
+func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 
-	(*dataset).Allocate(generalizeimage.Resultflag,(*dataset).Getlen(generalizeimage.Trainflag),(*dataset).Getlen(generalizeimage.Knowflag))
+	(*dataset).Allocate(generalizecartesian.Resultflag,(*dataset).Getlen(generalizecartesian.Trainflag),(*dataset).Getlen(generalizecartesian.Knowflag))
 
-	(*dataset).Allocate(generalizeimage.Interestflag,(*dataset).Getlen(generalizeimage.Trainflag),k)
+	(*dataset).Allocate(generalizecartesian.Interestflag,(*dataset).Getlen(generalizecartesian.Trainflag),k)
 
 	(*dataset).Calcdistance()
 
-	for i := 0; i < (*dataset).Getlen(generalizeimage.Trainflag); i++ {
+	for i := 0; i < (*dataset).Getlen(generalizecartesian.Trainflag); i++ {
 		(*dataset).Sortdist(i)
 
 		(*dataset).SetInterest(i,k,0)
