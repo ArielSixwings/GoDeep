@@ -17,7 +17,7 @@ func (d ByDist) Less(i, j int) bool { return d[i].dist < d[j].dist }
  */
 func (lf *Labelfeatures) Sortdist(i int){
 	if (*lf).is_sortedbydist[i] {
-		fmt.Println("the distance set of this images are already sorted")
+		fmt.Println("the distance set of this dataset are already sorted")
 		return
 	}
 	sort.Sort(ByDist((*lf).result[i].f_point))
@@ -32,6 +32,10 @@ func (lf *Labelfeatures) Sortdist(i int){
 func (lf *Labelfeatures) Calcdistance() { 
 
 	var sum float64 = 0.0
+
+	if len((*lf).result) == 0{
+		(*lf).Allocate(Resultflag,(*lf).Getlen(Trainflag),(*lf).Getlen(Knowflag))
+	}
 	
 	(*lf).is_sortedbydist = make([]bool,len((*lf).train))
 

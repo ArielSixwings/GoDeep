@@ -12,8 +12,6 @@ import (
  */
 func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 
-	(*dataset).Allocate(generalizecartesian.Resultflag,(*dataset).Getlen(generalizecartesian.Trainflag),(*dataset).Getlen(generalizecartesian.Knowflag))
-
 	(*dataset).Allocate(generalizecartesian.Interestflag,(*dataset).Getlen(generalizecartesian.Trainflag),k)
 
 	(*dataset).Calcdistance()
@@ -28,3 +26,6 @@ func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 	(*dataset).GetGreatestOcorrence(k)
 }
 
+func Kmeans(dataset *generalizecartesian.Labelfeatures){
+
+}
