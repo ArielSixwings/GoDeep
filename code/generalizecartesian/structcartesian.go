@@ -39,7 +39,7 @@ type labeldist struct{
 
 	f_point				[]featurepoint
 	learnedlabel 		string
-	status 				string
+	status 				bool
 	greatestoccurrence 	int
 }
 
@@ -56,16 +56,16 @@ type Sizelabel struct{
 
 type Labelfeatures struct {
 
-	train 			[]features
-	know 			[]features	
-	result 			[]labeldist
-	interestgroup 	[]interest
-	is_sortedbydist []bool
-	centroid 		[]features
-	centerdist 		[]featurepoint
-	sizelabel 		[]Sizelabel
+	train 				[]features
+	know 				[]features	
+	result 				[]labeldist
+	interestgroup 		[]interest
+	is_sortedbydist 	[]bool
+	is_sortedbycenter 	[]bool 
+	centroid 			[]features
+	centerdist 			[]featurepoint
+	sizelabel 			[]Sizelabel
 
 }
 
 type ByDist []featurepoint
-

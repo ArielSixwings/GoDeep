@@ -23,6 +23,19 @@ func (lf *Labelfeatures) Sortdist(i int){
 	sort.Sort(ByDist((*lf).result[i].f_point))
 	(*lf).is_sortedbydist[i] = true
 }
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) SortCenterdist(i int [description]
+ * @return {[type]}    [description]
+ */
+func (lf *Labelfeatures) SortCenterdist(i int){
+	if (*lf).is_sortedbycenter[i] {
+		fmt.Println("the distance set of this dataset are already sorted by the distance to the group center")
+		return
+	}
+	sort.Sort(ByDist((*lf).result[i].f_point))
+	(*lf).is_sortedbycenter[i] = true	
+}
 
 /**
  * [func description]
@@ -53,6 +66,34 @@ func (lf *Labelfeatures) Calcdistance() {
 		} 
 	}
 
+}
+
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) CalcCenterdistance( [description]
+ * @return {[type]}    [description]
+ */
+func (lf *Labelfeatures) CalcCenterdistance(){
+
+	var currentdist float64
+
+	if len((*lf).result) == 0{
+		(*lf).Allocate(Resultflag,(*lf).Getlen(Trainflag),(*lf).Getlen(Knowflag))
+	}
+
+	(*lf).is_sortedbycenter = make([]bool,len((*lf).train))
+
+	for i := 0; i < len((*lf).train); i++ {
+		(*lf).is_sortedbycenter[i] = false
+		for j := 0; j < len((*lf).centroid); j++ {
+			currentdist = math.Pow(((*lf).train[i].features[0] - (*lf).centroid[j].features[0]),2)
+			currentdist += math.Pow(((*lf).train[i].features[1] - (*lf).centroid[j].features[1]),2)
+			currentdist += math.Pow(((*lf).train[i].features[2] - (*lf).centroid[j].features[2]),2)
+			
+			(*lf).result[i].f_point[j].dist = currentdist
+			(*lf).result[i].learnedlabel =  (*lf).centroid[j].label
+		}
+	}
 }
 
 /**
@@ -284,10 +325,10 @@ func (lf *Labelfeatures) Centroid(){
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) Centerdists( [description]
+ * @param  {[type]} lf *Labelfeatures) GroupCenterdists( [description]
  * @return {[type]}    [description]
  */
-func (lf *Labelfeatures) Centerdists(){
+func (lf *Labelfeatures) GroupCenterdists(){
 	
 	var sum float64 = 0
 	var j = 0
@@ -308,4 +349,19 @@ func (lf *Labelfeatures) Centerdists(){
 	}
 
 	fmt.Println("Cernter distances: ",(*lf).centerdist)
+}
+
+/**
+ * [func description]
+ * @param  {[type]} lf *Labelfeatures) GetAccuracy( [description]
+ * @return {[type]}    [description]
+ */
+func (lf *Labelfeatures) GetAccuracy(){
+	for i := 0; i < len((*lf).train); i++ {
+		if (*lf).result[i].learnedlabel == (*lf).train[i].label{
+			(*lf).result[i].status = true
+		} else {
+			(*lf).result[i].status = false
+		}
+	}
 }

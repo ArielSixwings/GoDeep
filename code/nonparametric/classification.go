@@ -28,4 +28,12 @@ func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 
 func Kmeans(dataset *generalizecartesian.Labelfeatures){
 
+	(*dataset).Centroid()
+
+	(*dataset).CalcCenterdistance()
+	for i := 0; i < (*dataset).Getlen(generalizecartesian.Trainflag); i++ {
+		(*dataset).SortCenterdist(i)
+	}
+
+	(*dataset).GetAccuracy()	
 }

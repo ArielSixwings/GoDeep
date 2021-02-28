@@ -141,13 +141,13 @@ func main() {
 	fmt.Println("Generalizing train data set")
 	generalizecartesian.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizecartesian.Trainflag,3*trainsize)
 
-	//dataset.Printfeatures()
-	fmt.Println("Caling KNN")
-	nonparametric.KNN(&dataset,5)
+	// fmt.Println("Calling KNN")
+	// nonparametric.KNN(&dataset,5)
+
+	fmt.Println("Calling Kmeans")
+	nonparametric.Kmeans(&dataset)	
 
 	dataset.Printresults()
 
-	dataset.Centroid()
-
-	dataset.Centerdists()
+	dataset.GroupCenterdists()
 }
