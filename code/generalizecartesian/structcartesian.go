@@ -57,7 +57,7 @@ type Sizelabel struct{
 type Labelfeatures struct {
 
 	train 			[]features
-	know 			[]features	
+	know 			[]featuresS
 	result 			[]labeldist
 	interestgroup 	[]interest
 	is_sortedbydist []bool
