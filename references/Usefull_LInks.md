@@ -21,3 +21,7 @@ https://talks.godoc.org/github.com/biogo/talks/illumination/illumina.article
 #Using and extending types in bíogo 
 
 https://talks.godoc.org/github.com/biogo/talks/types/types.article
+
+#Godoc, our tool for documentation
+
+https://blog.golang.org/godoc
