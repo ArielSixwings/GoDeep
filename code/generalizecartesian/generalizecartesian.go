@@ -2,8 +2,9 @@ package generalizecartesian
 
 import(
 	"math"
-	"fmt"
+	//"fmt"
 	"sort"
+	"errors"
 )
 
 func (d ByDist) Len() int { return len(d) }
@@ -11,43 +12,55 @@ func (d ByDist) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
 func (d ByDist) Less(i, j int) bool { return d[i].dist < d[j].dist }
 
 /**
- * [func description]
- * @param  {[type]} lf *Labelfeatures) Sortdist(i int [description]
- * @return {[type]}    [description]
+ * [for the ith entry, selected by the i parameter, sort all the distances between the entry and the know group]
+ * @param  {*Labelfeatures} lf *Labelfeatures) Sortdist(i int) 	[the data set]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) Sortdist(i int){
-	if (*lf).is_sortedbydist[i] {
-		fmt.Println("the distance set of this dataset are already sorted")
-		return
+func (lf *Labelfeatures) Sortdist(i int, sortflag Groupflag) error{
+	
+	switch sortflag {
+	case Centerdistflag:
+		if (*lf).is_sortedbydist[i] {
+			return errors.New("the distance set of this dataset are already sorted by the distance to the group center")
+		}		
+		sort.Sort(ByDist((*lf).result[i].f_point))
+
+		(*lf).result[i].learnedlabel = (*lf).result[i].f_point[0].distlabel
+
+		(*lf).is_sortedbycenter[i] = true
+	case Knowflag:
+		if (*lf).is_sortedbydist[i] {
+			return errors.New("the distance set of this dataset are already sorted")
+		}
+		sort.Sort(ByDist((*lf).result[i].f_point))
+	
+		(*lf).is_sortedbydist[i] = true
 	}
-	sort.Sort(ByDist((*lf).result[i].f_point))
-	(*lf).is_sortedbydist[i] = true
-}
-/**
- * [func description]
- * @param  {[type]} lf *Labelfeatures) SortCenterdist(i int [description]
- * @return {[type]}    [description]
- */
-func (lf *Labelfeatures) SortCenterdist(i int){
-	if (*lf).is_sortedbycenter[i] {
-		fmt.Println("the distance set of this dataset are already sorted by the distance to the group center")
-		return
-	}
-	sort.Sort(ByDist((*lf).result[i].f_point))
-	(*lf).is_sortedbycenter[i] = true	
+	return nil
 }
 
 /**
- * [func description]
- * @param  {[type]} lf *Labelfeatures) Calcdistance( [description]
- * @return {[type]}    [description]
+ * [get the distance from each entry of the train group to the know group]
+ * @param  {*Labelfeatures} lf *Labelfeatures) Calcdistance( 	[the data set]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) Calcdistance() { 
+func (lf *Labelfeatures) Calcdistance() error{ 
 
 	var sum float64 = 0.0
+	if len((*lf).train) == 0{
+		if len((*lf).know) == 0{
+			return errors.New("the train and know datasets weren't provided")
+		} else{
+			return errors.New("the train dataset weren't provided")
+		}
+	}else{
+		if len((*lf).know) == 0{
+			return errors.New("the know dataset weren't provided")
+		}
+	}
 
 	if len((*lf).result) == 0{
-		(*lf).Allocate(Resultflag,(*lf).Getlen(Trainflag),(*lf).Getlen(Knowflag))
+		(*lf).Allocate(Resultflag,len((*lf).train),len((*lf).know))
 	}
 	
 	(*lf).is_sortedbydist = make([]bool,len((*lf).train))
@@ -66,42 +79,63 @@ func (lf *Labelfeatures) Calcdistance() {
 		} 
 	}
 
+	return nil
+
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) CalcCenterdistance( [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) CalcCenterdistance( [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) CalcCenterdistance(){
+func (lf *Labelfeatures) CalcCenterdistance() error{
 
 	var currentdist float64
 
+	if len((*lf).train) == 0{
+		if len((*lf).centroid) == 0{
+			return errors.New("the train and centroid datasets weren't provided")
+		} else{
+			return errors.New("the train dataset weren't provided")
+		}
+	}else{
+		if len((*lf).centroid) == 0{
+			return errors.New("the centroid dataset weren't provided")
+		}
+	}
+
 	if len((*lf).result) == 0{
-		(*lf).Allocate(Resultflag,(*lf).Getlen(Trainflag),(*lf).Getlen(Knowflag))
+		(*lf).Allocate(Resultflag,len((*lf).train),len((*lf).centroid))
 	}
 
 	(*lf).is_sortedbycenter = make([]bool,len((*lf).train))
 
 	for i := 0; i < len((*lf).train); i++ {
+		
 		(*lf).is_sortedbycenter[i] = false
+		
 		for j := 0; j < len((*lf).centroid); j++ {
+
 			currentdist = math.Pow(((*lf).train[i].features[0] - (*lf).centroid[j].features[0]),2)
+			
 			currentdist += math.Pow(((*lf).train[i].features[1] - (*lf).centroid[j].features[1]),2)
 			currentdist += math.Pow(((*lf).train[i].features[2] - (*lf).centroid[j].features[2]),2)
 			
 			(*lf).result[i].f_point[j].dist = currentdist
-			(*lf).result[i].learnedlabel =  (*lf).centroid[j].label
+			(*lf).result[i].f_point[j].distlabel =  (*lf).centroid[j].label
+			// fmt.Println(i,"  (*lf).result[i].f_point[j].distlabel : ",(*lf).result[i].f_point[j].distlabel )
 		}
 	}
+
+	return nil
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int){
+func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int) error{
 	switch allflag {
 	case Resultflag:
 		(*lf).result = make([]labeldist,allsize)
@@ -110,11 +144,13 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...i
 				(*lf).result[i].f_point = make([]featurepoint,secondsize[0])
 			}
 		}
+		return nil
 	case Knowflag:
 		(*lf).know = make([]features,allsize)
-
+		return nil
 	case Trainflag:
 		(*lf).train = make([]features,allsize)
+		return nil
 	case Interestflag:
 		(*lf).interestgroup = make([]interest,allsize)
 		for i := 0; i < allsize; i++ {
@@ -123,49 +159,64 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...i
 				(*lf).interestgroup[i].interestlabel = make([]string,secondsize[0])
 			}
 		}
+		return nil
 	case Centroidflag:
 		(*lf).centroid = make([]features,3)
+		return nil
 	case Centerdistflag:
-		(*lf).centerdist = make([]featurepoint,3)		
+		(*lf).centerdist = make([]featurepoint,3)
+		return nil
+	default:
+		return errors.New("invalid request of Allocate method, unkown allocate flag")
 	}
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64 [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64 [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64){
+func (lf *Labelfeatures) SetInterest(t_size int ,k int ,val float64) error{
 	for i := 0; i < t_size; i++ {
 		for j := 0; j < k; j++ {
 			(*lf).interestgroup[i].interestlabel[j] = "default"
 			(*lf).interestgroup[i].interestdist[j] = val
 		}
 	}
+	return nil
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) AddInterest(t_size int ,k int [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) AddInterest(t_size int ,k int [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) AddInterest(t_size int ,k int){
+func (lf *Labelfeatures) AddInterest(t_size int ,k int) error{
+	
+	if len((*lf).interestgroup) == 0{
+		return errors.New("interestgroup not allocated")
+	}
+
 	for i := 0; i < t_size; i++ {
 		for j := 0; j < k; j++ {
 			(*lf).interestgroup[i].interestlabel[j] = (*lf).result[i].f_point[j].distlabel
 			(*lf).interestgroup[i].interestdist[j] = (*lf).result[i].f_point[j].dist
 		}
 	}
-
+	return nil
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) GetGreatestOcorrence( [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) GetGreatestOcorrence( [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) GetGreatestOcorrence(k int){
+func (lf *Labelfeatures) GetGreatestOcorrence(k int) error{
 	
+	if len((*lf).result) == 0{
+		return errors.New("result data set not provided")
+	}
+
 	ocorrence := make(map[string]int)
 
 	for i := 0; i < len((*lf).train); i++ {
@@ -183,62 +234,63 @@ func (lf *Labelfeatures) GetGreatestOcorrence(k int){
 			}
 		}		
 	}
+	return nil
 }
 
 /**
  * [func description]
  * @param  {[type]} lf Labelfeatures) GetKnowstring(i int [description]
- * @return {[type]}    [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf Labelfeatures) GetKnowstring(i int) string{ return lf.know[i].label}
+func (lf Labelfeatures) GetKnowstring(i int) (string,error){ 
+
+	if len(lf.know) == 0{
+		return "invalid", errors.New("know dataset weren't provided")
+	}
+	return lf.know[i].label,nil
+}
 
 /**
  * [func description]
  * @param  {[type]} lf Labelfeatures) GetTrainstring(i int [description]
- * @return {[type]}    [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf Labelfeatures) GetTrainstring(i int) string{ return lf.know[i].label}
+func (lf Labelfeatures) GetTrainstring(i int) (string,error){ 
+	if len(lf.train ) == 0 {
+		return "invalid", errors.New("train dataset weren't provided")
+	}
+	return lf.train[i].label,nil
+}
 
 /**
  * [func description]
  * @param  {[type]} lf Labelfeatures) GetResultint(i int [description]
- * @return {[type]}    [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf Labelfeatures) GetResultint(i int) int{return lf.result[i].greatestoccurrence}
-/**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printfeatures( [description]
- * @return {[type]}    [description]
- */
-func (lf Labelfeatures) Printfeatures(){
-	
-	fmt.Println("These are the know features")
-	for i := 0; i < len(lf.know); i++ {
-		fmt.Println(lf.know[i])	
-	
-	}
-	
-	fmt.Println("These are the train features")
-	for i := 0; i < len(lf.train); i++ {
-		fmt.Println(lf.train[i])
-	}
+func (lf Labelfeatures) GetGreatestOccurrence(i int) (int,error){
+	if len(lf.result) == 0 {
+		return 0, errors.New("results weren't provided")
+	}	
+	return lf.result[i].greatestoccurrence,nil
 }
 
 /**
  * [func description]
  * @param  {[type]} lf Labelfeatures) Getlen(lenflag Groupflag [description]
- * @return {[type]}    [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf Labelfeatures) Getlen(lenflag Groupflag) int{ 
+func (lf Labelfeatures) Getlen(lenflag Groupflag) (int,error){ 
 	switch lenflag {
 	case Knowflag:
-		return len(lf.know)
+		return len(lf.know),nil
 
 	case Trainflag:
-		return len(lf.train)
-	}
-	return 0
-
+		return len(lf.train),nil
+	case Centroidflag:
+		return len(lf.centroid),nil
+	default:
+		return 0,errors.New("invalid request of Getlen method, unkown length flag")
+	}	
 }
 
 /**
@@ -251,7 +303,11 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) int{
  * @param {[type]} group         Groupflag      [description]
  * @param {[type]} size          int            [description]
  */
-func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, feature_Y []float64, feature_Z []float64,ls []Sizelabel,group Groupflag,size int){
+func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, feature_Y []float64, feature_Z []float64,ls []Sizelabel,group Groupflag,size int) error{
+
+	if size != len(feature_X) {
+		return errors.New("Incompatible length between features and data set")
+	}
 
 	var j int = 0 
 
@@ -290,28 +346,37 @@ func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, featur
 			}
 		}	
 	}
+	return nil
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) Centroid( [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) Centroid( [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) Centroid(){
+func (lf *Labelfeatures) Centroid() error{
+
+	if len((*lf).know) == 0{
+		return errors.New("know dataset weren't provided")
+	}
 
 	if len((*lf).centroid) == 0{
 		(*lf).Allocate(Centroidflag,1)
 	}
 	var sun [3]float64
+	var auxindex int
 
 	for i := 0; i < len((*lf).sizelabel); i++ {
 		sun[0] = 0.0
 		sun[1] = 0.0
 		sun[2] = 0.0
 		for j := 0; j < (*lf).sizelabel[i].Size_l; j++ {
-			sun[0]+= (*lf).know[i].features[0]
-			sun[1]+= (*lf).know[i].features[1]
-			sun[2]+= (*lf).know[i].features[2]
+			
+			auxindex = j+(i*(*lf).sizelabel[i].Size_l)
+			
+			sun[0]+= (*lf).know[auxindex].features[0]
+			sun[1]+= (*lf).know[auxindex].features[1]
+			sun[2]+= (*lf).know[auxindex].features[2]
 		}
 		(*lf).centroid[i].features[0] = (sun[0]/float64((*lf).sizelabel[i].Size_l))
 		(*lf).centroid[i].features[1] = (sun[1]/float64((*lf).sizelabel[i].Size_l))
@@ -320,16 +385,19 @@ func (lf *Labelfeatures) Centroid(){
 		(*lf).centroid[i].label = (*lf).sizelabel[i].Label
 	}
 
-	fmt.Println("general centroid:   ", (*lf).centroid )
+	return nil
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) GroupCenterdists( [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) GroupCenterdists( [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) GroupCenterdists(){
+func (lf *Labelfeatures) GroupCenterdists() error{
 	
+	if len((*lf).centroid) == 0 {
+		return errors.New("centroid weren't provided")
+	}
 	var sum float64 = 0
 	var j = 0
 
@@ -347,16 +415,20 @@ func (lf *Labelfeatures) GroupCenterdists(){
 			(*lf).centerdist[i+j-1].distlabel = (*lf).centroid[i].label + " to " + (*lf).centroid[j].label
 		}
 	}
-
-	fmt.Println("Cernter distances: ",(*lf).centerdist)
+	return nil
 }
 
 /**
  * [func description]
- * @param  {[type]} lf *Labelfeatures) GetAccuracy( [description]
- * @return {[type]}    [description]
+ * @param  {*Labelfeatures} lf *Labelfeatures) GetAccuracy( [description]
+ * @return {error} 	 											[gets errors]
  */
-func (lf *Labelfeatures) GetAccuracy(){
+func (lf *Labelfeatures) GetAccuracy() error{
+
+	if len((*lf).result) == 0{
+		return errors.New("results weren't computed")
+	}
+
 	for i := 0; i < len((*lf).train); i++ {
 		if (*lf).result[i].learnedlabel == (*lf).train[i].label{
 			(*lf).result[i].status = true
@@ -364,4 +436,6 @@ func (lf *Labelfeatures) GetAccuracy(){
 			(*lf).result[i].status = false
 		}
 	}
+
+	return nil
 }

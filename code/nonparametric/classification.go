@@ -12,14 +12,16 @@ import (
  */
 func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 
-	(*dataset).Allocate(generalizecartesian.Interestflag,(*dataset).Getlen(generalizecartesian.Trainflag),k)
+	auxlen,_ := (*dataset).Getlen(generalizecartesian.Trainflag)
+
+	(*dataset).Allocate(generalizecartesian.Interestflag,auxlen,k)
 
 	(*dataset).Calcdistance()
 
-	for i := 0; i < (*dataset).Getlen(generalizecartesian.Trainflag); i++ {
-		(*dataset).Sortdist(i)
+	for i := 0; i < auxlen; i++ {
+		(*dataset).Sortdist(i,generalizecartesian.Knowflag)
 
-		(*dataset).SetInterest(i,k,0)
+		//(*dataset).SetInterest(i,k,0)
 
 		(*dataset).AddInterest(i,k)
 	}
@@ -28,11 +30,13 @@ func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 
 func Kmeans(dataset *generalizecartesian.Labelfeatures){
 
+	auxlen,_ := (*dataset).Getlen(generalizecartesian.Trainflag)
+
 	(*dataset).Centroid()
 
 	(*dataset).CalcCenterdistance()
-	for i := 0; i < (*dataset).Getlen(generalizecartesian.Trainflag); i++ {
-		(*dataset).SortCenterdist(i)
+	for i := 0; i < auxlen; i++ {
+		(*dataset).Sortdist(i,generalizecartesian.Centerdistflag)
 	}
 
 	(*dataset).GetAccuracy()	

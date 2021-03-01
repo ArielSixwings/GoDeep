@@ -47,3 +47,24 @@ func (lf Labelfeatures) Printinterest(){
 		fmt.Println(lf.interestgroup[i])
 	}
 }
+
+/**
+ * [func description]
+ * @param  {[type]} lf Labelfeatures) Printfeatures( [description]
+ * @return {error} 	 											[gets errors]
+ */
+func (lf Labelfeatures) Printfeatures() error{
+	
+	fmt.Println("These are the know features")
+	for i := 0; i < len(lf.know); i++ {
+		fmt.Println(lf.know[i])	
+	
+	}
+	
+	fmt.Println("These are the train features")
+	for i := 0; i < len(lf.train); i++ {
+		fmt.Println(lf.train[i])
+	}
+
+	return nil
+}
