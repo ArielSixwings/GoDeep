@@ -11,17 +11,13 @@ import (
  * @param {[type]} k             int                            [description]
  */
 func KNN(dataset *generalizecartesian.Labelfeatures,k int){
-
+	
 	auxlen,_ := (*dataset).Getlen(generalizecartesian.Trainflag)
-
-	(*dataset).Allocate(generalizecartesian.Interestflag,auxlen,k)
 
 	(*dataset).Calcdistance()
 
 	for i := 0; i < auxlen; i++ {
 		(*dataset).Sortdist(i,generalizecartesian.Knowflag)
-
-		//(*dataset).SetInterest(i,k,0)
 
 		(*dataset).AddInterest(i,k)
 	}
