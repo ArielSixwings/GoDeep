@@ -6,9 +6,10 @@ import (
 )
 
 /**
- * [KNN description]
- * @param {[type]} dataset *generalizecartesian.Labelfeatures [description]
- * @param {[type]} k             int                            [description]
+ * [KNN description: K nearest neighbors uses the k smallests distances from the studied group to the know group]
+ * @struct {[type]} dataset *generalizecartesian.Labelfeatures   [that data set contains the study group, 
+ *                                                                the know group and some parameters computed using the know group]
+ * @param  {[type]} k             int                            [number of neighbors]
  */
 func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 	
@@ -24,6 +25,11 @@ func KNN(dataset *generalizecartesian.Labelfeatures,k int){
 	(*dataset).GetGreatestOcorrence(k)
 }
 
+/**
+ * [Kmeans description: K nearest neighbors uses the k smallests distances from the studied group to the know group]
+ * @struct {[type]} dataset *generalizecartesian.Labelfeatures   [that data set contains the study group, 
+ *                                                                the know group and some parameters computed using the know group]
+ */
 func Kmeans(dataset *generalizecartesian.Labelfeatures){
 
 	auxlen,_ := (*dataset).Getlen(generalizecartesian.Trainflag)

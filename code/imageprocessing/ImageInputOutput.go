@@ -37,25 +37,19 @@ func ReadImage(Image gocv.Mat, path string, show bool, save bool, colorfull bool
 }
 
 /**
- * @brief      Saves an image.
- *
- * @param      Name   The name
- * @param      Image  The image
- *
- * @return     { An image os the type gocv.Ma }
+ * [SaveImage description: Saves an image]
+ * @param {[type]} Name  string   [name to be saved]
+ * @param {[type]} Image gocv.Mat [the image to be saved]
  */
 func SaveImage(Name string, Image gocv.Mat) {
 	gocv.IMWrite(Name, Image) //save the image
 }
 
 /**
- * @brief      Shows the image.
- *
- * @param      Menssage  The menssage in the window
- * @param      Image     The image
- * @param      time      The time of the window
- *
- * @return     { An image os the type gocv.Mat }
+ * [ShowImage description: Shows the image]
+ * @param {[type]} Menssage string   [menssage in the window]
+ * @param {[type]} Image    gocv.Mat [image to be showed]
+ * @param {[type]} time     int      [time of the window]
  */
 func ShowImage(Menssage string, Image gocv.Mat, time int) {
 	window := gocv.NewWindow(Menssage) //basic window
@@ -64,13 +58,11 @@ func ShowImage(Menssage string, Image gocv.Mat, time int) {
 }
 
 /**
- * @brief     Visit files at some folder.
- *
- * @param      Files  []String of files
- *
- * @return     { some file paths }
+ * [visit description:]
+ * @param  {[type]} files *[]string        [array of files names]
+ * @return {[type]} filepath.WalkFunc      [parameter used at filepath.Walk()]
  */
-func visit(files *[]string) filepath.WalkFunc {
+func visit(files *[]string)  filepath.WalkFunc{
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			log.Fatal(err)
@@ -81,7 +73,7 @@ func visit(files *[]string) filepath.WalkFunc {
 }
 
 /**
- * [ReadFolder description]
+ * [ReadFolder description: read all images at some folder]
  * @param {[type]} Images    *[]gocv.Mat [An Array of gocv.Mat that will be used to contain the images of the folder]
  * @param {[type]} folder    string      [folder name]
  * @param {[type]} print     bool        [if its true, print the names]
@@ -127,9 +119,9 @@ func ReadFolder(Images []gocv.Mat, folder string, print bool, show bool, colorfu
 }
 
 /**
- * @param {[type]} folder    string      [folder name]
- *
- * @return     { Folder length }
+ * [FolderLength description: get the number of files in the folder]
+ * @param {[type]} folder string [name of folder]
+ * @return {[type]} int          [lenght of the folder(number of files)]
  */
 func FolderLength(folder string) int{
 	var files []string
