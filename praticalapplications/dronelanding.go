@@ -23,7 +23,7 @@ func main() {
 
 	/*calc sizes*/
 	size  = imageprocessing.FolderLength("../code/imageprocessing/Images/danger")
-	trainsize = 20//int(size/2.5)
+	trainsize = 25//int(size/2.5)
 	knowsize = size - trainsize
 
 	/*set labelsizes*/
@@ -141,11 +141,11 @@ func main() {
 	fmt.Println("Generalizing train data set")
 	generalizecartesian.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizecartesian.Trainflag,3*trainsize)
 
-	fmt.Println("Calling KNN")
-	nonparametric.KNN(&dataset,3)
+	// fmt.Println("Calling KNN")
+	// nonparametric.KNN(&dataset,3)
 
-	// fmt.Println("Calling Kmeans")
-	// nonparametric.Kmeans(&dataset)	
+	fmt.Println("Calling Kmeans")
+	nonparametric.Kmeans(&dataset)	
 
 	dataset.Printresults()
 

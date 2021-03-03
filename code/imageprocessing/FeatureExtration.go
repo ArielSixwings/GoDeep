@@ -67,10 +67,9 @@ func getGLCM(Image gocv.Mat, GLCM *gocv.Mat, delta_r int, delta_c int) error{
 	
 /**
  * [GroupGLCM description: Take the GLCM and the means of a group of images]
- * @param {[type]} Images []gocv.mat      [description]
- * @param {[type]} GLCMs  []gocv.Mat      [description]
- * @param {[type]} means  []gocv.Mat      [description]
- * @param {[type]} show   bool            [description]
+ * @param {[type]} Images []gocv.mat      [group of images used to compute the glcm group]
+ * @param {[type]} GLCMs  []gocv.Mat      [group of glcms]
+ * @param {[type]} show   bool            [if its true, show the computed glcms]
  * @return {[type]}                       [error handling] 
  */
 func GroupGLCM(Images []gocv.Mat, GLCMs *[]gocv.Mat, print bool ,show bool) error{
@@ -103,7 +102,7 @@ func GroupGLCM(Images []gocv.Mat, GLCMs *[]gocv.Mat, print bool ,show bool) erro
 }
 
 /**
- * [energy description:]
+ * [energy description:compute energy]
  * @param  {[type]} GLCM gocv.Mat      [A GLCM gocv.Mat]
  * @return {[type]} float64            [energy of the image that produced the GLCM]
  */
@@ -120,7 +119,7 @@ func energy(GLCM gocv.Mat) float64{
 }
 
 /**
- * [correlation description:]
+ * [correlation description:compute correlation]
  * @param  {[type]} GLCM gocv.Mat      [A GLCM gocv.Mat]
  * @return {[type]} float64            [correlation of the image that produced the GLCM]
  */
@@ -141,7 +140,7 @@ func correlation(GLCM gocv.Mat) float64{
 }
 
 /**
- * [homogeneity description:]
+ * [homogeneity description:compute homogeneity]
  * @param  {[type]} GLCM gocv.Mat      [A GLCM gocv.Mat]
  * @return {[type]} float64            [homogeneity of the image that produced the GLCM]
  */
@@ -158,9 +157,9 @@ func homogeneity(GLCM gocv.Mat) float64{
 }
 
 /**
- * [contrast description:]
- * @param {[type]} GLCM gocv.Mat [description]
- * @return {[type]}       [description]
+ * [contrast description:compute contrast]
+ * @param {[type]} GLCM gocv.Mat [A GLCM gocv.Mat]
+ * @return {[type]}              [contrast of the image that produced the GLCM]
  */
 func contrast(GLCM gocv.Mat) float64{
 
@@ -176,9 +175,9 @@ func contrast(GLCM gocv.Mat) float64{
 }
 
 /**
- * [getMu description:]
- * @param  {[type]} GLCM gocv.Mat)     (float64,float64 [description]
- * @return {[type]}      [description]
+ * [getMu description:compute mus]
+ * @param  {[type]} GLCM gocv.Mat)     [A GLCM gocv.Mat]
+ * @return {[type]}                    [computed muRow and muCol]
  */
 func getMu(GLCM gocv.Mat) (float64,float64){
 	
@@ -195,11 +194,11 @@ func getMu(GLCM gocv.Mat) (float64,float64){
 }
 
 /**
- * [getSigma description:]
- * @param  {[type]} GLCM  gocv.Mat      [description]
- * @param  {[type]} muRow float64       [description]
- * @param  {[type]} muCol float64)      (float64,float64 [description]
- * @return {[type]}       [description]
+ * [getSigma description:compute sigmas]
+ * @param  {[type]} GLCM  gocv.Mat      [A GLCM gocv.Mat]
+ * @param  {[type]} muRow float64       [muRow previously computed]
+ * @param  {[type]} muCol float64       [muCol previously computed]
+ * @return {[type]} (float64,float64)   [computed sigmaRow and sigmaCol]
  */
 func getSigma(GLCM gocv.Mat, muRow float64, muCol float64) (float64,float64){
 	

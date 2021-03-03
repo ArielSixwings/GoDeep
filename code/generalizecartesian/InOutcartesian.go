@@ -3,10 +3,11 @@ package generalizecartesian
 import (
 	"fmt"
 )
+
 /**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printresults( [description]
- * @return {[type]}    [description]
+ * [Printresults description: print at the terminal the computed results, with Success rate]
+ * @struct {[type]}  lf Labelfeatures [thats a Labelfeatures method]
+ * @return {[type]}  error            [gets errors]
  */
 func (lf Labelfeatures) Printresults(){
 
@@ -14,9 +15,13 @@ func (lf Labelfeatures) Printresults(){
 
 	right = 0
 	total = float64( len(lf.result))
+	
 	fmt.Println("These are the results")
+	
 	for i := 0; i < len(lf.result); i++ {
+		
 		fmt.Println(lf.result[i].learnedlabel,"and that label status is:", (lf.result[i].learnedlabel == lf.train[i].label))
+		
 		if lf.result[i].learnedlabel == lf.train[i].label {
 			right++ 
 		}
@@ -25,22 +30,27 @@ func (lf Labelfeatures) Printresults(){
 }
 
 /**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printdists( [description]
- * @return {[type]}    [description]
+ * [func description: print at the terminal the computed distances]
+ * @struct {[type]}  lf Labelfeatures [thats a Labelfeatures method]
+ * @return {[type]}  error            [gets errors]
  */
 func (lf Labelfeatures) Printdists(){
-	fmt.Println("These are the results")
+	
+	fmt.Println("These are the distances between the data set groups")
+	
 	for i := 0; i < len(lf.result); i++ {
+		
 		fmt.Println("results: ", i)
-		fmt.Println(lf.result[i])	
+		for j  := 0; j  < len(lf.result[i].f_point); j ++ {
+			fmt.Println(lf.result[i].f_point[j].dist)	
+		}
 	}	
 }
 
 /**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printinterest( [description]
- * @return {[type]}    [description]
+ * [Printinterest description: print interest group]
+ * @struct {[type]}  lf Labelfeatures [thats a Labelfeatures method]
+ * @return {[type]}  error            [gets errors]
  */
 func (lf Labelfeatures) Printinterest(){
 	for i := 0; i < len(lf.interestgroup); i++ {
@@ -49,9 +59,9 @@ func (lf Labelfeatures) Printinterest(){
 }
 
 /**
- * [func description]
- * @param  {[type]} lf Labelfeatures) Printfeatures( [description]
- * @return {error} 	 											[gets errors]
+ * [Printfeatures description: print groups features]
+ * @struct {[type]}  lf Labelfeatures [thats a Labelfeatures method]
+ * @return {[type]}  error            [gets errors]
  */
 func (lf Labelfeatures) Printfeatures() error{
 	
