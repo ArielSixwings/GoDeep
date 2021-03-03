@@ -11,17 +11,15 @@ import (
 )
 
 /**
- * @brief      Reads an image. colorfull or not
- *
- * @param      Image      The image
- * @param      path       The path
- * @param      show       To show the image
- * @param      save       To save the image
- * @param      colorfull  To read as an rgb image
- *
- * @return     { An image os the type gocv.Mat }
+ * [ReadImage description: read an image following the parameters]
+ * @param {[type]} Image     gocv.Mat [the image]
+ * @param {[type]} path      string   [the path to the image]
+ * @param {[type]} show      bool     [if it is true show the image]
+ * @param {[type]} save      bool     [if it is true save the image]
+ * @param {[type]} colorfull bool     [if it is true read the image as a 3 chanel rbg]
+ * @return {[type]}   gocv.Mat        [the readed image]
  */
-func ReadImage(Image gocv.Mat, path string, show bool, save bool, colorfull bool) gocv.Mat {
+func ReadImage(Image gocv.Mat, path string, show bool, save bool, colorfull bool) gocv.Mat{
 
 	ImagePath := filepath.Join(path) //set path to the base image
 
@@ -32,7 +30,7 @@ func ReadImage(Image gocv.Mat, path string, show bool, save bool, colorfull bool
 	}
 
 	if show {
-		ShowImage("And this is yout image", Image, 0)
+		ShowImage("And this is yout image", Image, 100)
 	}
 
 	return Image

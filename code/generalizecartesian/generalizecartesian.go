@@ -7,26 +7,27 @@ import(
 )
 /**
  * [return lenght of the dist of the ByDist sort template]
- * @param  {[type]} d ByDist)       Len( [description]
- * @return {[type]}   [description]
+ * @struct {[type]}   (d ByDist)       Len [description]
+ * @return {[type]}   int                  [description]
  */
 func (d ByDist) Len() int { return len(d) }
 /**
  * [swap the ith the jth entry]
- * @param  {[type]} d ByDist)       Swap(i, j int [description]
+ * @struct {[type]} d ByDist)       Swap 
+ * i, j int [description]
  * @return {[type]}   [description]
  */
 func (d ByDist) Swap(i, j int) { d[i], d[j] = d[j], d[i] }
 /**
  * [return the samlest distance betwee the ith and jth entry]
- * @param  {[type]} d ByDist)       Less(i, j int [description]
+ * @struct {[type]} d ByDist)       Less(i, j int [description]
  * @return {[type]}   [description]
  */
 func (d ByDist) Less(i, j int) bool{ return d[i].dist < d[j].dist }
 
 /**
  * [for the ith entry, selected by the i parameter, sort all the distances between the entry and the know group]
- * @param  {*Labelfeatures} lf *Labelfeatures)					[the data set] 
+ * @struct {[type]} lf *Labelfeatures)					[the data set] 
  * @param  Sortdist(i int) 	
  * @return {error} 	 											[gets errors]
  */
@@ -34,13 +35,13 @@ func (lf *Labelfeatures) Sortdist(i int, sortflag Groupflag) error{
 	
 	switch sortflag {
 	case Centerdistflag:
-		if (*lf).is_sortedbydist[i] {
-			return errors.New("the distance set of this dataset are already sorted by the distance to the group center")
-		}else{
-			if len((*lf).result) == 0 {
-				return errors.New("result weren't computed")
-			}
-		}
+		// if (*lf).is_sortedbydist[i] {
+		// 	return errors.New("the distance set of this dataset are already sorted by the distance to the group center")
+		// }else{
+		// 	if len((*lf).result) == 0 {
+		// 		return errors.New("result weren't computed")
+		// 	}
+		// }
 		sort.Sort(ByDist((*lf).result[i].f_point))
 
 		(*lf).result[i].learnedlabel = (*lf).result[i].f_point[0].distlabel
@@ -63,7 +64,7 @@ func (lf *Labelfeatures) Sortdist(i int, sortflag Groupflag) error{
 
 /**
  * [get the distance from each entry of the train group to the know group]
- * @param  {*Labelfeatures} lf *Labelfeatures) Calcdistance( 	[the data set]
+ * @struct {[type]} lf *Labelfeatures) Calcdistance( 	[the data set]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) Calcdistance() error{ 
@@ -107,7 +108,7 @@ func (lf *Labelfeatures) Calcdistance() error{
 
 /**
  * [get the distance from each entry of the train group to the centroid of each label of the know group]
- * @param  {*Labelfeatures} lf *Labelfeatures) CalcCenterdistance( 	[the data set]
+ * @struct {[type]} lf *Labelfeatures) CalcCenterdistance( 	[the data set]
  * @return {error} 													[gets errors]
  */
 func (lf *Labelfeatures) CalcCenterdistance() error{
@@ -153,7 +154,7 @@ func (lf *Labelfeatures) CalcCenterdistance() error{
 
 /**
  * [use make build in fucntion to allocate setioncs of the Labelfeatures based on the allocate flag]
- * @param  {*Labelfeatures} lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
+ * @struct {[type]} lf *Labelfeatures) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int, secondsize ...int) error{
@@ -205,7 +206,7 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int, secondsize ...
 
 /**
  * [add the interest group based on the k nearest neighbors]
- * @param  {*Labelfeatures} lf *Labelfeatures) AddInterest(t_size int ,k int [description]
+ * @struct {[type]} lf *Labelfeatures) AddInterest(t_size int ,k int [description]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) AddInterest(t_size int ,k int) error{
@@ -230,7 +231,7 @@ func (lf *Labelfeatures) AddInterest(t_size int ,k int) error{
 
 /**
  * [get the greatest ocorrence at the interest group]
- * @param  {*Labelfeatures} lf *Labelfeatures) GetGreatestOcorrence( [description]
+ * @struct {[type]} lf *Labelfeatures) GetGreatestOcorrence( [description]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) GetGreatestOcorrence(k int) error{
@@ -261,7 +262,7 @@ func (lf *Labelfeatures) GetGreatestOcorrence(k int) error{
 
 /**
  * [get the label of the ith entry at the selected group]
- * @param  {[type]} lf Labelfeatures) GetKnowstring(i int [description]
+ * @struct {[type]} lf Labelfeatures) GetKnowstring(i int [description]
  * @return {string,error} 	 											[gets errors]
  */
 func (lf Labelfeatures) Getlabel(labelflag Groupflag ,i int) (string,error){ 
@@ -284,7 +285,7 @@ func (lf Labelfeatures) Getlabel(labelflag Groupflag ,i int) (string,error){
 
 /**
  * [get the length of the section selected by the flag]
- * @param  {[type]} lf Labelfeatures) Getlen(lenflag Groupflag [description]
+ * @struct {[type]} lf Labelfeatures) Getlen(lenflag Groupflag [description]
  * @return {int,error} 	 											[gets errors]
  */
 func (lf Labelfeatures) Getlen(lenflag Groupflag) (int,error){ 
@@ -303,7 +304,7 @@ func (lf Labelfeatures) Getlen(lenflag Groupflag) (int,error){
 
 /**
  * [Generalize_for_nonparametric description]
- * @param {[type]} lf        *Labelfeatures [description]
+ * @struct {[type]} lf        *Labelfeatures [description]
  * @param {[type]} feature_X []float64      [description]
  * @param {[type]} feature_Y []float64      [description]
  * @param {[type]} feature_Z []float64      [description]
@@ -359,7 +360,7 @@ func Generalize_for_nonparametric(lf *Labelfeatures, feature_X []float64, featur
 
 /**
  * [compute the centroid of each group]
- * @param  {*Labelfeatures} lf *Labelfeatures) Centroid( [description]
+ * @struct {[type]} lf *Labelfeatures) Centroid( [description]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) Centroid() error{
@@ -398,7 +399,7 @@ func (lf *Labelfeatures) Centroid() error{
 
 /**
  * [comput the distance between each group centroid]
- * @param  {*Labelfeatures} lf *Labelfeatures) GroupCenterdists( [description]
+ * @struct {[type]} lf *Labelfeatures) GroupCenterdists( [description]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) GroupCenterdists() error{
@@ -428,7 +429,7 @@ func (lf *Labelfeatures) GroupCenterdists() error{
 
 /**
  * [check if the learned label provided by some external IA process is corret]
- * @param  {*Labelfeatures} lf *Labelfeatures) GetAccuracy( [description]
+ * @struct {[type]}lf *Labelfeatures) GetAccuracy( [description]
  * @return {error} 	 											[gets errors]
  */
 func (lf *Labelfeatures) GetAccuracy() error{

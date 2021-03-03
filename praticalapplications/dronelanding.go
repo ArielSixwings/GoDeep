@@ -79,7 +79,7 @@ func main() {
 
 	/*read and separe each group of images*/
 	fmt.Println("Reading danger folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",false,false,false)
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",false,true,false)
 	
 	for i := 0; i < size; i++ {
 		if i < trainsize{
@@ -90,7 +90,7 @@ func main() {
 	}
 	
 	fmt.Println("Reading asphalt folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",false,false,false)
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",false,true,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+trainsize] = auxImages[i]
@@ -100,7 +100,7 @@ func main() {
 	}
 	
 	fmt.Println("Reading grass folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",false,false,false)
+	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",false,true,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+(2*trainsize)] = auxImages[i]
@@ -111,13 +111,13 @@ func main() {
 
 	/*compute GLCMs and them the normalized GLCM*/
 	fmt.Println("Computing know GLCMs")
-	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, false, false)
+	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, false, true)
 	for i := 0; i < 3*knowsize; i++ {
 		gocv.Normalize(knowGLCMs[i], &normalizedknow[i], 0.0, 255.0, normtype )		
 	}
 
 	fmt.Println("Computing train GLCMs")
-	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, false, false)
+	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, false, true)
 	for i := 0; i < 3*trainsize; i++ {
 		gocv.Normalize(trainGLCMs[i], &normalizedtrain[i], 0.0, 255.0, normtype )
 
