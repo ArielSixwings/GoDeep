@@ -1,9 +1,9 @@
 package main
 
 import (
-	"../code/imageprocessing"
-	"../code/generalizecartesian"
-	"../code/nonparametric"
+	"../src/imageprocessing"
+	"../src/generalizecartesian"
+	"../src/nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
@@ -22,7 +22,7 @@ func main() {
 	var normtype gocv.NormType = gocv.NormMinMax
 
 	/*calc sizes*/
-	size  = imageprocessing.FolderLength("../code/imageprocessing/Images/danger")
+	size  = imageprocessing.FolderLength("../src/imageprocessing/Images/danger")
 	trainsize = 25//int(size/2.5)
 	knowsize = size - trainsize
 
@@ -79,7 +79,7 @@ func main() {
 
 	/*read and separe each group of images*/
 	fmt.Println("Reading danger folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",false,true,false)
+	imageprocessing.ReadFolder(auxImages,"../src/imageprocessing/Images/danger",false,true,false)
 	
 	for i := 0; i < size; i++ {
 		if i < trainsize{
@@ -90,7 +90,7 @@ func main() {
 	}
 	
 	fmt.Println("Reading asphalt folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",false,true,false)
+	imageprocessing.ReadFolder(auxImages,"../src/imageprocessing/Images/asphalt",false,true,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+trainsize] = auxImages[i]
@@ -100,7 +100,7 @@ func main() {
 	}
 	
 	fmt.Println("Reading grass folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",false,true,false)
+	imageprocessing.ReadFolder(auxImages,"../src/imageprocessing/Images/grass",false,true,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+(2*trainsize)] = auxImages[i]

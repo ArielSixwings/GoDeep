@@ -1,39 +1,35 @@
 package main
-import (
-	"fmt"
-)
 
-func main(){
-	var size int
-	var knowsize int
-	var trainsize int
+import "fmt"
+
+func main() {
+	a := make([]int, 5)
+	b := make([]int, 5)
+	//c := make([]int, 5)
+
+	b = b[:0]
+
+	var j int = 0
+
+	printSlice("a", a)
 	
-	size = 50
-	trainsize = 20 //int(size/2.5)
-	knowsize = size - trainsize
+	for i := 0; i < 5; i++ {
+		a[i] = i
+	}
+	for i := 0; i < 5; i++ {
+		if a[i]%2 == 0{
+			b = b[:1+j]
+			b[j] = a[i]
+			j++
+		}
+	}
 
-	for i := 0; i < size; i++ {
-		if i < trainsize{
-			fmt.Println(i)
-		} else{
-			fmt.Println(i-trainsize)
-		}
-	}
-	fmt.Println("end of firts 50")
-	for i := 0; i < size; i++ {
-		if i < trainsize{
-			fmt.Println(i+trainsize)
-		} else{
-			fmt.Println(i+(knowsize-trainsize))
-		}
-	}
-	fmt.Println("end of 50 to 99")
-	for i := 0; i < size; i++ {
-		if i < trainsize{
-			fmt.Println(i+(2*trainsize))
-		} else{
-			fmt.Println(i+((2*knowsize)-trainsize))
-		}
-	}
-	fmt.Println("end of 100 to 149")
+	a = b
+	
+	printSlice("a", a)
+}
+
+func printSlice(s string, x []int) {
+	fmt.Printf("%s len=%d cap=%d %v\n",
+		s, len(x), cap(x), x)
 }

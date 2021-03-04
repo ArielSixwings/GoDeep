@@ -1,5 +1,4 @@
 package generalizecartesian
-
 import(
 	"math"
 	"sort"

@@ -8,7 +8,7 @@ Mudar escopo, usar algo como Joãozinho e não uma comunidade.
 
 Mudar jornadas 2 e 3 para usar joãozinho e mariazinha.
 
-#Features:
+#Features: DONE
 
 Devem ser mais alto nível.
 
