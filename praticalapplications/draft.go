@@ -1,35 +1,79 @@
 package main
 
-import "fmt"
+import (
+    "fmt"
+    "strings"
+)
 
-func main() {
-	a := make([]int, 5)
-	b := make([]int, 5)
-	//c := make([]int, 5)
-
-	b = b[:0]
-
-	var j int = 0
-
-	printSlice("a", a)
-	
-	for i := 0; i < 5; i++ {
-		a[i] = i
-	}
-	for i := 0; i < 5; i++ {
-		if a[i]%2 == 0{
-			b = b[:1+j]
-			b[j] = a[i]
-			j++
-		}
-	}
-
-	a = b
-	
-	printSlice("a", a)
+func Index(vs []string, t string) int {
+    for i, v := range vs {
+        if v == t {
+            return i
+        }
+    }
+    return -1
 }
 
-func printSlice(s string, x []int) {
-	fmt.Printf("%s len=%d cap=%d %v\n",
-		s, len(x), cap(x), x)
+func Include(vs []string, t string) bool {
+    return Index(vs, t) >= 0
+}
+
+func Any(vs []string, f func(string) bool) bool {
+    for _, v := range vs {
+        if f(v) {
+            return true
+        }
+    }
+    return false
+}
+
+func All(vs []string, f func(string) bool) bool {
+    for _, v := range vs {
+        if !f(v) {
+            return false
+        }
+    }
+    return true
+}
+
+func Filter(vs []string, f func(string) bool) []string {
+    vsf := make([]string, 0)
+    for _, v := range vs {
+        if f(v) {
+            vsf = append(vsf, v)
+        }
+    }
+    return vsf
+}
+
+func Map(vs []string, f func(string) string) []string {
+    vsm := make([]string, len(vs))
+    for i, v := range vs {
+        vsm[i] = f(v)
+    }
+    return vsm
+}
+
+func main() {
+
+    var strs = []string{"peach", "apple", "pear", "plum"}
+
+    fmt.Println(Index(strs, "pear"))
+
+    fmt.Println(Include(strs, "grape"))
+
+    fmt.Println(Any(strs, func(v string) bool {
+        return strings.HasPrefix(v, "p")
+    }))
+
+    fmt.Println(All(strs, func(v string) bool {
+        return strings.HasPrefix(v, "p")
+    }))
+
+    fmt.Println(Filter(strs, func(v string) bool {
+        return strings.Contains(v, "e")
+    }))
+
+    fmt.Println(Map(strs, strings.ToUpper))
+
 }
