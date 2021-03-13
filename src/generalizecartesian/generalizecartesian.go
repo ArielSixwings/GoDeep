@@ -3,6 +3,7 @@ import(
 	"math"
 	"sort"
 	"errors"
+	"fmt"
 )
 /**
  * [return lenght of the dist of the ByDist sort template]
@@ -47,7 +48,6 @@ func (lf *Labelfeatures) Sortdist(i int, sortflag Groupflag) error{
 			}
 		}
 		sort.Sort(ByDist((*lf).result[i].f_point))
-
 		(*lf).result[i].learnedlabel = (*lf).result[i].f_point[0].distlabel
 
 		(*lf).is_sortedbycenter[i] = true
@@ -198,8 +198,11 @@ func (lf *Labelfeatures) Allocate(allflag Groupflag, allsize int, secondsize ...
 		}
 		return nil
 	case Centroidflag:
-		(*lf).centroid = make([]features,3)
+		(*lf).centroid = make([]centroidinfo,3)
 		return nil
+	// case Allcentroidflag:
+	// 	(*lf).allcentroid = make([]centroidinfo,3)
+		return nil		
 	case Centerdistflag:
 		(*lf).centerdist = make([]featurepoint,3)
 		return nil
@@ -377,8 +380,14 @@ func (lf *Labelfeatures) Centroid() error{
 		(*lf).Allocate(Centroidflag,1)
 	}
 	var sun [3]float64
+	var allsun [3]float64
+	var distgroupcentroid [3]float64
 	var auxindex int
-
+	
+	allsun[0] = 0.0
+	allsun[1] = 0.0
+	allsun[2] = 0.0
+	
 	for i := 0; i < len((*lf).sizelabel); i++ {
 		sun[0] = 0.0
 		sun[1] = 0.0
@@ -390,13 +399,42 @@ func (lf *Labelfeatures) Centroid() error{
 			sun[0]+= (*lf).know[auxindex].features[0]
 			sun[1]+= (*lf).know[auxindex].features[1]
 			sun[2]+= (*lf).know[auxindex].features[2]
+
+			allsun[0]+= (*lf).know[auxindex].features[0]
+			allsun[1]+= (*lf).know[auxindex].features[1]
+			allsun[2]+= (*lf).know[auxindex].features[2]			
 		}
 		(*lf).centroid[i].features[0] = (sun[0]/float64((*lf).sizelabel[i].Size_l))
 		(*lf).centroid[i].features[1] = (sun[1]/float64((*lf).sizelabel[i].Size_l))
 		(*lf).centroid[i].features[2] = (sun[2]/float64((*lf).sizelabel[i].Size_l))
 
 		(*lf).centroid[i].label = (*lf).sizelabel[i].Label
+
+		(*lf).allcentroid.features[0] = allsun[0]/float64(len((*lf).know))
+		(*lf).allcentroid.features[1] = allsun[1]/float64(len((*lf).know))
+		(*lf).allcentroid.features[2] = allsun[2]/float64(len((*lf).know))		
 	}
+	for i := 0; i < len((*lf).sizelabel); i++ {
+		(*lf).allcentroid.maxradius = allsun[0]/float64(len((*lf).know))		
+	}
+
+	distgroupcentroid[0] = (*lf).euclidiandistance((*lf).allcentroid.features, (*lf).centroid[0].features)
+	distgroupcentroid[1] = (*lf).euclidiandistance((*lf).allcentroid.features, (*lf).centroid[1].features)
+	distgroupcentroid[2] = (*lf).euclidiandistance((*lf).allcentroid.features, (*lf).centroid[2].features)
+
+	(*lf).allcentroid.minradius = distgroupcentroid[0]
+	(*lf).allcentroid.maxradius = distgroupcentroid[1]
+
+	for i := 0; i < len((*lf).sizelabel); i++ {
+		if (*lf).allcentroid.minradius > distgroupcentroid[i]{
+			(*lf).allcentroid.minradius = distgroupcentroid[i]
+		}
+		if (*lf).allcentroid.maxradius < distgroupcentroid[i]{
+			(*lf).allcentroid.maxradius = distgroupcentroid[i]
+		}
+	}
+	fmt.Println((*lf).allcentroid)
+
 
 	return nil
 }
@@ -451,4 +489,42 @@ func (lf *Labelfeatures) GetAccuracy() error{
 	}
 
 	return nil
+}
+
+func (lf *Labelfeatures) Calcradius() error{
+	if len((*lf).know) == 0{
+		if len((*lf).centroid) == 0{
+			return errors.New("know dataset and centroid weren't provided")
+		} else{
+			return errors.New("know dataset weren't provided")
+		}
+	} else{
+		if len((*lf).centroid) == 0{
+			return errors.New("centroid weren't provided")
+		}
+	}
+
+	var auxradius float64
+	var auxindex int
+
+	for i := 0; i < len((*lf).sizelabel); i++ {
+		
+		auxradius = 0.0
+		
+		(*lf).centroid[i].radius = auxradius
+
+		for j := 0; j < (*lf).sizelabel[i].Size_l; j++ {
+			
+			auxindex = j+(i*(*lf).sizelabel[i].Size_l)
+			
+			auxradius = (*lf).euclidiandistance((*lf).know[auxindex].features,(*lf).centroid[i].features)
+
+			if (*lf).centroid[i].radius < auxradius{
+				(*lf).centroid[i].radius = auxradius
+			}
+		}
+
+	}
+
+	return nil	
 }

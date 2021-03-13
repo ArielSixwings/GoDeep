@@ -20,12 +20,13 @@ func (lf Labelfeatures) Printresults(){
 	
 	for i := 0; i < len(lf.result); i++ {
 		
-		fmt.Println(lf.result[i].learnedlabel,"and that label status is:", (lf.result[i].learnedlabel == lf.train[i].label))
+		fmt.Println(lf.result[i].learnedlabel,"label should be: ",lf.train[i].label," and that label status is:", (lf.result[i].learnedlabel == lf.train[i].label))
 		
 		if lf.result[i].learnedlabel == lf.train[i].label {
 			right++ 
 		}
 	}
+	fmt.Println("Total = ",total)
 	fmt.Println("Success rate = ",100*(right/total),"%")
 }
 

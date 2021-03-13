@@ -141,11 +141,23 @@ func main() {
 	fmt.Println("Generalizing train data set")
 	generalizecartesian.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizecartesian.Trainflag,3*trainsize)
 
-	// fmt.Println("Calling KNN")
-	// nonparametric.KNN(&dataset,3)
+	// fmt.Println("Computing centroid")
+	// dataset.Centroid()
 
-	fmt.Println("Calling Kmeans")
-	nonparametric.Kmeans(&dataset)	
+	// fmt.Println("Conputing radius")
+	// dataset.Calcradius()
+
+	// fmt.Println("Conputing CalcCenterdistance")
+	// dataset.CalcCenterdistance()
+
+	// fmt.Println("Filtering data set")
+	// dataset.Filterdataset(dataset.MinCaoszoneRule)	
+
+	fmt.Println("Calling KNN")
+	nonparametric.KNN(&dataset,3)
+
+	// fmt.Println("Calling Kmeans")
+	// nonparametric.Kmeans(&dataset)
 
 	dataset.Printresults()
 

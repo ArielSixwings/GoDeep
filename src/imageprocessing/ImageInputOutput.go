@@ -1,13 +1,13 @@
 package imageprocessing
 
 import (
-	"gocv.io/x/gocv"
-	"path/filepath"
-	"log"
-	"strings"
-	"os"
 	"fmt"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
 
+	"gocv.io/x/gocv"
 )
 
 /**
@@ -19,7 +19,7 @@ import (
  * @param {[type]} colorfull bool     [if it is true read the image as a 3 chanel rbg]
  * @return {[type]}   gocv.Mat        [the readed image]
  */
-func ReadImage(Image gocv.Mat, path string, show bool, save bool, colorfull bool) gocv.Mat{
+func ReadImage(Image gocv.Mat, path string, show bool, save bool, colorfull bool) gocv.Mat {
 
 	ImagePath := filepath.Join(path) //set path to the base image
 
@@ -62,7 +62,7 @@ func ShowImage(Menssage string, Image gocv.Mat, time int) {
  * @param  {[type]} files *[]string        [array of files names]
  * @return {[type]} filepath.WalkFunc      [parameter used at filepath.Walk()]
  */
-func visit(files *[]string)  filepath.WalkFunc{
+func visit(files *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			log.Fatal(err)
@@ -85,33 +85,30 @@ func ReadFolder(Images []gocv.Mat, folder string, print bool, show bool, colorfu
 	var name string
 	var firtst bool = true
 	var i int
-	nametemp := []string{"\"./","\""}
-	
-	
-	tempimage := gocv.NewMat()
+	nametemp := []string{"\"./", "\""}
 
+	tempimage := gocv.NewMat()
 
 	err := filepath.Walk(folder, visit(&files))
 	if err != nil {
 		panic(err)
 	}
 
-
 	for _, file := range files {
-		
-		if( firtst){
+
+		if firtst {
 			firtst = false
-			i = 0 
+			i = 0
 			continue
 		}
-		
+
 		name = strings.Join(nametemp, file)
-		
-		if(print){
+
+		if print {
 			fmt.Println("geting image:     ", name)
 
 		}
-		
+
 		tempimage = ReadImage(tempimage, file, show, false, colorfull)
 		Images[i] = tempimage
 		i++
@@ -123,7 +120,7 @@ func ReadFolder(Images []gocv.Mat, folder string, print bool, show bool, colorfu
  * @param {[type]} folder string [name of folder]
  * @return {[type]} int          [lenght of the folder(number of files)]
  */
-func FolderLength(folder string) int{
+func FolderLength(folder string) int {
 	var files []string
 
 	err := filepath.Walk(folder, visit(&files))
@@ -131,5 +128,5 @@ func FolderLength(folder string) int{
 	if err != nil {
 		panic(err)
 	}
-	return 	((len(files) - 1)) 
+	return (len(files) - 1)
 }
