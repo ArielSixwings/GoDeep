@@ -1,9 +1,9 @@
 package main
 
 import (
-	"../code/imageprocessing"
-	"../code/generalizecartesian"
-	"../code/nonparametric"
+	"../src/imageprocessing"
+	"../src/generalizecartesian"
+	"../src/nonparametric"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
@@ -22,7 +22,7 @@ func main() {
 	var normtype gocv.NormType = gocv.NormMinMax
 
 	/*calc sizes*/
-	size  = imageprocessing.FolderLength("../code/imageprocessing/Images/danger")
+	size  = imageprocessing.FolderLength("../src/imageprocessing/Images/danger")
 	trainsize = 25//int(size/2.5)
 	knowsize = size - trainsize
 
@@ -79,7 +79,7 @@ func main() {
 
 	/*read and separe each group of images*/
 	fmt.Println("Reading danger folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/danger",false,false,false)
+	imageprocessing.ReadFolder(auxImages,"../src/imageprocessing/Images/danger",false,true,false)
 	
 	for i := 0; i < size; i++ {
 		if i < trainsize{
@@ -90,7 +90,7 @@ func main() {
 	}
 	
 	fmt.Println("Reading asphalt folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/asphalt",false,false,false)
+	imageprocessing.ReadFolder(auxImages,"../src/imageprocessing/Images/asphalt",false,true,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+trainsize] = auxImages[i]
@@ -100,7 +100,7 @@ func main() {
 	}
 	
 	fmt.Println("Reading grass folder")
-	imageprocessing.ReadFolder(auxImages,"../code/imageprocessing/Images/grass",false,false,false)
+	imageprocessing.ReadFolder(auxImages,"../src/imageprocessing/Images/grass",false,true,false)
 	for i := 0; i < size; i++ {
 		if i < trainsize{
 			trainImages[i+(2*trainsize)] = auxImages[i]
@@ -111,13 +111,13 @@ func main() {
 
 	/*compute GLCMs and them the normalized GLCM*/
 	fmt.Println("Computing know GLCMs")
-	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, false, false)
+	imageprocessing.GroupGLCM(knowImages, &knowGLCMs, false, true)
 	for i := 0; i < 3*knowsize; i++ {
 		gocv.Normalize(knowGLCMs[i], &normalizedknow[i], 0.0, 255.0, normtype )		
 	}
 
 	fmt.Println("Computing train GLCMs")
-	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, false, false)
+	imageprocessing.GroupGLCM(trainImages, &trainGLCMs, false, true)
 	for i := 0; i < 3*trainsize; i++ {
 		gocv.Normalize(trainGLCMs[i], &normalizedtrain[i], 0.0, 255.0, normtype )
 
@@ -141,13 +141,25 @@ func main() {
 	fmt.Println("Generalizing train data set")
 	generalizecartesian.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,generalizecartesian.Trainflag,3*trainsize)
 
-	//dataset.Printfeatures()
-	fmt.Println("Caling KNN")
-	nonparametric.KNN(&dataset,5)
+	// fmt.Println("Computing centroid")
+	// dataset.Centroid()
+
+	// fmt.Println("Conputing radius")
+	// dataset.Calcradius()
+
+	// fmt.Println("Conputing CalcCenterdistance")
+	// dataset.CalcCenterdistance()
+
+	// fmt.Println("Filtering data set")
+	// dataset.Filterdataset(dataset.MinCaoszoneRule)	
+
+	fmt.Println("Calling KNN")
+	nonparametric.KNN(&dataset,3)
+
+	// fmt.Println("Calling Kmeans")
+	// nonparametric.Kmeans(&dataset)
 
 	dataset.Printresults()
 
-	dataset.Centroid()
-
-	dataset.Centerdists()
+	//dataset.GroupCenterdists()
 }

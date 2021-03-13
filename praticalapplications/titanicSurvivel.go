@@ -8,6 +8,8 @@ import (
 	"../src/nonparametric"
 )
 
+
+
 func main() {
 	path := "tempTrain.csv"
 	filePath := filepath.Join(path)
