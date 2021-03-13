@@ -32,17 +32,19 @@ func scanText(filePath string) ([]string, error) {
 	return lines, scanner.Err()
 }
 
-func main() {
-	path := "foo.txt"
-	filePath := filepath.Join(path)
-
-	lines, err := scanText(filePath)
-
+func printText(lines []string, err error) {
 	if err != nil {
 		fmt.Println(err)
 	}
 	for i := 0; i < len(lines); i++ {
 		fmt.Println(lines[i])
 	}
+}
 
+func main() {
+	path := "foo.txt"
+	filePath := filepath.Join(path)
+
+	lines, err := scanText(filePath)
+	printText(lines, err)
 }
