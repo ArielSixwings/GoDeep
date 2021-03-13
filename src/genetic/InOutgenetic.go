@@ -8,12 +8,12 @@ import (
 
 func main() {
 
-	var a [10000]string
-	var b [50]string
+	var a [5120]string
+	var c int = 0
 
-	for j := 0; j < 2; j++ {
+	for j := 0; j < 20; j++ {
 
-		for i := 0; i < 10000; i++ {
+		for i := c; i < 5120; i++ {
 			randonInt := rand.Intn(9)
 			if randonInt == 3 {
 				a[i] = "_"
@@ -26,14 +26,18 @@ func main() {
 			} else if randonInt == 6 || randonInt == 7 {
 				a[i] = "G"
 			}
-			if i == 50 {
+			if i == 256 {
+				c += 256
 				continue
-				i = 51
 			}
 		}
 	}
-
-	fmt.Println("\nA:")
-	for j := 0; j < 1000; j++ {
+	var chamada int = 0
+	for j := 0; j < 5120; j++ {
 		fmt.Print(a[j])
+		if j%256 == 0 && j != 0 {
+			fmt.Println("chamada:", chamada)
+			chamada = chamada + 1
+		}
 	}
+}
