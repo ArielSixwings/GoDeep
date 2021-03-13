@@ -19,16 +19,10 @@ const (
 
 	Centroidflag Groupflag = 7
 
-<<<<<<< HEAD
 	Centerdistflag Groupflag = 8
-=======
-	Centerdistflag Groupflag = 8 
 
 	Allcentroidflag Groupflag = 9
-<<<<<<< HEAD
->>>>>>> 4f53d4c9e48b573612708bbd393026c5c82930c4
-=======
->>>>>>> ca327d6c03557e258929aa48adcafa9bf3ccd30a
+
 )
 
 type interest struct {
@@ -53,35 +47,15 @@ type features struct {
 	label    string
 }
 
-<<<<<<< HEAD
 type Sizelabel struct {
 	Label  string
 	Size_l int
-=======
+}
 type centroidinfo struct {
 
 	features 	[3]float64 
 	radius 		float64
 	label 		string
-}
-
-type centroidinfo struct {
-
-	features 	[3]float64 
-	radius 		float64
-	label 		string
-}
-
-type Sizelabel struct{
-	Label 	string
-	Size_l 	int
->>>>>>> 4f53d4c9e48b573612708bbd393026c5c82930c4
-}
-
-type allcenter struct{
-	features 	[3]float64
-	maxradius	float64
-	minradius	float64
 }
 
 type allcenter struct{
@@ -91,17 +65,7 @@ type allcenter struct{
 }
 
 type Labelfeatures struct {
-<<<<<<< HEAD
-	train             []features
-	know              []features
-	result            []labeldist
-	interestgroup     []interest
-	is_sortedbydist   []bool
-	is_sortedbycenter []bool
-	centroid          []features
-	centerdist        []featurepoint
-	sizelabel         []Sizelabel
-=======
+
 
 	train 				[]features
 	know 				[]features	
@@ -114,7 +78,6 @@ type Labelfeatures struct {
 	sizelabel 			[]Sizelabel
 	allcentroid			allcenter
 
->>>>>>> 4f53d4c9e48b573612708bbd393026c5c82930c4
 }
 
 type ByDist []featurepoint
