@@ -3,11 +3,12 @@ package generalizecartesian
 import(
 	"fmt"
 	"math"
+	"../basicdata"
 )
 
 func (lf *Labelfeatures) Filterdataset( rule func(int) bool) error{
 	
-	temp := make([]features, len((*lf).know))
+	temp := make([]cartesian.Features, len((*lf).know))
 
 	temp = temp[:0]
 
@@ -56,7 +57,7 @@ func (lf *Labelfeatures) RedzoneRule(i int) bool{
 
 func (lf *Labelfeatures) MinCaoszoneRule(i int) bool{
 
-	if (*lf).RedzoneRule(i) && ((*lf).allcentroid.minradius > (*lf).euclidiandistance((*lf).know[i].features,(*lf).allcentroid.features))  {
+	if (*lf).RedzoneRule(i) && ((*lf).allcentroid.Minradius > (*lf).euclidiandistance((*lf).know[i].Features,(*lf).allcentroid.Features))  {
 		return false
 	}else{
 		return true
@@ -65,8 +66,8 @@ func (lf *Labelfeatures) MinCaoszoneRule(i int) bool{
 
 func (lf *Labelfeatures) insidetworadius(i int, groupA int, groupB int) bool{
 	
-	var insideA bool = (*lf).euclidiandistance((*lf).know[i].features,(*lf).centroid[groupA].features) < (*lf).centroid[groupA].radius
-	var insideB bool = (*lf).euclidiandistance((*lf).know[i].features,(*lf).centroid[groupB].features) < (*lf).centroid[groupB].radius
+	var insideA bool = (*lf).euclidiandistance((*lf).know[i].Features,(*lf).centroid[groupA].Features) < (*lf).centroid[groupA].Radius
+	var insideB bool = (*lf).euclidiandistance((*lf).know[i].Features,(*lf).centroid[groupB].Features) < (*lf).centroid[groupB].Radius
 	return insideA && insideB
 }
 

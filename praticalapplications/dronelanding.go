@@ -4,6 +4,7 @@ import (
 	"../src/imageprocessing"
 	"../src/generalizecartesian"
 	"../src/nonparametric"
+	"../src/basicdata"
 	"gocv.io/x/gocv"
 	"fmt"
 	//"math"
@@ -27,8 +28,8 @@ func main() {
 	knowsize = size - trainsize
 
 	/*set labelsizes*/
-	knowls := make([]generalizecartesian.Sizelabel,3)
-	trainls := make([]generalizecartesian.Sizelabel,3)
+	knowls := make([]cartesian.Sizelabel,3)
+	trainls := make([]cartesian.Sizelabel,3)
 
 	for i := 0; i < 3; i++ {
 		knowls[i].Size_l  = knowsize
