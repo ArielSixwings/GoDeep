@@ -20,9 +20,9 @@ func (lf Labelfeatures) Printresults(){
 	
 	for i := 0; i < len(lf.result); i++ {
 		
-		fmt.Println(lf.result[i].learnedlabel,"label should be: ",lf.train[i].label," and that label status is:", (lf.result[i].learnedlabel == lf.train[i].label))
+		fmt.Println(lf.result[i].Learnedlabel,"Label should be: ",lf.train[i].Label," and that Label status is:", (lf.result[i].Learnedlabel == lf.train[i].Label))
 		
-		if lf.result[i].learnedlabel == lf.train[i].label {
+		if lf.result[i].Learnedlabel == lf.train[i].Label {
 			right++ 
 		}
 	}
@@ -42,8 +42,8 @@ func (lf Labelfeatures) Printdists(){
 	for i := 0; i < len(lf.result); i++ {
 		
 		fmt.Println("results: ", i)
-		for j  := 0; j  < len(lf.result[i].f_point); j ++ {
-			fmt.Println(lf.result[i].f_point[j].dist)	
+		for j  := 0; j  < len(lf.result[i].F_point); j ++ {
+			fmt.Println(lf.result[i].F_point[j].Dist)	
 		}
 	}	
 }

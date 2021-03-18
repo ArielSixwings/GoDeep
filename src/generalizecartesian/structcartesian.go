@@ -1,5 +1,7 @@
 package generalizecartesian
-
+import(
+	"../basicdata"
+)
 type Groupflag int
 
 const (
@@ -22,62 +24,21 @@ const (
 	Centerdistflag Groupflag = 8
 
 	Allcentroidflag Groupflag = 9
-
 )
-
-type interest struct {
-	interestlabel []string
-	interestdist  []float64
-}
-
-type featurepoint struct {
-	dist      float64
-	distlabel string
-}
-
-type labeldist struct {
-	f_point            []featurepoint
-	learnedlabel       string
-	status             bool
-	greatestoccurrence int
-}
-
-type features struct {
-	features [3]float64
-	label    string
-}
-
-type Sizelabel struct {
-	Label  string
-	Size_l int
-}
-type centroidinfo struct {
-
-	features 	[3]float64 
-	radius 		float64
-	label 		string
-}
-
-type allcenter struct{
-	features 	[3]float64
-	maxradius	float64
-	minradius	float64
-}
 
 type Labelfeatures struct {
 
-
-	train 				[]features
-	know 				[]features	
-	result 				[]labeldist
-	interestgroup 		[]interest
+	train 				[]cartesian.Features
+	know 				[]cartesian.Features	
+	result 				[]cartesian.Labeldist
+	interestgroup 		[]cartesian.Interest
+	centroid 			[]cartesian.Centroidinfo
+	centerdist 			[]cartesian.Featurepoint
+	sizelabel 			[]cartesian.Sizelabel
+	allcentroid			cartesian.Allcenter
 	is_sortedbydist 	[]bool
 	is_sortedbycenter 	[]bool 
-	centroid 			[]centroidinfo
-	centerdist 			[]featurepoint
-	sizelabel 			[]Sizelabel
-	allcentroid			allcenter
 
 }
 
-type ByDist []featurepoint
+type ByDist []cartesian.Featurepoint
