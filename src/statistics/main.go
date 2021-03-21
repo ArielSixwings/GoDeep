@@ -30,9 +30,7 @@ func scanText(caminhoDoArquivo string) ([]string, error) {
 	return linhas, scanner.Err()
 }
 
-func main() {
-	var conteudo []string
-	conteudo, err := scanText("foo.txt")
+func printText(conteudo []string, err error) {
 	if err != nil {
 		//log.Fatalf("Erro:", err)
 		fmt.Println("Erro:", err)
@@ -41,4 +39,13 @@ func main() {
 	for indice, linha := range conteudo {
 		fmt.Println(indice, linha)
 	}
+}
+
+//###### APAGAR #######
+func main() {
+	var conteudo []string
+	conteudo, err := scanText("tempTrain.csv")
+	printText(conteudo, err)
+
+	Allocate(allflag Groupflag, allsize int, secondsize ...float64)
 }
