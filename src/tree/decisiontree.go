@@ -2,6 +2,7 @@ package tree
 
 import(
 	"fmt"
+	"math"
 )
 /*
 if root == null
@@ -14,16 +15,29 @@ if root == null
 			insert(at right) 
 
  */
+func auxsecondrule() bool{
+	fmt.Println("internal node, a leaf!!!")
+	return false
+}
 
-func (nd *Node) Insert(newrule func()) error {
+func (nd *Node) Insert(newrule func()bool) error {
 	if nd.rule == nil {
-		fmt.Println("nd is nil",nd.rule)
 		nd.rule = newrule
-		fmt.Println("the setted rule: ")
-		nd.rule()
 		return nil
 	} else{
-		fmt.Println("nd is	NOT nil",nd)
-		return nil		
+		if nd.rule(){
+			(*nd).left = make([]Node, 1)
+			(*nd).left[0].Insert(auxsecondrule)
+			return nil
+		}else{
+			(*nd).right = make([]Node, 1)
+			(*nd).right[0].Insert(auxsecondrule)
+			return nil
+		}
+
 	}
+}
+
+func (nd *Node) ginileafimpurity() error {
+
 }

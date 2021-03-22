@@ -1,10 +1,24 @@
 package tree
 
-//type feature float64
+type StatusKeys int 
+
+const (
+	IsRoot StatusKeys = 0
+
+	IsNode StatusKeys = 1
+
+	IsLeaf StatusKeys = 2
+
+)
 
 type Node struct {
-	rule 	func()
-	left	*Node
-	right	*Node
+
+	status 	StatusKeys
+
+	
+	
+	rule 	func() bool
+	left	[]Node
+	right	[]Node
 	
 }
