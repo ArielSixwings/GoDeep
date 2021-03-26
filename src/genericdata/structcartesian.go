@@ -1,13 +1,14 @@
-package generalizecartesian
+package genericdata
+
 import(
 	"../basicdata"
 )
 type Groupflag int
 
 const (
-	Knowflag Groupflag = 0
+	Trainflag Groupflag = 0
 
-	Trainflag Groupflag = 1
+	Testflag Groupflag = 1
 
 	Resultflag Groupflag = 2
 
@@ -26,10 +27,10 @@ const (
 	Allcentroidflag Groupflag = 9
 )
 
-type Labelfeatures struct {
+type DataSet struct {
 
-	train 				[]cartesian.Features
-	know 				[]cartesian.Features	
+	test 				[]cartesian.Features
+	train 				[]cartesian.Features	
 	result 				[]cartesian.Labeldist
 	interestgroup 		[]cartesian.Interest
 	centroid 			[]cartesian.Centroidinfo
