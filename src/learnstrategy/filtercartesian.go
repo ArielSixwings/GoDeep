@@ -1,4 +1,4 @@
-package genericdata
+package learnstrategy
 
 import(
 	"fmt"

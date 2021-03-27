@@ -1,13 +1,15 @@
-package genericdata
+package learnstrategy
 
 import (
 	"errors"
-	"fmt"
-	"math"
-	"sort"
 	"../basicdata"
 )
-
+func (ds *DataSet) SetLearnStrategy(ls learnStrategy) {
+    ds.learnStrategy = ls
+}
+func (ds *DataSet) ProcessLearn(){
+	ds.learnStrategy.Learn(ds)
+}
 /**
  * [use make build in fucntion to allocate setioncs of the DataSet based on the allocate flag]
  * @struct {[type]} ds *DataSet) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]

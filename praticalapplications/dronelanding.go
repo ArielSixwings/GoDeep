@@ -2,8 +2,8 @@ package main
 
 import (
 	"../src/imageprocessing"
-	"../src/genericdata"
-	"../src/nonparametric"
+	"../src/learnstrategy/nonparametric"
+	"../src/learnstrategy"
 	"../src/basicdata"
 	"gocv.io/x/gocv"
 	"fmt"
@@ -12,7 +12,7 @@ import (
 
 func main() {
 	
-	var dataset genericdata.DataSet
+	var dataset learnstrategy.DataSet
 	
 	/*size of test and train groups*/
 	var size int
@@ -137,10 +137,10 @@ func main() {
 
 
 	fmt.Println("Generalizing train data set")
-	genericdata.Generalize_for_nonparametric(&dataset, trainEnergys, trainCorrelations, trainContrasts,trainls,genericdata.Trainflag,3*trainsize)
+	dataset.Build(trainEnergys, trainCorrelations, trainContrasts,trainls,learnstrategy.Trainflag,3*trainsize)
 	
 	fmt.Println("Generalizing test data set")
-	genericdata.Generalize_for_nonparametric(&dataset, testEnergys, testCorrelations, testContrasts,testls,genericdata.Testflag,3*testsize)
+	dataset.Build(testEnergys, testCorrelations, testContrasts,testls,learnstrategy.Testflag,3*testsize)
 
 	// fmt.Println("Computing centroid")
 	// dataset.Centroid()
@@ -153,14 +153,22 @@ func main() {
 
 	// fmt.Println("Filtering data set")
 	// dataset.Filterdataset(dataset.MinCaoszoneRule)	
+	fmt.Println("Calling Kmeans")
 
-	fmt.Println("Calling KNN")
-	nonparametric.KNN(&dataset,3)
-
-	// fmt.Println("Calling Kmeans")
-	// nonparametric.Kmeans(&dataset)
-
+	Kmeans := &nonparametric.Kmeans{} 	// lfu := &lfu{}
+	dataset.SetLearnStrategy(Kmeans) 	// cache.setEvictionAlgo(lru)
+	dataset.ProcessLearn() 	//nonparametric.KNN(&dataset,3)
 	dataset.Printresults()
+    
+	fmt.Println("Calling KNN")
+
+	knn := &nonparametric.Knn{} 	// lfu := &lfu{}
+	dataset.SetLearnStrategy(knn) 	// cache.setEvictionAlgo(lru)
+	dataset.ProcessLearn() 	//nonparametric.KNN(&dataset,3)
+	dataset.Printresults()
+	
+
+
 
 	//dataset.GroupCenterdists()
 }

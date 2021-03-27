@@ -1,4 +1,4 @@
-package genericdata
+package learnstrategy
 
 import(
 	"../basicdata"
@@ -27,26 +27,30 @@ const (
 	Allcentroidflag Groupflag = 9
 )
 
+type learnStrategy interface {
+	Learn(ds *DataSet)
+}
+
 type DataSet struct {
 
 	test 				[]cartesian.Features
 	train 				[]cartesian.Features	
 	result 				[]cartesian.Labeldist
 	
-	centroid 			[]cartesian.Centroidinfo 	//kmeans
-	
-	centerdist 			[]cartesian.Featurepoint
-	
 	sizelabel 			[]cartesian.Sizelabel
+
+	interestgroup 		[]cartesian.Interest 		//knn
+	
+	centroid 			[]cartesian.Centroidinfo 	//kmeans
+	centerdist 			[]cartesian.Featurepoint
 	allcentroid			cartesian.Allcenter
 	
+	
 	is_sortedbydist 	[]bool
-	is_sortedbycenter 	[]bool 
+	is_sortedbycenter 	[]bool
 
+	learnStrategy learnStrategy
 }
 
-type learnStrategy interface {
-	learn(ds *DataSet)
-}
 
 type ByDist []cartesian.Featurepoint

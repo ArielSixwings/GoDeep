@@ -1,3 +1,10 @@
+package learnstrategy
+
+import(
+	"sort"
+	"errors"
+)
+
 /**
  * [return lenght of the dist of the ByDist sort template]
  * @struct {[type]}   (d ByDist)  [description]

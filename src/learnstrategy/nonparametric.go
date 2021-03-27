@@ -1,11 +1,9 @@
-package genericdata
+package learnstrategy
 
 import (
 	"errors"
 	"fmt"
 	"math"
-	"sort"
-	"../basicdata"
 )
 
 /**
