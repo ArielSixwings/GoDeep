@@ -49,3 +49,37 @@ func main() {
 
 	Allocate(allflag Groupflag, allsize int, secondsize ...float64)
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+func convertDataSet(dataTrain []string, dataKnow []string) ([]float64, []float64) {
+	var dataTrainFloat64, dataKnowFloat64 float64
+	var dataTrainSliceFloat64, dataKnowSliceFloat64 []float64
+	var i int
+
+	for i=0; i<len(dataTrain); i++ {
+		dataTrainFloat64, _ = strconv.ParseFloat(dataTrain[i], 64)
+		dataTrainSliceFloat64 = append(dataTrainSliceFloat64, dataTrainFloat64)
+		fmt.Println("inside train loop")
+		fmt.Println(dataTrain[i])
+	}
+
+	for i=0; i<len(dataKnow); i++ {
+		dataKnowFloat64, _ = strconv.ParseFloat(dataKnow[i], 64)
+		dataKnowSliceFloat64 = append(dataKnowSliceFloat64, dataKnowFloat64)
+		fmt.Println("inside Know loop")
+		fmt.Println(dataKnow[i])
+	}
+
+	return dataTrainSliceFloat64, dataKnowSliceFloat64
+}
