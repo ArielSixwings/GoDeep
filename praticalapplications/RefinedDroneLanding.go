@@ -11,7 +11,6 @@ import (
 )
 
 func main() {
-	
 	var dataset learnstrategy.DataSet
 	
 	/*size of test and train groups*/
@@ -26,6 +25,25 @@ func main() {
 	size  = imageprocessing.FolderLength("../src/imageprocessing/Images/danger")
 	testsize = 25//int(size/2.5)
 	trainsize = size - testsize
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+	
+	var TrainExtractor imageprocessing.ImageExtractor
+	var TestExtractor imageprocessing.ImageExtractor
+
+	trainImages 			:= make([]gocv.Mat,3*trainsize)	// 	images
+	trainGLCMs 			:= make([]gocv.Mat,3*trainsize)	// 	GLCMs
+	normalizedtrain	 	:= make([]gocv.Mat,3*trainsize)	// 	normalizedGLCMs
+	
+	/*train gclm and normalized glcm internal allocation*/
+	for i := 0; i < 3*trainsize; i++ {
+		trainGLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
+		normalizedtrain[i]		= gocv.NewMat()
+	}
+
+	testImages 		:= make([]gocv.Mat,3*testsize)	// 	images
+
+	//+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 
 	/*set labelsizes*/
 	trainls := make([]cartesian.Sizelabel,3)
@@ -46,22 +64,13 @@ func main() {
 	testls[2].Label = "grass"
 
 	/* train images and features allocation*/
-	trainImages 			:= make([]gocv.Mat,3*trainsize)	// 	images
 	
-	trainGLCMs 			:= make([]gocv.Mat,3*trainsize)	// 	GLCMs
-	normalizedtrain	 	:= make([]gocv.Mat,3*trainsize)	// 	normalizedGLCMs
-	/*train gclm and normalized glcm internal allocation*/
-	for i := 0; i < 3*trainsize; i++ {
-		trainGLCMs[i]			= gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)	
-		normalizedtrain[i]		= gocv.NewMat()
-	}
 	/*train Features*/
 	trainEnergys			:= make([]float64,3*trainsize)	// 	Energy
 	trainCorrelations	:= make([]float64,3*trainsize)	// 	Correlation
 	trainContrasts		:= make([]float64,3*trainsize)	// 	Contrast
 
 	/* test images and features allocation*/
-	testImages 		:= make([]gocv.Mat,3*testsize)	// 	images
 	
 	testGLCMs 			:= make([]gocv.Mat,3*testsize)	// 	GLCMs
 	normalizedtest		:= make([]gocv.Mat,3*testsize)	// 	normalizedGLCMs

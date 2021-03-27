@@ -5,10 +5,10 @@ import (
 	"../basicdata"
 )
 func (ds *DataSet) SetLearnStrategy(ls learnStrategy) {
-    ds.learnStrategy = ls
+    ds.Strategy = ls
 }
 func (ds *DataSet) ProcessLearn(){
-	ds.learnStrategy.Learn(ds)
+	ds.Strategy.Learn(ds)
 }
 /**
  * [use make build in fucntion to allocate setioncs of the DataSet based on the allocate flag]

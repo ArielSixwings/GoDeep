@@ -49,7 +49,7 @@ type DataSet struct {
 	is_sortedbydist 	[]bool
 	is_sortedbycenter 	[]bool
 
-	learnStrategy learnStrategy
+	Strategy learnStrategy
 }
 
 
