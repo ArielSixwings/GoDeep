@@ -32,14 +32,21 @@ type DataSet struct {
 	test 				[]cartesian.Features
 	train 				[]cartesian.Features	
 	result 				[]cartesian.Labeldist
-	interestgroup 		[]cartesian.Interest
-	centroid 			[]cartesian.Centroidinfo
+	
+	centroid 			[]cartesian.Centroidinfo 	//kmeans
+	
 	centerdist 			[]cartesian.Featurepoint
+	
 	sizelabel 			[]cartesian.Sizelabel
 	allcentroid			cartesian.Allcenter
+	
 	is_sortedbydist 	[]bool
 	is_sortedbycenter 	[]bool 
 
+}
+
+type learnStrategy interface {
+	learn(ds *DataSet)
 }
 
 type ByDist []cartesian.Featurepoint
