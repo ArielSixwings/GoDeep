@@ -6,7 +6,7 @@ import(
 	"../basicdata"
 )
 
-func (ds *DataSet) Filterdataset( rule func(int) bool) error{
+func (ds *DataLearner) Filterdataset( rule func(int) bool) error{
 	
 	temp := make([]cartesian.Features, len((*ds).train))
 
@@ -28,7 +28,7 @@ func (ds *DataSet) Filterdataset( rule func(int) bool) error{
 	return nil
 }
 
-func (ds *DataSet) PurplezoneRule(i int) bool{
+func (ds *DataLearner) PurplezoneRule(i int) bool{
 
 	if (*ds).insidetworadius(i,0,1) || (*ds).insidetworadius(i,0,2) || (*ds).insidetworadius(i,1,2) {
 		return false
@@ -37,7 +37,7 @@ func (ds *DataSet) PurplezoneRule(i int) bool{
 	}
 }
 
-func (ds *DataSet) RedzoneRule(i int) bool{
+func (ds *DataLearner) RedzoneRule(i int) bool{
 
 	if (*ds).insidetworadius(i,0,1) && (*ds).insidetworadius(i,0,2) && (*ds).insidetworadius(i,1,2) {
 		return false
@@ -55,7 +55,7 @@ func (ds *DataSet) RedzoneRule(i int) bool{
 // 	}
 // }
 
-func (ds *DataSet) MinCaoszoneRule(i int) bool{
+func (ds *DataLearner) MinCaoszoneRule(i int) bool{
 
 	if (*ds).RedzoneRule(i) && ((*ds).allcentroid.Minradius > (*ds).euclidiandistance((*ds).train[i].Features,(*ds).allcentroid.Features))  {
 		return false
@@ -64,14 +64,14 @@ func (ds *DataSet) MinCaoszoneRule(i int) bool{
 	}
 }
 
-func (ds *DataSet) insidetworadius(i int, groupA int, groupB int) bool{
+func (ds *DataLearner) insidetworadius(i int, groupA int, groupB int) bool{
 	
 	var insideA bool = (*ds).euclidiandistance((*ds).train[i].Features,(*ds).centroid[groupA].Features) < (*ds).centroid[groupA].Radius
 	var insideB bool = (*ds).euclidiandistance((*ds).train[i].Features,(*ds).centroid[groupB].Features) < (*ds).centroid[groupB].Radius
 	return insideA && insideB
 }
 
-func (ds *DataSet) euclidiandistance(x [3]float64,y [3]float64) float64{
+func (ds *DataLearner) euclidiandistance(x [3]float64,y [3]float64) float64{
 	
 	var sum float64 = 0.0
 

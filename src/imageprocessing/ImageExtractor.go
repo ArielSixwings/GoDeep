@@ -10,43 +10,40 @@ import (
 	"gocv.io/x/gocv"
 )
 func (ie *ImageExtractor) Allocate(size int){
+	
 	(*ie).Images = make([]gocv.Mat,size)
+	
+	for i := 0; i < size; i++ {
+		(*ie).Images[i] = gocv.NewMat()
+	}
 }
 /**
  * [ReadImage description: read an image following the parameters]
  * @param {[type]} Image     gocv.Mat [the image]
  * @param {[type]} path      string   [the path to the image]
  * @param {[type]} show      bool     [if it is true show the image]
- * @param {[type]} save      bool     [if it is true save the image]
  * @param {[type]} colorfull bool     [if it is true read the image as a 3 chanel rbg]
  * @return {[type]}   gocv.Mat        [the readed image]
  */
-func (ie *ImageExtractor)  ReadImage(path string, show bool, save bool, colorfull bool, i ...int){
+func (ie *ImageExtractor)  ReadImage(path string, show bool, colorfull bool, i int){
 
 	ImagePath := filepath.Join(path) //set path to the base image
+	
 	if len((*ie).Images) == 0{
-		(*ie).Allocate(75) 	//temporary solution
+		(*ie).Allocate(150) 	//temporary solution
 	}
+	
 	if colorfull {
-		if len(i) > 0{
-			(*ie).Images[i[0]] = gocv.IMRead(ImagePath, gocv.IMReadUnchanged) //read the base image as as RGB
-		} else{
-			(*ie).Images[0] = gocv.IMRead(ImagePath, gocv.IMReadUnchanged) //read the base image as as RGB
-		}
+		(*ie).Images[i] = gocv.IMRead(ImagePath, gocv.IMReadUnchanged) //read the base image as as RGB
+
 	} else {
-		if len(i) > 0{
-			(*ie).Images[i[0]] = gocv.IMRead(ImagePath, gocv.IMReadGrayScale) //read the base image in grayscale
-		} else{
-			(*ie).Images[0] = gocv.IMRead(ImagePath, gocv.IMReadGrayScale) //read the base image in grayscale
-		}
+		(*ie).Images[i] = gocv.IMRead(ImagePath, gocv.IMReadGrayScale) //read the base image in grayscale
+
 	}
 
 	if show {
-		if len(i) > 0{
-			(*ie).ShowImage(i[0],"And this is yout image", 100)
-		} else{
-			(*ie).ShowImage(0,"And this is yout image", 100)
-		}
+		ShowImage("And this is yout image", (*ie).Images[i], 100)
+
 	}
 }
 
@@ -58,7 +55,7 @@ func (ie *ImageExtractor)  ReadImage(path string, show bool, save bool, colorful
  * @param {[type]} show      bool        [if its true, show the images]
  * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
  */
-func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool) {
+func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) {
 	
 	var files []string
 	var name string
@@ -75,7 +72,11 @@ func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, color
 
 		if firtst {
 			firtst = false
-			i = 0
+			if len(index) > 0{
+				i = index[0]
+			}else{
+				i = 0
+			}
 			continue
 		}
 
@@ -86,7 +87,7 @@ func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, color
 
 		}
 
-		(*ie).ReadImage(file, show, false, colorfull,i)
+		(*ie).ReadImage(file, show, colorfull,i)
 
 		i++
 	}
@@ -98,19 +99,18 @@ func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, color
  * @param {[type]} Image    gocv.Mat [image to be showed]
  * @param {[type]} time     int      [time of the window]
  */
-func (ie ImageExtractor) ShowImage(i int, Menssage string, time int) {
+func ShowImage(Menssage string, Image gocv.Mat, time int) {
 	window := gocv.NewWindow(Menssage) //basic window
-	window.IMShow(ie.Images[i])               //show the image
+	window.IMShow(Image)               //show the image
 	window.WaitKey(time)
 }
-
 /**
  * [SaveImage description: Saves an image]
  * @param {[type]} Name  string   [name to be saved]
  * @param {[type]} Image gocv.Mat [the image to be saved]
  */
-func SaveImage(Name string, Image gocv.Mat) {
-	gocv.IMWrite(Name, Image) //save the image
+func (ie ImageExtractor) SaveImage(i int,Name string) {
+	gocv.IMWrite(Name, ie.Images[i]) //save the image
 }
 
 /**

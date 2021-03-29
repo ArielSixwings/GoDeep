@@ -34,7 +34,7 @@ func (d ByDist) Less(i, j int) bool { return d[i].Dist < d[j].Dist }
  * @param  Sortdist(i int)
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) Sortdist(i int, sortflag Groupflag) error {
+func (ds *DataLearner) Sortdist(i int, sortflag Groupflag) error {
 
 	switch sortflag {
 	case Centerdistflag:

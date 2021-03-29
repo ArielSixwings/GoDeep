@@ -1,12 +1,6 @@
 package imageprocessing
 
 import (
-	//"fmt"
-	//"log"
-	//os"
-	//"path/filepath"
-	//"strings"
-
 	"gocv.io/x/gocv"
 )
 

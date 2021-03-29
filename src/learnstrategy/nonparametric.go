@@ -11,7 +11,7 @@ import (
  * @struct {[type]} ds *DataSet) Calcdistance( 	[the data set]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) Calcdistance() error {
+func (ds *DataLearner) Calcdistance() error {
 
 	var sum float64 = 0.0
 	if len((*ds).test) == 0 {
@@ -55,7 +55,7 @@ func (ds *DataSet) Calcdistance() error {
  * @struct {[type]} ds *DataSet) CalcCenterdistance( 	[the data set]
  * @return {error} 													[gets errors]
  */
-func (ds *DataSet) CalcCenterdistance() error {
+func (ds *DataLearner) CalcCenterdistance() error {
 
 	var currentdist float64
 
@@ -101,7 +101,7 @@ func (ds *DataSet) CalcCenterdistance() error {
  * @struct {[type]} ds *DataSet) AddInterest(t_size int ,k int [description]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) AddInterest(t_size int, k int) error {
+func (ds *DataLearner) AddInterest(t_size int, k int) error {
 
 	if len((*ds).interestgroup) == 0 {
 		(*ds).Allocate(Interestflag, len((*ds).test), k)
@@ -125,7 +125,7 @@ func (ds *DataSet) AddInterest(t_size int, k int) error {
  * @struct {[type]} ds *DataSet) GetGreatestOcorrence( [description]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) GetGreatestOcorrence(k int) error {
+func (ds *DataLearner) GetGreatestOcorrence(k int) error {
 
 	if len((*ds).result) == 0 {
 		return errors.New("result data set not provided")
@@ -156,7 +156,7 @@ func (ds *DataSet) GetGreatestOcorrence(k int) error {
  * @struct {[type]} ds *DataSet) Centroid( [description]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) Centroid() error {
+func (ds *DataLearner) Centroid() error {
 
 	if len((*ds).train) == 0 {
 		return errors.New("train dataset weren't provided")
@@ -229,7 +229,7 @@ func (ds *DataSet) Centroid() error {
  * @struct {[type]} ds *DataSet) GroupCenterdists( [description]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) GroupCenterdists() error {
+func (ds *DataLearner) GroupCenterdists() error {
 
 	if len((*ds).centroid) == 0 {
 		return errors.New("centroid weren't provided")
@@ -254,7 +254,7 @@ func (ds *DataSet) GroupCenterdists() error {
 	return nil
 }
 
-func (ds *DataSet) Calcradius() error {
+func (ds *DataLearner) Calcradius() error {
 	if len((*ds).train) == 0 {
 		if len((*ds).centroid) == 0 {
 			return errors.New("train dataset and centroid weren't provided")

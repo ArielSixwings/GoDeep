@@ -9,7 +9,7 @@ import (
  * @struct {[type]}  ds DataSet [thats a DataSet method]
  * @return {[type]}  error            [gets errors]
  */
-func (ds DataSet) Printresults(){
+func (ds DataLearner) Printresults(){
 
 	var total , right float64
 
@@ -35,7 +35,7 @@ func (ds DataSet) Printresults(){
  * @struct {[type]}  ds DataSet [thats a DataSet method]
  * @return {[type]}  error            [gets errors]
  */
-func (ds DataSet) Printdists(){
+func (ds DataLearner) Printdists(){
 	
 	fmt.Println("These are the distances between the data set groups")
 	
@@ -53,7 +53,7 @@ func (ds DataSet) Printdists(){
  * @struct {[type]}  ds DataSet [thats a DataSet method]
  * @return {[type]}  error            [gets errors]
  */
-func (ds DataSet) Printinterest(){
+func (ds DataLearner) Printinterest(){
 	for i := 0; i < len(ds.interestgroup); i++ {
 		fmt.Println(ds.interestgroup[i])
 	}
@@ -64,7 +64,7 @@ func (ds DataSet) Printinterest(){
  * @struct {[type]}  ds DataSet [thats a DataSet method]
  * @return {[type]}  error            [gets errors]
  */
-func (ds DataSet) Printfeatures() error{
+func (ds DataLearner) Printfeatures() error{
 	
 	fmt.Println("These are the train features")
 	for i := 0; i < len(ds.train); i++ {

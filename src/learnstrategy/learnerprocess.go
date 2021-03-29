@@ -3,11 +3,12 @@ package learnstrategy
 import (
 	"errors"
 	"../basicdata"
+	"../genericdata"
 )
-func (ds *DataSet) SetLearnStrategy(ls learnStrategy) {
+func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
     ds.Strategy = ls
 }
-func (ds *DataSet) ProcessLearn(){
+func (ds *DataLearner) ProcessLearn(){
 	ds.Strategy.Learn(ds)
 }
 /**
@@ -15,7 +16,7 @@ func (ds *DataSet) ProcessLearn(){
  * @struct {[type]} ds *DataSet) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) Allocate(allflag Groupflag, allsize int, secondsize ...int) error {
+func (ds *DataLearner) Allocate(allflag Groupflag, allsize int, secondsize ...int) error {
 	if allsize == 0 {
 		return errors.New("invalid size of length 0, can't allocate")
 	} else {
@@ -70,7 +71,7 @@ func (ds *DataSet) Allocate(allflag Groupflag, allsize int, secondsize ...int) e
  * @struct {[type]} ds DataSet) Gettrainstring(i int [description]
  * @return {string,error} 	 											[gets errors]
  */
-func (ds DataSet) Getlabel(labelflag Groupflag, i int) (string, error) {
+func (ds DataLearner) Getlabel(labelflag Groupflag, i int) (string, error) {
 	switch Labelflag {
 	case Trainflag:
 		if len(ds.train) == 0 {
@@ -93,7 +94,7 @@ func (ds DataSet) Getlabel(labelflag Groupflag, i int) (string, error) {
  * @struct {[type]} ds DataSet) Getlen(lenflag Groupflag [description]
  * @return {int,error} 	 											[gets errors]
  */
-func (ds DataSet) Getlen(lenflag Groupflag) (int, error) {
+func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
 	switch lenflag {
 	case Trainflag:
 		return len(ds.train), nil
@@ -117,12 +118,7 @@ func (ds DataSet) Getlen(lenflag Groupflag) (int, error) {
  * @param {[type]} group     Groupflag      [description]
  * @param {[type]} size      int            [description]
  */
-func (ds *DataSet) Build(feature_X []float64, feature_Y []float64, feature_Z []float64, ls []cartesian.Sizelabel, group Groupflag, size int) error {
-
-	if size != len(feature_X) {
-		return errors.New("Incompatible length between features and data set")
-	}
-
+func (ds *DataLearner) Build(cv *imageprocessing.ComputerVison ,ls []cartesian.Sizelabel,groupsize int) error {
 	var j int = 0
 
 	if group == Trainflag {
@@ -168,7 +164,7 @@ func (ds *DataSet) Build(feature_X []float64, feature_Y []float64, feature_Z []f
  * @struct {[type]}ds *DataSet) GetAccuracy( [description]
  * @return {error} 	 											[gets errors]
  */
-func (ds *DataSet) GetAccuracy() error {
+func (ds *DataLearner) GetAccuracy() error {
 
 	if len((*ds).result) == 0 {
 		return errors.New("results weren't computed")

@@ -108,7 +108,7 @@ func main() {
 		} else{
 			trainImages[i+((2*trainsize)-testsize)] = auxImages[i]
 		}
-	}	
+	}
 
 	/*compute GLCMs and them the normalized GLCM*/
 	fmt.Println("Computing train GLCMs")

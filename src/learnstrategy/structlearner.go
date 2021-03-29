@@ -31,7 +31,7 @@ type learnStrategy interface {
 	Learn(ds *DataSet)
 }
 
-type DataSet struct {
+type DataLearner struct {
 
 	test 				[]cartesian.Features
 	train 				[]cartesian.Features	

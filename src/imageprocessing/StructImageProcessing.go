@@ -1,15 +1,20 @@
 package imageprocessing
 
-type FeatureType int
+import (
+	"gocv.io/x/gocv"
+)
+type AllIpType int
 
 const (
 
-	EnergyFeature FeatureType = 0
+	AllGLCM AllIpType = 0
 
-	ContrastFeature FeatureType = 1
-
-	CorrelationFeature FeatureType = 2
-
-	HomogeneityFeature FeatureType = 3
+	AllNormalizedGLCM AllIpType = 1
 
 )
+
+type ImageProcessing struct {
+	FilteredImages 	[]gocv.Mat
+	GLCMs 			[]gocv.Mat
+	NormalizedGLCMs []gocv.Mat
+}
