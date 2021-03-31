@@ -14,7 +14,7 @@ func (cv *ComputerVison) GetBaseImages(ip *ImageProcessing){
 }
 
 func (cv *ComputerVison) AllocateCvStructs(size int){
-	(*cv).information = make([]cartesian.Features, size)
+	(*cv).Information = make([]cartesian.Features, size)
 }
 /**
  * [correlation description:compute correlation]
@@ -155,7 +155,7 @@ func (cv *ComputerVison) selectfeature(i int,featuretype FeatureType) (error,flo
  */
 func (cv *ComputerVison) GroupFeature(print bool,featuretype ...FeatureType) error{
 	
-	if len((*cv).information) == 0 {
+	if len((*cv).Information) == 0 {
 		(*cv).AllocateCvStructs(len((*cv).BaseImages))
 	}
 
@@ -164,14 +164,14 @@ func (cv *ComputerVison) GroupFeature(print bool,featuretype ...FeatureType) err
 			fmt.Println("Calculating Features:  ",(i+1), "of ",len((*cv).BaseImages))
 		}
 		for j := 0; j < len(featuretype); j++ {
-			_,(*cv).information[i].Features[j] = (*cv).selectfeature(i,featuretype[j])
+			_,(*cv).Information[i].Features[j] = (*cv).selectfeature(i,featuretype[j])
 		}
 	}
 	return nil
 }
 
 func (cv ComputerVison) PrintFeatures(){
-	for i := 0; i < len(cv.information); i++ {
-		fmt.Println(cv.information[i])
+	for i := 0; i < len(cv.Information); i++ {
+		fmt.Println(cv.Information[i])
 	}
 }

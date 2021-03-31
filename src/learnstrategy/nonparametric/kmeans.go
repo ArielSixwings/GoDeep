@@ -9,19 +9,19 @@ type Kmeans struct {
 
 /**
  * [Kmeans description: K nearest neighbors uses the k smallests distances from the studied group to the know group]
- * @struct {[type]} dataset *dataset.DataSet   [that data set contains the study group, 
+ * @struct {[type]} DataLearner *DataLearner.DataLearner   [that data set contains the study group, 
  *                                                                the know group and some parameters computed using the know group]
  */
-func (theKeans *Kmeans) Learn(dataset *learnstrategy.DataSet){
+func (theKeans *Kmeans) Learn(DataLearner *learnstrategy.DataLearner){
 
-	auxlen,_ := (*dataset).Getlen(learnstrategy.Testflag)
+	auxlen,_ := (*DataLearner).Getlen(learnstrategy.Testflag)
 
-	(*dataset).Centroid()
+	(*DataLearner).Centroid()
 
-	(*dataset).CalcCenterdistance()
+	(*DataLearner).CalcCenterdistance()
 	for i := 0; i < auxlen; i++ {
-		(*dataset).Sortdist(i,learnstrategy.Centerdistflag)
+		(*DataLearner).Sortdist(i,learnstrategy.Centerdistflag)
 	}
 
-	(*dataset).GetAccuracy()	
+	(*DataLearner).GetAccuracy()	
 }

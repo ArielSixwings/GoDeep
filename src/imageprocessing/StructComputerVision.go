@@ -21,5 +21,5 @@ const (
 
 type ComputerVison struct {
 	BaseImages 	[]gocv.Mat
-	information []cartesian.Features
+	Information []cartesian.Features
 }

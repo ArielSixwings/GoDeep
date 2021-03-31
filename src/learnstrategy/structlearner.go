@@ -28,7 +28,7 @@ const (
 )
 
 type learnStrategy interface {
-	Learn(ds *DataSet)
+	Learn(ds *DataLearner)
 }
 
 type DataLearner struct {

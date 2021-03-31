@@ -3,7 +3,8 @@ package learnstrategy
 import (
 	"errors"
 	"../basicdata"
-	"../genericdata"
+	//"../genericdata"
+	"../imageprocessing"
 )
 func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
     ds.Strategy = ls
@@ -120,40 +121,22 @@ func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
  */
 func (ds *DataLearner) Build(cv *imageprocessing.ComputerVison ,ls []cartesian.Sizelabel,groupsize int) error {
 	var j int = 0
-
-	if group == Trainflag {
-		(*ds).Allocate(Trainflag, size)
-	} else {
-		(*ds).Allocate(Testflag, size)
+	for i := 0; i < len((*cv).Information); i++ {
+		if i%2 == 0{
+			(*ds).train = append((*ds).train,(*cv).Information[i])
+		} else{
+			(*ds).test = append((*ds).test,(*cv).Information[i])	
+		}
+	
 	}
-
-	(*ds).sizelabel = ls
-	for i := 0; i < size; i++ {
-		if group == Trainflag {
-
-			(*ds).train[i].Features[0] = feature_X[i]
-			(*ds).train[i].Features[1] = feature_Y[i]
-			(*ds).train[i].Features[2] = feature_Z[i]
-
-			if i < (1+j)*ls[j].Size_l {
-				(*ds).train[i].Label = ls[j].Label
-			} else {
-				j++
-				(*ds).train[i].Label = ls[j].Label
-			}
-
+	for i := 0; i < groupsize; i++ {
+		if i < (1+j)*ls[j].Size_l {
+			(*ds).train[i].Label = ls[j].Label
+			(*ds).test[i].Label = ls[j].Label
 		} else {
-
-			(*ds).test[i].Features[0] = feature_X[i]
-			(*ds).test[i].Features[1] = feature_Y[i]
-			(*ds).test[i].Features[2] = feature_Z[i]
-
-			if i < (1+j)*ls[j].Size_l {
-				(*ds).test[i].Label = ls[j].Label
-			} else {
-				j++
-				(*ds).test[i].Label = ls[j].Label
-			}
+			j++
+			(*ds).train[i].Label = ls[j].Label
+			(*ds).test[i].Label = ls[j].Label
 		}
 	}
 	return nil
