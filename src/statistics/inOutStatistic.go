@@ -8,8 +8,8 @@ import (
 //	"path/filepath"
 	"strings"
 	"strconv"
-	"../generalizecartesian"
-	"../basicdata"
+//	"../generalizecartesian"
+//	"../basicdata"
 )
 
 // Funcao que le o conteudo do arquivo e retorna um slice the string com todas as linhas do arquivo
@@ -46,7 +46,7 @@ func printText(conteudo []string, err error) {
 	}
 }
 
-func splitTextTrain(conteudo []string) ([]string, []string, []string){
+func splitTextTrain(conteudo []string) ([]string, []string, []string, []string){
 	var split = make([]string, len(conteudo))
 	var pSurvived, pClass, pSex, pAge []string
 	var folderText string
@@ -77,10 +77,10 @@ func splitTextTrain(conteudo []string) ([]string, []string, []string){
 		pAge = append(pAge, split[i])
 	}
 
-	return pAge, pClass, pSex
+	return pAge, pClass, pSex, pSurvived
 }
 
-func splitTextKnow(conteudo []string) ([]string, []string, []string){
+func splitTextKnow(conteudo []string) ([]string, []string, []string, []string){
 	var split = make([]string, len(conteudo))
 	var pSurvived, pClass, pSex, pAge []string
 	var folderText string
@@ -112,7 +112,7 @@ func splitTextKnow(conteudo []string) ([]string, []string, []string){
 	}
 
 
-	return pAge, pClass, pSex
+	return pAge, pClass, pSex, pSurvived
 }
 
 func convertData(data_1 []string, data_2 []string, data_3 []string) ([]float64, []float64, []float64) {
@@ -162,9 +162,9 @@ func convertData(data_1 []string, data_2 []string, data_3 []string) ([]float64, 
 //###### APAGAR #######
 func main() {
 	var dataKnow, dataTrain []string
-	var tAge, tClass, tSex, kAge, kClass, kSex []string
+	var tAge, tClass, tSex, tSurvived, kAge, kClass, kSex, kSurvived []string
 	var tData1, tData2, tData3, kData1, kData2, kData3 []float64
-	var dataset generalizecartesian.Labelfeatures
+	//var dataset generalizecartesian.Labelfeatures
 
 	// Scan folders
 	dataTrain, err := scanText("tempTrain.csv")
@@ -173,10 +173,10 @@ func main() {
 	printText(dataKnow, err)
 
 	// Convert data from data set train
-	tAge, tClass, tSex = splitTextTrain(dataTrain)
+	tAge, tClass, tSex, tSurvived = splitTextTrain(dataTrain)
 	tData1, tData2, tData3 = convertData(tAge, tClass, tSex)
 
-	kAge, kClass, kSex = splitTextKnow(dataKnow)
+	kAge, kClass, kSex, kSurvived = splitTextKnow(dataKnow)
 	kData1, kData2,  kData3 = convertData(kAge, kClass, kSex)
 
 	// Convert data sets
@@ -197,6 +197,8 @@ func main() {
 	fmt.Println(kAge)
 	fmt.Println(kClass)
 	fmt.Println(kSex)
+	fmt.Println(kSurvived)
+	fmt.Println(tSurvived)
 	fmt.Println()
 	fmt.Println()
 	fmt.Println()
