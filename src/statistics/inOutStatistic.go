@@ -8,8 +8,8 @@ import (
 //	"path/filepath"
 	"strings"
 	"strconv"
-//	"../generalizecartesian"
-//	"../basicdata"
+	"../generalizecartesian"
+	"../basicdata"
 )
 
 // Funcao que le o conteudo do arquivo e retorna um slice the string com todas as linhas do arquivo
@@ -164,7 +164,11 @@ func main() {
 	var dataKnow, dataTrain []string
 	var tAge, tClass, tSex, tSurvived, kAge, kClass, kSex, kSurvived []string
 	var tData1, tData2, tData3, kData1, kData2, kData3 []float64
-	//var dataset generalizecartesian.Labelfeatures
+	var dataset generalizecartesian.Labelfeatures
+
+	/*set labelsizes*/
+	knowls := make([]cartesian.Sizelabel,3)
+	trainls := make([]cartesian.Sizelabel,3)
 
 	// Scan folders
 	dataTrain, err := scanText("tempTrain.csv")
@@ -212,7 +216,7 @@ func main() {
 	fmt.Println(kData3)
 
 	//fmt.Println("Generalizing know data set")
-	//generalizecartesian.Generalize_for_nonparametric(&dataset, kData1, kData2, kData3, knowls, generalizecartesian.Knowflag,3*knowsize)
+	generalizecartesian.Generalize_for_nonparametric(&dataset, kData1, kData2, kData3, knowls, generalizecartesian.Knowflag,3*knowsize)
 	
 	//fmt.Println("Generalizing train data set")
 	//generalizecartesian.Generalize_for_nonparametric(&dataset, tData1, tData2, tData3,trainls, generalizecartesian.Trainflag,3*trainsize)
