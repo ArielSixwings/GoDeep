@@ -170,6 +170,23 @@ func main() {
 	knowls := make([]cartesian.Sizelabel,3)
 	trainls := make([]cartesian.Sizelabel,3)
 
+
+	for i := 0; i < 3; i++ {
+		knowls[i].Size_l  = knowsize
+		trainls[i].Size_l = trainsize	
+	}
+
+	knowls[0].Label  = "class"
+	trainls[0].Label = "class"
+
+	knowls[1].Label  = "age"
+	trainls[1].Label = "age"
+
+	knowls[2].Label  = "gender"
+	trainls[2].Label = "gender"
+
+
+
 	// Scan folders
 	dataTrain, err := scanText("tempTrain.csv")
 	printText(dataTrain, err)
@@ -221,5 +238,10 @@ func main() {
 	//fmt.Println("Generalizing train data set")
 	//generalizecartesian.Generalize_for_nonparametric(&dataset, tData1, tData2, tData3,trainls, generalizecartesian.Trainflag,3*trainsize)
 
+	type Folders struct {
+		dataSetOrigin string
+		dataSetFolder string
+	}
 
+	var folder Folders[]
 }
