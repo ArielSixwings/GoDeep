@@ -4,6 +4,7 @@ import (
 	"gocv.io/x/gocv"
 	"fmt"
 	"errors"
+	"../imageextractor"
 
 )
 
@@ -64,6 +65,11 @@ func (ip *ImageProcessing) getGLCM( index int,delta_r int, delta_c int) error{
 	return nil
 }
 
+func (ip *ImageProcessing) getNormalizedGLCM(i int,alpha float64, beta float64, typ gocv.NormType) error{
+	gocv.Normalize((*ip).GLCMs[i], &(*ip).NormalizedGLCMs[i], alpha, beta, typ)
+	return nil
+}
+
 func (ip *ImageProcessing) AllocateIpStructs(size int,alliptype AllIpType) error{
 	switch alliptype {
 	case AllGLCM:
@@ -111,13 +117,13 @@ func (ip *ImageProcessing) GroupGLCM(print bool ,show bool) error{
 		(*ip).getGLCM(i,0,1)
 
 		if show {
-			ShowImage("GLCMs", (*ip).GLCMs[i], 100)
+			imageextractor.ShowImage("GLCMs", (*ip).GLCMs[i], 100)
 		}
 
 	}
 	return nil
 }
-//++++++//
+
 func (ip *ImageProcessing) GroupNormalizedGLCM(alpha float64, beta float64, typ gocv.NormType,print bool ,show bool) error{
 
 	if len((*ip).GLCMs) == 0{
@@ -137,18 +143,13 @@ func (ip *ImageProcessing) GroupNormalizedGLCM(alpha float64, beta float64, typ 
 		(*ip).getNormalizedGLCM(i,0.0,255.0,typ)
 
 		if show {
-			ShowImage("NormalizedGLCMs", (*ip).NormalizedGLCMs[i], 100)
+			imageextractor.ShowImage("NormalizedGLCMs", (*ip).NormalizedGLCMs[i], 100)
 		}
 
 	}
 	return nil
 }
-//++++++//
-func (ip *ImageProcessing) GetImages(ie *ImageExtractor){
-	(*ip).FilteredImages = (*ie).Images
-}
 
-func (ip *ImageProcessing) getNormalizedGLCM(i int,alpha float64, beta float64, typ gocv.NormType) error{
-	gocv.Normalize((*ip).GLCMs[i], &(*ip).NormalizedGLCMs[i], alpha, beta, typ)
-	return nil
+func (ip *ImageProcessing) GetImages(ie *imageextractor.ImageExtractor){
+	(*ip).FilteredImages = (*ie).Images
 }

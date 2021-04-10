@@ -1,4 +1,4 @@
-package imageprocessing
+package imageextractor
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
-
+	//"strconv"
 	"gocv.io/x/gocv"
 )
 func (ie *ImageExtractor) Allocate(size int){
@@ -28,10 +28,6 @@ func (ie *ImageExtractor) Allocate(size int){
 func (ie *ImageExtractor)  ReadImage(path string, show bool, colorfull bool, i int){
 
 	ImagePath := filepath.Join(path) //set path to the base image
-	
-	if len((*ie).Images) == 0{
-		(*ie).Allocate(150) 	//temporary solution
-	}
 	
 	if colorfull {
 		(*ie).Images[i] = gocv.IMRead(ImagePath, gocv.IMReadUnchanged) //read the base image as as RGB
@@ -59,24 +55,33 @@ func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, color
 	
 	var files []string
 	var name string
-	var firtst bool = true
+	var first bool = true
 	var i int
 	nametemp := []string{"\"./", "\""}
+	
 
 	err := filepath.Walk(folder, visit(&files))
 	if err != nil {
 		panic(err)
+	} else {
+		if len((*ie).Images) == 0{
+			(*ie).Allocate(3*(len(files)-1)) 	//temporary solution
+		}
 	}
 
 	for _, file := range files {
 
-		if firtst {
-			firtst = false
+		if first {
 			if len(index) > 0{
 				i = index[0]
 			}else{
 				i = 0
 			}
+			
+			fmt.Println(file)
+			(*ie).getFolderName(file)
+			
+			first = false
 			continue
 		}
 
@@ -142,4 +147,12 @@ func FolderLength(folder string) int {
 		panic(err)
 	}
 	return (len(files) - 1)
+}
+
+func (ie *ImageExtractor) getFolderName(path string){
+	//(*ie).split = make([]string, len(path)) //4
+	(*ie).split = append(strings.Split(path, "/"))
+	for i := 0; i < len((*ie).split); i++ {
+		fmt.Println((*ie).split[i])
+	}
 }

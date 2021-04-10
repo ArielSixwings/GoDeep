@@ -1,15 +1,15 @@
-package imageprocessing
+package computervision
 
 import (
-	//"gocv.io/x/gocv"
 	"fmt"
 	"math"
-	"../basicdata"
+	"../../basicdata"
+	"../imageprocessing"
 	"errors"
 
 )
 
-func (cv *ComputerVison) GetBaseImages(ip *ImageProcessing){
+func (cv *ComputerVison) GetBaseImages(ip *imageprocessing.ImageProcessing){
 	(*cv).BaseImages = (*ip).NormalizedGLCMs
 }
 
