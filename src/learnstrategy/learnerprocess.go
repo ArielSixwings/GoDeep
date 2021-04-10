@@ -3,8 +3,7 @@ package learnstrategy
 import (
 	"errors"
 	"../basicdata"
-	//"../genericdata"
-	"../imageprocessing"
+	"../imagehandler/computervision"
 )
 func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
     ds.Strategy = ls
@@ -119,7 +118,7 @@ func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
  * @param {[type]} group     Groupflag      [description]
  * @param {[type]} size      int            [description]
  */
-func (ds *DataLearner) Build(cv *imageprocessing.ComputerVison ,ls []cartesian.Sizelabel,groupsize int) error {
+func (ds *DataLearner) Build(cv *computervision.ComputerVison ,ls []cartesian.Sizelabel,groupsize int) error {
 	var j int = 0
 	for i := 0; i < len((*cv).Information); i++ {
 		if i%2 == 0{

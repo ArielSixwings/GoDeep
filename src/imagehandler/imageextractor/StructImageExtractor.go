@@ -1,4 +1,4 @@
-package imageprocessing
+package imageextractor
 
 import (
 	"gocv.io/x/gocv"
@@ -6,4 +6,5 @@ import (
 
 type ImageExtractor struct {
 	Images 	[]gocv.Mat
+	split 	[]string
 }
