@@ -28,9 +28,12 @@ func main() {
 	labelsize[2].Label = "grass"
 	labelsize[2].Size_l = 25
 
-	datasetextractor.ReadFolder("../src/imagehandler/Images/danger",true,true,false)
-	datasetextractor.ReadFolder("../src/imagehandler/Images/asphalt",true,true,false,50)
-	datasetextractor.ReadFolder("../src/imagehandler/Images/grass",true,true,false,100)
+	origins := []string{"../src/imagehandler/Images/danger", 
+		"../src/imagehandler/Images/asphalt", 
+		"../src/imagehandler/Images/grass"}
+
+	datasetextractor.SetOrigins(origins)
+	datasetextractor.Read()
 	
 	datatransformer.GetImages(&datasetextractor)
 	datatransformer.GroupGLCM(true, true)

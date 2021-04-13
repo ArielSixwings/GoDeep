@@ -5,6 +5,7 @@ import (
 )
 
 type ImageExtractor struct {
-	Images 	[]gocv.Mat
-	split 	[]string
+	Images 		[]gocv.Mat
+	split 		[]string
+	readOrigins []string
 }

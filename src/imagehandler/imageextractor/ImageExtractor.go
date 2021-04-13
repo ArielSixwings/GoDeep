@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"errors"
 	//"strconv"
 	"gocv.io/x/gocv"
 )
@@ -150,9 +151,55 @@ func FolderLength(folder string) int {
 }
 
 func (ie *ImageExtractor) getFolderName(path string){
-	//(*ie).split = make([]string, len(path)) //4
 	(*ie).split = append(strings.Split(path, "/"))
 	for i := 0; i < len((*ie).split); i++ {
 		fmt.Println((*ie).split[i])
+	}
+}
+
+func (ie ImageExtractor) verifycandidate(candidate []string) bool{
+	if candidate[0] == ".." || candidate[0] == "." { //"../src/imagehandler/Images/danger" or "./Images/grass_1.png"
+		return true
+	} else{
+		return false
+	}
+}
+
+func (ie *ImageExtractor) SetOrigins(origins []string) ([]bool,error){
+	
+	var originsIntegrity bool = true
+	path := make([][]string,len(origins))
+	statusorigins := make([]bool,len(origins))
+
+	for i := 0; i < len(origins); i++ {
+		
+		path[i] = append(strings.Split(origins[i], "/"))
+		statusorigins[i] = (*ie).verifycandidate(path[i])
+		
+		if originsIntegrity {
+			originsIntegrity = statusorigins[i] 
+		}
+	}
+
+	if originsIntegrity{
+		(*ie).readOrigins = origins
+		return statusorigins,nil
+	}else{
+		return statusorigins,errors.New("There was an error to set the origins, path provided is not valid")
+	}
+}
+
+func (ie *ImageExtractor) Read() error{
+	if len((*ie).readOrigins) == 0{
+		return errors.New("Origins were not provided, use ReadFloder or define the Origins")
+	} else{
+		for i := 0; i < len((*ie).readOrigins); i++ {
+			if i == 0{
+				(*ie).ReadFolder((*ie).readOrigins[i],true,true,false)
+			} else{
+				(*ie).ReadFolder((*ie).readOrigins[i],true,true,false,i*50) //temporary solution
+			}
+		}
+		return nil
 	}
 }
