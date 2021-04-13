@@ -1,5 +1,4 @@
-//package main
-package main
+package geneticextractor
 
 import (
 	"bufio"
@@ -9,6 +8,29 @@ import (
 	"os"
 	"strings"
 )
+
+// Funcao que le o conteudo do arquivo e retorna um slice the string com todas as linhas do arquivo
+func scanText(caminhoDoArquivo string) ([]string, error) {
+	var linhas []string
+	// Abre o arquivo
+	arquivo, err := os.Open(caminhoDoArquivo)
+	// Caso tenha encontrado algum erro ao tentar abrir o arquivo retorne o erro encontrado
+	if err != nil {
+		return nil, err
+	}
+	// Garante que o arquivo sera fechado apos o uso
+	defer arquivo.Close()
+
+	// Cria um scanner que le cada linha do arquivo
+
+	scanner := bufio.NewScanner(arquivo)
+	for scanner.Scan() {
+		linhas = append(linhas, scanner.Text())
+	}
+
+	// Retorna as linhas lidas e um erro se ocorrer algum erro no scanner
+	return linhas, scanner.Err()
+}
 
 func escreverTexto(linhas []string, caminhoDoArquivo string) error {
 	// Cria o arquivo de texto
@@ -52,17 +74,6 @@ func lerTexto(caminhoDoArquivo string) ([]string, error) {
 }
 
 func gerarDataSet(str []string, caminho string, tam int) error {
-	/*var lista [64000]string
-	for i := 0; i < 64000; i++ {
-		lista[i] = str[i]
-		if i == 256 {
-			lista[i] = "\000"
-		}
-		if i%257 == 0 && i != 0 {
-			lista[i] = "\n"
-		}
-		fmt.Print(lista)
-	}*/
 	var lista2 []string
 	for i := 0; i < len(str); i++ {
 		lista2 = append(lista2, str[i])
@@ -165,7 +176,7 @@ func gerarStringFilho(dtPai string) ([]string, error) {
 	return lista, err
 }
 
-func main() {
+/*func main() {
 
 	//var a []string
 	//var b []string
