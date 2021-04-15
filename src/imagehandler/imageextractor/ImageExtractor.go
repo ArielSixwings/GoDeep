@@ -7,8 +7,8 @@ import (
 	"path/filepath"
 	"strings"
 	"errors"
-	//"strconv"
 	"gocv.io/x/gocv"
+	"../../basicdata"
 )
 func (ie *ImageExtractor) Allocate(size int){
 	
@@ -52,14 +52,11 @@ func (ie *ImageExtractor)  ReadImage(path string, show bool, colorfull bool, i i
  * @param {[type]} show      bool        [if its true, show the images]
  * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
  */
-func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) {
+func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) int{
 	
 	var files []string
-	var name string
 	var first bool = true
 	var i int
-	nametemp := []string{"\"./", "\""}
-	
 
 	err := filepath.Walk(folder, visit(&files))
 	if err != nil {
@@ -80,23 +77,18 @@ func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, color
 			}
 			
 			fmt.Println(file)
-			(*ie).getFolderName(file)
-			
 			first = false
 			continue
 		}
-
-		name = strings.Join(nametemp, file)
-
 		if print {
-			fmt.Println("geting image:     ", name)
+
+			fmt.Println("geting image:     ", file)
 
 		}
-
 		(*ie).ReadImage(file, show, colorfull,i)
-
 		i++
 	}
+	return len(files)-1
 }
 
 /**
@@ -150,10 +142,13 @@ func FolderLength(folder string) int {
 	return (len(files) - 1)
 }
 
-func (ie *ImageExtractor) getFolderName(path string){
-	(*ie).split = append(strings.Split(path, "/"))
-	for i := 0; i < len((*ie).split); i++ {
-		fmt.Println((*ie).split[i])
+func (ie *ImageExtractor) getFolderName(path string,index int){
+	if len((*ie).split) == 0{
+		(*ie).split = make([][]string,len((*ie).readOrigins))
+	}
+	(*ie).split[index] = append(strings.Split(path, "/"))
+	for i := 0; i < len((*ie).split[index]); i++ {
+		fmt.Println((*ie).split[index][i])
 	}
 }
 
@@ -194,12 +189,31 @@ func (ie *ImageExtractor) Read() error{
 		return errors.New("Origins were not provided, use ReadFloder or define the Origins")
 	} else{
 		for i := 0; i < len((*ie).readOrigins); i++ {
+			
+			(*ie).getFolderName((*ie).readOrigins[i],i)
+			(*ie).setLabelbyPath(i)
+			
 			if i == 0{
-				(*ie).ReadFolder((*ie).readOrigins[i],true,true,false)
+				(*ie).Labelsize[i].Size_l = (*ie).ReadFolder((*ie).readOrigins[i],true,true,false)
 			} else{
-				(*ie).ReadFolder((*ie).readOrigins[i],true,true,false,i*50) //temporary solution
+				(*ie).Labelsize[i].Size_l = (*ie).ReadFolder((*ie).readOrigins[i],true,true,false,i*(*ie).Labelsize[i-1].Size_l) //temporary solution
+
 			}
 		}
 		return nil
+	}
+}
+
+func (ie *ImageExtractor) setLabelbyPath(index int,meaningfulname ...int){
+	if len((*ie).Labelsize) == 0{
+		(*ie).Labelsize = make([]cartesian.Sizelabel,len((*ie).readOrigins))
+	}
+	if len(meaningfulname) == 0{
+		(*ie).Labelsize[index].Label = (*ie).split[index][len((*ie).split[index])-1]
+		fmt.Println("The label that was defined: ", (*ie).Labelsize[index].Label)
+	} else{
+		fmt.Println("REMEMBER TO IMPLEMENT THAT OPTION")
+		(*ie).Labelsize[index].Label = (*ie).split[index][len((*ie).split[index])-1]
+		fmt.Println("The label that was defined: ", (*ie).Labelsize[index].Label)
 	}
 }
