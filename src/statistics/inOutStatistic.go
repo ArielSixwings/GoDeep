@@ -9,50 +9,48 @@ import (
 )
 
 
-func scanText(caminhoDoArquivo string) ([]string, error) {
-	var linhas []string
+func scanText(filePath string) ([]string, error) {
+	var lines []string
 	
-	arquivo, err := os.Open(caminhoDoArquivo)
-	// Caso tenha encontrado algum erro ao tentar abrir o arquivo retorne o erro encontrado
+	file, err := os.Open(filePath)
+
 	if err != nil {
 		return nil, err
 	}
-	// Garante que o arquivo sera fechado apos o uso
-	defer arquivo.Close()
-
-	// Cria um scanner que le cada linha do arquivo
 	
-	scanner := bufio.NewScanner(arquivo)
+	defer file.Close()
+	
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		linhas = append(linhas, scanner.Text())
+		lines = append(lines, scanner.Text())
 	}
 
-	// Retorna as linhas lidas e um erro se ocorrer algum erro no scanner
-	return linhas, scanner.Err()
+	
+	return lines, scanner.Err()
 }
 
-func printText(conteudo []string, err error) {
+func printText(fileContents []string, err error) {
 	if err != nil {
 		//log.Fatalf("Erro:", err)
 		fmt.Println("Erro:", err)
 	}
 
-	for indice, linha := range conteudo {
-		fmt.Println(indice, linha)
+	for index, line := range fileContents {
+		fmt.Println(index, line)
 	}
 }
 
-func splitText(conteudo []string) ([]string, []string, []string, []string){
-	var split = make([]string, len(conteudo))
+func splitText(fileContents []string) ([]string, []string, []string, []string){
+	var split = make([]string, len(fileContents))
 	var pSurvived, pClass, pSex, pAge []string
 	var folderText string
 	var i int = 0
 
-	for i=0; i<len(conteudo); i++ {
-		folderText = folderText + conteudo[i]
+	for i=0; i<len(fileContents); i++ {
+		folderText = folderText + fileContents[i]
 	}
 
-	for i=0; i<len(conteudo); i++ {
+	for i=0; i<len(fileContents); i++ {
 		split = append(strings.Split(folderText, ","))
 	}
 
