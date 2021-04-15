@@ -5,11 +5,8 @@ import (
 )
 
 func main() {
+	var leitor [][]string
 	var reader textextractor.TextExtractor
-	var reader2 textextractor.TextExtractor
-	reader.ScanText("./genetic/tapes/fathers.txt")
-	reader2.ScanText("./genetic/tapes/childs.txt")
-	reader.PrintFile()
-	reader2.PrintFile()
-
+	leitor = reader.ScanFolder("./genetic/tapes")
+	reader.PrintFile(leitor)
 }
