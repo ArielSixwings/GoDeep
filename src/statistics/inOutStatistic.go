@@ -124,16 +124,16 @@ func convertData(data_1 []string, data_2 []string, data_3 []string, data_4 []str
 
 func sortData(data_4 []string, tamData int) ([]string) {
 	var sortedData = make([]string, tamData)
-	lower := 0
-	upper := 0
+	lowerVectorIndex := 0
+	upperVectorIndex := 0
 
 	for i := 0; i < tamData; i++ {
 		if data_4[i] == "0" {
-			sortedData[lower] = data_4[i]
-			lower++
+			sortedData[lowerVectorIndex] = data_4[i]
+			lowerVectorIndex++
 		} else {
-			sortedData[tamData - 1 - upper] = data_4[i]
-			upper++
+			sortedData[tamData - 1 - upperVectorIndex] = data_4[i]
+			upperVectorIndex++
 		}
 	}
 
