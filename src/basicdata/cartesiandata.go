@@ -27,6 +27,12 @@ type Sizelabel struct {
 	Label  string
 	Size_l int
 }
+
+type ReadInformation struct {
+	SizeData int
+	Labelsize 	[]cartesian.Sizelabel
+}
+
 type Centroidinfo struct {
 
 	Features [3]float64
