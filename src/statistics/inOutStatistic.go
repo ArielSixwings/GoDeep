@@ -3,121 +3,80 @@ package main
 import (
 	"fmt"
 	"bufio"
-//	"errors"
 	"os"
-//	"path/filepath"
 	"strings"
 	"strconv"
-	"../generalizecartesian"
-	"../basicdata"
 )
 
-// Funcao que le o conteudo do arquivo e retorna um slice the string com todas as linhas do arquivo
-func scanText(caminhoDoArquivo string) ([]string, error) {
-	var linhas []string
-	// Abre o arquivo
-	arquivo, err := os.Open(caminhoDoArquivo)
-	// Caso tenha encontrado algum erro ao tentar abrir o arquivo retorne o erro encontrado
+
+func scanText(filePath string) ([]string, error) {
+	var lines []string
+	
+	file, err := os.Open(filePath)
+
 	if err != nil {
 		return nil, err
 	}
-	// Garante que o arquivo sera fechado apos o uso
-	defer arquivo.Close()
-
-	// Cria um scanner que le cada linha do arquivo
 	
-	scanner := bufio.NewScanner(arquivo)
+	defer file.Close()
+	
+	scanner := bufio.NewScanner(file)
 	for scanner.Scan() {
-		linhas = append(linhas, scanner.Text())
+		lines = append(lines, scanner.Text())
 	}
 
-	// Retorna as linhas lidas e um erro se ocorrer algum erro no scanner
-	return linhas, scanner.Err()
+	
+	return lines, scanner.Err()
 }
 
-func printText(conteudo []string, err error) {
+func printText(fileContents []string, err error) {
 	if err != nil {
 		//log.Fatalf("Erro:", err)
 		fmt.Println("Erro:", err)
 	}
 
-	for indice, linha := range conteudo {
-		fmt.Println(indice, linha)
+	for index, line := range fileContents {
+		fmt.Println(index, line)
 	}
 }
 
-func splitTextTrain(conteudo []string) ([]string, []string, []string, []string){
-	var split = make([]string, len(conteudo))
+func splitText(fileContents []string) ([]string, []string, []string, []string){
+	var split = make([]string, len(fileContents))
 	var pSurvived, pClass, pSex, pAge []string
 	var folderText string
 	var i int = 0
 
-	for i=0; i<len(conteudo); i++ {
-		folderText = folderText + conteudo[i]
+	for i=0; i<len(fileContents); i++ {
+		folderText = folderText + fileContents[i]
 	}
 
-	for i=0; i<len(conteudo); i++ {
+	for i=0; i<len(fileContents); i++ {
 		split = append(strings.Split(folderText, ","))
 	}
 
 	// Spliting information
-	for i=12; i<len(split)/2; i+=12 {
+	for i=12; i<len(split); i+=12 {
 		pSurvived = append(pSurvived, split[i])
 	}
 
-	for i=13; i<len(split)/2; i+=12 {
+	for i=13; i<len(split); i+=12 {
 		pClass = append(pClass, split[i])
 	}
 
-	for i=16; i<len(split)/2; i+=12 {
+	for i=16; i<len(split); i+=12 {
 		pSex = append(pSex, split[i])
 	}
 
-	for i=17; i<len(split)/2; i+=12 {
+	for i=17; i<len(split); i+=12 {
 		pAge = append(pAge, split[i])
 	}
 
 	return pAge, pClass, pSex, pSurvived
 }
 
-func splitTextKnow(conteudo []string) ([]string, []string, []string, []string){
-	var split = make([]string, len(conteudo))
-	var pSurvived, pClass, pSex, pAge []string
-	var folderText string
-	var i int = 0
-
-	for i=0; i<len(conteudo); i++ {
-		folderText = folderText + conteudo[i]
-	}
-
-	for i=0; i<len(conteudo); i++ {
-		split = append(strings.Split(folderText, ","))
-	}
-
-	// Spliting information
-	for i=12+(len(split)/2); i<len(split); i+=12 {
-		pSurvived = append(pSurvived, split[i])
-	}
-
-	for i=13+(len(split)/2); i<len(split); i+=12 {
-		pClass = append(pClass, split[i])
-	}
-
-	for i=16+(len(split)/2); i<len(split); i+=12 {
-		pSex = append(pSex, split[i])
-	}
-
-	for i=17+(len(split)/2); i<len(split); i+=12 {
-		pAge = append(pAge, split[i])
-	}
-
-
-	return pAge, pClass, pSex, pSurvived
-}
-
-func convertData(data_1 []string, data_2 []string, data_3 []string) ([]float64, []float64, []float64) {
-	var pData1Float64, pData2Float64,pData3Float64 float64
-	var pData1SliceFloat64, pData2SliceFloat64, pData3SliceFloat64 []float64
+func convertData(data_1 []string, data_2 []string, data_3 []string, data_4 []string) ([]float64, []float64, []float64, []float64) {
+	var pData1Float64, pData2Float64,pData3Float64, pData4Float64 float64
+	var pData1SliceFloat64, pData2SliceFloat64, pData3SliceFloat64, pData4SliceFloat64 []float64
 	var i int
 
 	for i=0; i<len(data_1); i++ {
@@ -150,76 +109,77 @@ func convertData(data_1 []string, data_2 []string, data_3 []string) ([]float64, 
 		pData3SliceFloat64 = append(pData3SliceFloat64, pData3Float64)
 	}
 
+	for i=0; i<len(data_4); i++ {
+		pData4Float64, _ = strconv.ParseFloat(data_4[i], 64)
+		pData4SliceFloat64 = append(pData4SliceFloat64, pData4Float64)
+	}
+
 	//fmt.Println(pData1SliceFloat64)
 	//fmt.Println(pData2SliceFloat64)
 	//fmt.Println(pData3SliceFloat64)
 
-	return pData1SliceFloat64, pData2SliceFloat64, pData3SliceFloat64
+	return pData1SliceFloat64, pData2SliceFloat64, pData3SliceFloat64, pData4SliceFloat64
 
 }
 
+func sortData(data_4 []string, tamData int) ([]string) {
+	var sortedData = make([]string, tamData)
+	lowerVectorIndex := 0
+	upperVectorIndex := 0
 
-//###### APAGAR #######
+	for i := 0; i < tamData; i++ {
+		if data_4[i] == "0" {
+			sortedData[lowerVectorIndex] = data_4[i]
+			lowerVectorIndex++
+		} else {
+			sortedData[tamData - 1 - upperVectorIndex] = data_4[i]
+			upperVectorIndex++
+		}
+	}
+
+	return sortedData
+}
+
 func main() {
-	var dataKnow, dataTrain []string
-	var tAge, tClass, tSex, tSurvived, kAge, kClass, kSex, kSurvived []string
-	var tData1, tData2, tData3, kData1, kData2, kData3 []float64
-	var dataset generalizecartesian.Labelfeatures
+	var dataTrain []string
+	var age, class, sex, survived, sortedData []string
+	var data1, data2, data3, data4 []float64
 
-	/*set labelsizes*/
-	knowls := make([]cartesian.Sizelabel,3)
-	trainls := make([]cartesian.Sizelabel,3)
-
-	// Scan folders
+	// Scan and print folders
 	dataTrain, err := scanText("tempTrain.csv")
 	printText(dataTrain, err)
-	dataKnow, err = scanText("tempTest.csv")
-	printText(dataKnow, err)
 
-	// Convert data from data set train
-	tAge, tClass, tSex, tSurvived = splitTextTrain(dataTrain)
-	tData1, tData2, tData3 = convertData(tAge, tClass, tSex)
+	// Split and convert data from data set
+	age, class, sex, survived = splitText(dataTrain)
+	// Sort data
+	sortedData = sortData(survived, len(survived))
 
-	kAge, kClass, kSex, kSurvived = splitTextKnow(dataKnow)
-	kData1, kData2,  kData3 = convertData(kAge, kClass, kSex)
+	data1, data2, data3, data4 = convertData(age, class, sex, sortedData)
 
-	// Convert data sets
-	//dataSetTrain, dataSetKnow = convertDataSet(dataTrain, dataKnow)
 	
 
-	fmt.Println(tData1)
-	fmt.Println(tData2)
-	fmt.Println(tData3)
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println(kAge)
-	fmt.Println(kClass)
-	fmt.Println(kSex)
-	fmt.Println(kSurvived)
-	fmt.Println(tSurvived)
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println(kData1)
-	fmt.Println(kData2)
-	fmt.Println(kData3)
-
-	//fmt.Println("Generalizing know data set")
-	generalizecartesian.Generalize_for_nonparametric(&dataset, kData1, kData2, kData3, knowls, generalizecartesian.Knowflag,3*knowsize)
+	// Verifing data
 	
-	//fmt.Println("Generalizing train data set")
-	//generalizecartesian.Generalize_for_nonparametric(&dataset, tData1, tData2, tData3,trainls, generalizecartesian.Trainflag,3*trainsize)
+	fmt.Println(data1)
+	fmt.Println()
+	fmt.Println(data2)
+	fmt.Println()
+	fmt.Println(data3)
+	fmt.Println()
 
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
+	fmt.Println()
 
+	fmt.Println(data4)
+	fmt.Println()
+
+	fmt.Println(sortedData)
 }
