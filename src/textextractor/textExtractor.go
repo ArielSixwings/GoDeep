@@ -10,15 +10,31 @@ import (
 	"strings"
 )
 
+func (st *TextExtractor) getName() string {
+	return (*st).name
+}
+func (ft *FolderExtractor) getName() string {
+	return (*ft).name
+}
 func (st *TextExtractor) allocate(size int) {
-	(*st).texts = make([][]string, size+10)
-	for i := 0; i < size+10; i++ {
-		(*st).texts[i] = make([]string, size+10)
+	(*st).texts = make([][]string, size)
+	for i := 0; i < size-1; i++ {
+		(*st).texts[i] = make([]string, 250)
 	}
 }
-func (st TextExtractor) PrintFile(leitor [][]string) {
-	for i := 0; i < len(leitor); i++ {
-		fmt.Println(i, "  ", leitor[i][0])
+func (st *TextExtractor) GetTexts(position int) []string {
+	return (*st).texts[position]
+}
+
+func (st TextExtractor) PrintFile() {
+	for j := 0; j < len(st.texts)-1; j++ {
+		for i := 0; i < 250; i++ {
+			if len(st.texts[j][i]) == 0 {
+				fmt.Println("posicao zerada")
+				break
+			}
+			fmt.Println("arquivo:", j, "linha:", i, "  ", st.texts[j][i])
+		}
 	}
 }
 func (st TextExtractor) verifycandidate(candidate []string) bool {
@@ -46,6 +62,7 @@ func (st *TextExtractor) SetOrigins(origins []string) ([]bool, error) {
 		return statusorigins, errors.New("There was an error to set the origins, path provided is not valid")
 	}
 }
+
 func visit(files *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -56,16 +73,15 @@ func visit(files *[]string) filepath.WalkFunc {
 	}
 }
 
-func (st *TextExtractor) ScanFolder(folder string, index ...int) [][]string {
-	var files []string
+func (ft *FolderExtractor) ScanFolder(folder string, index ...int) {
 	var first bool = true
 	var i int
-	//nametemp := []string{"\"./", "\""}
-	err := filepath.Walk(folder, visit(&files))
+	err := filepath.Walk(folder, visit(&ft.files))
 	if err != nil {
 		panic(err)
 	}
-	for _, file := range files {
+	ft.allocate(len(ft.files))
+	for _, file := range ft.files {
 		if first {
 			if len(index) > 0 {
 				i = index[0]
@@ -75,11 +91,19 @@ func (st *TextExtractor) ScanFolder(folder string, index ...int) [][]string {
 			first = false
 			continue
 		}
-		(*st).ScanText(file, i)
-		//fmt.Println(i, "  ", (*st).texts[i])
+		(*ft).ScanText(file, i)
 		i++
 	}
-	return (*st).texts
+}
+func (ft FolderExtractor) PrintNameFolder() {
+	for j := 0; j < len(ft.files); j++ {
+		fmt.Print((ft).files[j])
+	}
+}
+func (st TextExtractor) PrintNameFiles() {
+	for j := 0; j < len(st.name); j++ {
+		fmt.Print((st).name[j])
+	}
 }
 
 // Function that reads the contents of the file and returns a slice of the string with all lines of the file
@@ -98,11 +122,10 @@ func (st *TextExtractor) ScanText(filepath string, index int) error {
 	for scanner.Scan() {
 		temp = append(temp, scanner.Text())
 	}
-
-	(*st).allocate(len(temp))
-	for i := 0; i < len(temp)-1; i++ {
+	for i := 0; i < len(temp); i++ {
 		(*st).texts[index][i] = temp[i]
 	}
+
 	temp = temp[:0]
 	// Returns the lines read and an error if an error occurs in the scanner
 	return scanner.Err()

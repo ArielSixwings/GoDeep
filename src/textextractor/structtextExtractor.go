@@ -1,7 +1,7 @@
 package textextractor
 
 type TextExtractor struct {
-	cont        int
+	name        string
 	texts       [][]string
 	readOrigins []string
 }

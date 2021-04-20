@@ -1,4 +1,4 @@
-package main
+package geneticextractor
 
 import (
 	"bufio"
@@ -183,10 +183,10 @@ func Alimented(A string, B string, gap int) (string, string) {
 }
 
 func main() {
-	c, err := scanText("pais.txt")
-	d, err := scanText("filhos.txt")
+	c, err := scanText("./tapes/fathers.txt")
+	d, err := scanText("./tapes/childs.txt")
 	//fmt.Printf("%s ", c[0], err)
-	fmt.Print(err)
+	fmt.Println(err)
 	var J int
 	for i := 0; i < len(c); i++ {
 		J = get_score(c[45], d[i], 1, -1, -2)
@@ -194,6 +194,4 @@ func main() {
 			fmt.Printf("%d, posicao: %d\n", J, i)
 		}
 	}
-	h, j := Alimented("GCAT", "GATC", -1)
-	fmt.Printf("%s %s", h, j)
 }
