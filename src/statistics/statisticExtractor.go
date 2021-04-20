@@ -1,4 +1,4 @@
-package main
+package statisticextractor
 
 import (
 	"fmt"
@@ -25,7 +25,6 @@ func scanText(filePath string) ([]string, error) {
 		lines = append(lines, scanner.Text())
 	}
 
-	
 	return lines, scanner.Err()
 }
 
