@@ -1,4 +1,5 @@
-package statisticextractor
+//package statisticextractor
+package main
 
 import (
 	"fmt"
@@ -6,6 +7,7 @@ import (
 	"os"
 	"strings"
 	"strconv"
+	//"data"
 )
 
 
@@ -145,7 +147,7 @@ func main() {
 	var data1, data2, data3, data4 []float64
 
 	// Scan and print folders
-	dataTrain, err := scanText("tempTrain.csv")
+	dataTrain, err := scanText("data/tempTrain.csv")
 	printText(dataTrain, err)
 
 	// Split and convert data from data set

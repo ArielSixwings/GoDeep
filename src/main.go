@@ -10,5 +10,4 @@ func main() {
 	//process.GetResult(reader.GetTexts(0), reader.GetTexts(1), 0)
 
 	reader.PrintFile()
-
 }
