@@ -3,8 +3,8 @@ package learnstrategy
 import (
 	"errors"
 	"../basicdata"
-	"../imagehandler/computervision"
-	"../imagehandler/imageextractor"
+	// "../imagehandler/computervision"
+	// "../imagehandler/imageextractor"
 )
 func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
     ds.Strategy = ls
@@ -119,30 +119,33 @@ func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
  * @param {[type]} group     Groupflag      [description]
  * @param {[type]} size      int            [description]
  */
-func (ds *DataLearner) Build(cv *computervision.ComputerVison ,ie imageextractor.ImageExtractor,groupsize int) error {
+func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInformation,groupsize int) error {
 	var j int = 0
 	var proportion int
-	proportion = len(ie.Images)/groupsize
-	for i := 0; i < len((*cv).Information); i++ {
-		if i%2 == 0{
-			(*ds).train = append((*ds).train,(*cv).Information[i])
-		} else{
-			(*ds).test = append((*ds).test,(*cv).Information[i])	
+	proportion = ri.SizeData/groupsize
+	for i := 0; i < ri.SizeData; i++ {
+		if i%2 == 0 {
+			(*ds).train = append((*ds).train,(*features)[i])
+		} else {
+			(*ds).test = append((*ds).test,(*features)[i])	
 		}
-	
 	}
 
 	for i := 0; i < groupsize; i++ {
-		if i < (1+j)*ie.Labelsize[j].Size_l/proportion {
-			(*ds).train[i].Label = ie.Labelsize[j].Label
-			(*ds).test[i].Label = ie.Labelsize[j].Label
+		if i < (1+j)*ri.Labelsize[j].Size_l/proportion {
+			(*ds).train[i].Label = ri.Labelsize[j].Label
+			(*ds).test[i].Label = ri.Labelsize[j].Label
 		} else {
 			j++
-			(*ds).train[i].Label = ie.Labelsize[j].Label
-			(*ds).test[i].Label = ie.Labelsize[j].Label
+			(*ds).train[i].Label = ri.Labelsize[j].Label
+			(*ds).test[i].Label = ri.Labelsize[j].Label
 		}
 	}
 	return nil
+
+	//ie imageextractor.ImageExtractor
+	//len(ie.Images)
+	//len((*cv).Information)
 }
 
 /**
