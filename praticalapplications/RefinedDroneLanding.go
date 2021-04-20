@@ -31,7 +31,7 @@ func main() {
 	datavision.GroupFeature(true,computervision.EnergyFeature,computervision.CorrelationFeature,computervision.ContrastFeature)
 	datavision.PrintFeatures()
 
-	datalearner.Build(&datavision,datasetextractor,75)
+	datalearner.Build(&datavision.Information,datasetextractor.Readinfo,75)
 	datalearner.Printfeatures()
 
 	knn := &nonparametric.Knn{}

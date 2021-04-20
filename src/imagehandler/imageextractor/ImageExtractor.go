@@ -194,26 +194,27 @@ func (ie *ImageExtractor) Read() error{
 			(*ie).setLabelbyPath(i)
 			
 			if i == 0{
-				(*ie).Labelsize[i].Size_l = (*ie).ReadFolder((*ie).readOrigins[i],true,true,false)
+				(*ie).Readinfo.Labelsize[i].Size_l = (*ie).ReadFolder((*ie).readOrigins[i],true,true,false)
 			} else{
-				(*ie).Labelsize[i].Size_l = (*ie).ReadFolder((*ie).readOrigins[i],true,true,false,i*(*ie).Labelsize[i-1].Size_l) //temporary solution
+				(*ie).Readinfo.Labelsize[i].Size_l = (*ie).ReadFolder((*ie).readOrigins[i],true,true,false,i*(*ie).Readinfo.Labelsize[i-1].Size_l) //temporary solution
 
 			}
 		}
+		(*ie).Readinfo.SizeData = 150
 		return nil
 	}
 }
 
 func (ie *ImageExtractor) setLabelbyPath(index int,meaningfulname ...int){
-	if len((*ie).Labelsize) == 0{
-		(*ie).Labelsize = make([]cartesian.Sizelabel,len((*ie).readOrigins))
+	if len((*ie).Readinfo.Labelsize) == 0{
+		(*ie).Readinfo.Labelsize = make([]cartesian.Sizelabel,len((*ie).readOrigins))
 	}
 	if len(meaningfulname) == 0{
-		(*ie).Labelsize[index].Label = (*ie).split[index][len((*ie).split[index])-1]
-		fmt.Println("The label that was defined: ", (*ie).Labelsize[index].Label)
+		(*ie).Readinfo.Labelsize[index].Label = (*ie).split[index][len((*ie).split[index])-1]
+		fmt.Println("The label that was defined: ", (*ie).Readinfo.Labelsize[index].Label)
 	} else{
 		fmt.Println("REMEMBER TO IMPLEMENT THAT OPTION")
-		(*ie).Labelsize[index].Label = (*ie).split[index][len((*ie).split[index])-1]
-		fmt.Println("The label that was defined: ", (*ie).Labelsize[index].Label)
+		(*ie).Readinfo.Labelsize[index].Label = (*ie).split[index][len((*ie).split[index])-1]
+		fmt.Println("The label that was defined: ", (*ie).Readinfo.Labelsize[index].Label)
 	}
 }

@@ -30,7 +30,7 @@ type Sizelabel struct {
 
 type ReadInformation struct {
 	SizeData int
-	Labelsize 	[]cartesian.Sizelabel
+	Labelsize 	[]Sizelabel
 }
 
 type Centroidinfo struct {
