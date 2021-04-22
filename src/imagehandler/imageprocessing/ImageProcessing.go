@@ -4,7 +4,7 @@ import (
 	"gocv.io/x/gocv"
 	"fmt"
 	"errors"
-	"../imageextractor"
+	"../../readerstrategy"
 
 )
 
@@ -117,7 +117,7 @@ func (ip *ImageProcessing) GroupGLCM(print bool ,show bool) error{
 		(*ip).getGLCM(i,0,1)
 
 		if show {
-			imageextractor.ShowImage("GLCMs", (*ip).GLCMs[i], 100)
+			extractstrategy.ShowImage("GLCMs", (*ip).GLCMs[i], 100)
 		}
 
 	}
@@ -143,13 +143,13 @@ func (ip *ImageProcessing) GroupNormalizedGLCM(alpha float64, beta float64, typ 
 		(*ip).getNormalizedGLCM(i,0.0,255.0,typ)
 
 		if show {
-			imageextractor.ShowImage("NormalizedGLCMs", (*ip).NormalizedGLCMs[i], 100)
+			extractstrategy.ShowImage("NormalizedGLCMs", (*ip).NormalizedGLCMs[i], 100)
 		}
 
 	}
 	return nil
 }
 
-func (ip *ImageProcessing) GetImages(ie *imageextractor.ImageExtractor){
+func (ip *ImageProcessing) GetImages(ie *extractstrategy.ImageExtractor){
 	(*ip).FilteredImages = (*ie).Images
 }

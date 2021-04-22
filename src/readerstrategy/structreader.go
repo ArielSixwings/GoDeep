@@ -1,17 +1,16 @@
-package readerstrategy
+package extractstrategy
 
 import (
 	"../basicdata"
 )
 
 type readStrategy interface {
-	ReadData(rd *DataReader) error
-	Allocate(rd *DataReader) error
+	ReadData(rd DataReader,i int) error
+	Allocate(rd DataReader) error
 }
 //func (ie *ImageExtractor)  ReadData(path string, show bool, colorfull bool, i int){
 
 type readerParameters struct{
-	path string
 	index int
 	Format bool
 	Show bool

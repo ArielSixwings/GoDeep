@@ -1,22 +1,17 @@
-package imageextractor
+package extractstrategy
 
 import (
-	"fmt"
-	"log"
-	"os"
-	"strings"
-	"errors"
+	"path/filepath"
 	"gocv.io/x/gocv"
-	"../"
-	"../../basicdata"
 )
-func (ie *ImageExtractor) Allocate(datareader readerstrategy.DataReader){
+func (ie *ImageExtractor) Allocate(datareader DataReader) error{
 	
-	(*ie).Images = make([]gocv.Mat,(*dr).Readinfo.SizeData)
+	(*ie).Images = make([]gocv.Mat,datareader.Readinfo.SizeData)
 	
-	for i := 0; i < (*dr).Readinfo.SizeData; i++ {
+	for i := 0; i < datareader.Readinfo.SizeData; i++ {
 		(*ie).Images[i] = gocv.NewMat()
 	}
+	return nil
 }
 /**
  * [ReadImage description: read an image following the parameters]
@@ -30,9 +25,9 @@ func (ie *ImageExtractor) Allocate(datareader readerstrategy.DataReader){
 //func (thek *Knn) Learn(DataLearner *learnstrategy.DataLearner){
 
 //func (ie *ImageExtractor)  ReadData(path string, show bool, colorfull bool, i int){
-func (ie *ImageExtractor)  ReadData(datareader readerstrategy.DataReader){
+func (ie *ImageExtractor)  ReadData(datareader DataReader, i int) error{
 
-	ImagePath := filepath.Join(path) //set path to the base image
+	ImagePath := filepath.Join(datareader.readOrigins[0]) //set path to the base image
 	
 	if datareader.Format { 	//in that context, verify it should read a collorfull, or a gray image
 		(*ie).Images[i] = gocv.IMRead(ImagePath, gocv.IMReadUnchanged) //read the base image as as RGB
@@ -46,6 +41,7 @@ func (ie *ImageExtractor)  ReadData(datareader readerstrategy.DataReader){
 		ShowImage("And this is yout image", (*ie).Images[i], 100)
 
 	}
+	return nil
 }
 
 /**

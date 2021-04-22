@@ -1,4 +1,4 @@
-package imageextractor
+package extractstrategy
 
 import (
 	"gocv.io/x/gocv"

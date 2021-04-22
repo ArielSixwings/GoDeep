@@ -1,32 +1,37 @@
 package main
 
 import (
-	"../src/readerstrategy"
-	"../src/readerstrategy/imageextractor"
-	"../src/imagehandler/imageprocessing"
-	"../src/imagehandler/computervision"
-	"../src/learnstrategy/nonparametric"
-	"../src/learnstrategy"
+	"./src/readerstrategy"
+	"./src/learnstrategy"
+	
 	"gocv.io/x/gocv"
+	"./src/imagehandler/imageprocessing"
+	"./src/imagehandler/computervision"
+
+	
+	"./src/learnstrategy/nonparametric"
+	
+
 )
 
 func main() {
-	var datasetextractor readerstrategy.DataReader
+	var datasetextractor extractstrategy.DataReader
 	var datatransformer imageprocessing.ImageProcessing
 	var datavision computervision.ComputerVison
 	var datalearner learnstrategy.DataLearner
 
 	var normtype gocv.NormType = gocv.NormMinMax
-	origins := []string{"../src/imagehandler/Images/danger", 
-		"../src/imagehandler/Images/asphalt", 
-		"../src/imagehandler/Images/grass"}
+	origins := []string{"./src/imagehandler/Images/danger", 
+		"./src/imagehandler/Images/asphalt", 
+		"./src/imagehandler/Images/grass"}
 
-	ImageApplication := &imageprocessing.ImageProcessing{}
+	ImageApplication := &extractstrategy.ImageExtractor{}
 	datasetextractor.SetReadStrategy(ImageApplication)
 	datasetextractor.SetOrigins(origins)
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
 	datasetextractor.Read()
 	
-	datatransformer.GetImages(&datasetextractor)
+	datatransformer.GetImages(ImageApplication)
 	datatransformer.GroupGLCM(true, true)
 	datatransformer.GroupNormalizedGLCM(0.0, 255.0, normtype,true ,true)	
 	

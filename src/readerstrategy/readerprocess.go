@@ -1,4 +1,4 @@
-package readerstrategy
+package extractstrategy
 
 import (
 	"../basicdata"
@@ -6,17 +6,19 @@ import (
 	"fmt"
 	"strings"
 	"errors"
+	"os"
+	"log"
 )
 
 func (dr *DataReader) SetReadStrategy(rs readStrategy) {
 	dr.Strategy = rs
 }
-func (dr *DataReader) ProcessRead(){
-	dr.Strategy.ReadData(dr)
+func (dr *DataReader) ProcessRead(i int){
+	dr.Strategy.ReadData(*dr,i)
 }
 func (dr *DataReader) ProcessAllocation(size int){
 	(*dr).Readinfo.SizeData = size //temporary solution
-	dr.Strategy.Allocate(dr)
+	dr.Strategy.Allocate(*dr)
 }
 
 
@@ -29,13 +31,13 @@ func (dr *DataReader) ProcessAllocation(size int){
  * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
  */
 //func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) int{
-func (dr *DataReader) ReadFolder(index ...int) int{
+func (dr *DataReader) ReadFolder(index int) int{
 	
 	var files []string
 	var first bool = true
 	var i int
 
-	err := filepath.Walk((*dr).path, visit(&files))
+	err := filepath.Walk((*dr).readOrigins[index], visit(&files))
 	if err != nil {
 		panic(err)
 	} else {
@@ -47,12 +49,8 @@ func (dr *DataReader) ReadFolder(index ...int) int{
 	for _, file := range files {
 
 		if first {
-			if len(index) > 0{
-				i = index[0]
-			}else{
-				i = 0
-			}
-			
+			i = index
+
 			fmt.Println(file)
 			first = false
 			continue
@@ -62,7 +60,7 @@ func (dr *DataReader) ReadFolder(index ...int) int{
 			fmt.Println("geting image:     ", file)
 
 		}
-		(*dr).ProcessRead()
+		(*dr).ProcessRead(i)
 		i++
 	}
 	return len(files)-1
@@ -72,7 +70,7 @@ func (dr *DataReader) getFolderName(index int){
 	if len((*dr).split) == 0{
 		(*dr).split = make([][]string,len((*dr).readOrigins))
 	}
-	(*dr).split[index] = append(strings.Split((*dr).path, "/"))
+	(*dr).split[index] = append(strings.Split((*dr).readOrigins[index], "/"))
 	for i := 0; i < len((*dr).split[index]); i++ {
 		fmt.Println((*dr).split[index][i])
 	}
@@ -107,12 +105,12 @@ func (dr *DataReader) Read() error{
 		return errors.New("Origins were not provided, use ReadFloder or define the Origins")
 	} else{
 		for i := 0; i < len((*dr).readOrigins); i++ {
-			
 			(*dr).getFolderName(i)
 			(*dr).setLabelbyPath(i)
 			
 			if i == 0{
-				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder()
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//		
+				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i)
 			} else{
 				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i*(*dr).Readinfo.Labelsize[i-1].Size_l) //temporary solution
 
