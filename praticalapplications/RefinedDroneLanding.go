@@ -1,7 +1,8 @@
 package main
 
 import (
-	"../src/imagehandler/imageextractor"
+	"../src/readerstrategy"
+	"../src/readerstrategy/imageextractor"
 	"../src/imagehandler/imageprocessing"
 	"../src/imagehandler/computervision"
 	"../src/learnstrategy/nonparametric"
@@ -10,7 +11,7 @@ import (
 )
 
 func main() {
-	var datasetextractor imageextractor.ImageExtractor
+	var datasetextractor readerstrategy.DataReader
 	var datatransformer imageprocessing.ImageProcessing
 	var datavision computervision.ComputerVison
 	var datalearner learnstrategy.DataLearner
@@ -20,6 +21,8 @@ func main() {
 		"../src/imagehandler/Images/asphalt", 
 		"../src/imagehandler/Images/grass"}
 
+	ImageApplication := &imageprocessing.ImageProcessing{}
+	datasetextractor.SetReadStrategy(ImageApplication)
 	datasetextractor.SetOrigins(origins)
 	datasetextractor.Read()
 	

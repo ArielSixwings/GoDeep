@@ -3,11 +3,9 @@ package learnstrategy
 import (
 	"errors"
 	"../basicdata"
-	// "../imagehandler/computervision"
-	// "../imagehandler/imageextractor"
 )
 func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
-    ds.Strategy = ls
+	ds.Strategy = ls
 }
 func (ds *DataLearner) ProcessLearn(){
 	ds.Strategy.Learn(ds)
