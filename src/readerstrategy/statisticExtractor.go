@@ -1,4 +1,4 @@
-package statisticextractor
+package extract
 
 import (
 	"fmt"
@@ -113,10 +113,6 @@ func convertData(data_1 []string, data_2 []string, data_3 []string, data_4 []str
 		pData4SliceFloat64 = append(pData4SliceFloat64, pData4Float64)
 	}
 
-	//fmt.Println(pData1SliceFloat64)
-	//fmt.Println(pData2SliceFloat64)
-	//fmt.Println(pData3SliceFloat64)
-
 	return pData1SliceFloat64, pData2SliceFloat64, pData3SliceFloat64, pData4SliceFloat64
 
 }
@@ -137,48 +133,4 @@ func sortData(data_4 []string, tamData int) ([]string) {
 	}
 
 	return sortedData
-}
-
-func main() {
-	var dataTrain []string
-	var age, class, sex, survived, sortedData []string
-	var data1, data2, data3, data4 []float64
-
-	// Scan and print folders
-	dataTrain, err := scanText("tempTrain.csv")
-	printText(dataTrain, err)
-
-	// Split and convert data from data set
-	age, class, sex, survived = splitText(dataTrain)
-	// Sort data
-	sortedData = sortData(survived, len(survived))
-
-	data1, data2, data3, data4 = convertData(age, class, sex, sortedData)
-
-	
-
-	// Verifing data
-	
-	fmt.Println(data1)
-	fmt.Println()
-	fmt.Println(data2)
-	fmt.Println()
-	fmt.Println(data3)
-	fmt.Println()
-
-	fmt.Println()
-	fmt.Println()
-	//fmt.Println()
-	//fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-	fmt.Println()
-
-	fmt.Println(data4)
-	fmt.Println()
-
-	fmt.Println(sortedData)
 }

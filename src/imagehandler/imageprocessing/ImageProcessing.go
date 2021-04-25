@@ -117,7 +117,7 @@ func (ip *ImageProcessing) GroupGLCM(print bool ,show bool) error{
 		(*ip).getGLCM(i,0,1)
 
 		if show {
-			extractstrategy.ShowImage("GLCMs", (*ip).GLCMs[i], 100)
+			//extract.ShowImage("GLCMs", (*ip).GLCMs[i], 100)
 		}
 
 	}
@@ -143,13 +143,13 @@ func (ip *ImageProcessing) GroupNormalizedGLCM(alpha float64, beta float64, typ 
 		(*ip).getNormalizedGLCM(i,0.0,255.0,typ)
 
 		if show {
-			extractstrategy.ShowImage("NormalizedGLCMs", (*ip).NormalizedGLCMs[i], 100)
+			//extract.ShowImage("NormalizedGLCMs", (*ip).NormalizedGLCMs[i], 100)
 		}
 
 	}
 	return nil
 }
 
-func (ip *ImageProcessing) GetImages(ie *extractstrategy.ImageExtractor){
+func (ip *ImageProcessing) GetImages(ie *extract.ImageExtractor){
 	(*ip).FilteredImages = (*ie).Images
 }

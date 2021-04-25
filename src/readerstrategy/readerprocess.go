@@ -1,4 +1,4 @@
-package extractstrategy
+package extract
 
 import (
 	"../basicdata"
@@ -13,14 +13,6 @@ import (
 func (dr *DataReader) SetReadStrategy(rs readStrategy) {
 	dr.Strategy = rs
 }
-func (dr *DataReader) ProcessRead(i int){
-	dr.Strategy.ReadData(*dr,i)
-}
-func (dr *DataReader) ProcessAllocation(size int){
-	(*dr).Readinfo.SizeData = size //temporary solution
-	dr.Strategy.Allocate(*dr)
-}
-
 
 /**
  * [ReadFolder description: read all images at some folder]
@@ -31,36 +23,45 @@ func (dr *DataReader) ProcessAllocation(size int){
  * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
  */
 //func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) int{
-func (dr *DataReader) ReadFolder(index int) int{
+func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	
 	var files []string
+	var name string
 	var first bool = true
 	var i int
+	nametemp := []string{"\"./","\""}
 
-	err := filepath.Walk((*dr).readOrigins[index], visit(&files))
+	err := filepath.Walk((*dr).readOrigins[folderindex], visit(&files))
+	
 	if err != nil {
 		panic(err)
 	} else {
 		if (*dr).Readinfo.SizeData == 0{
-			(*dr).ProcessAllocation(3*(len(files)-1)) 	//temporary solution
+			(*dr).Readinfo.SizeData = 3*(len(files)-1) //temporary solution
+			dr.Strategy.Allocate()
+			fmt.Println("Allocate was done: ",(*dr).Readinfo.SizeData)
 		}
 	}
 
 	for _, file := range files {
 
-		if first {
+		if first {	
 			i = index
 
-			fmt.Println(file)
+			fmt.Println("at first if:   ",file)
 			first = false
 			continue
 		}
-		if (*dr).print {
 
-			fmt.Println("geting image:     ", file)
+		name = strings.Join(nametemp, file)
+
+		if (*dr).Print {
+
+			fmt.Println("geting image:     ", name)
 
 		}
-		(*dr).ProcessRead(i)
+
+		(*dr).Strategy.ReadData(file,i)
 		i++
 	}
 	return len(files)-1
@@ -76,7 +77,9 @@ func (dr *DataReader) getFolderName(index int){
 	}
 }
 
-func (dr *DataReader) SetOrigins(origins []string) ([]bool,error){
+func (dr *DataReader) SetOrigins(origins []string,rs readStrategy) ([]bool,error){
+	
+	(*dr).SetReadStrategy(rs)
 	
 	var originsIntegrity bool = true
 	path := make([][]string,len(origins))
@@ -100,7 +103,11 @@ func (dr *DataReader) SetOrigins(origins []string) ([]bool,error){
 	}
 }
 
-func (dr *DataReader) Read() error{
+func (dr *DataReader) Read(	format bool, show bool, print bool) error{
+	(*dr).Format = format
+	(*dr).Show = show
+	(*dr).Print = print
+	
 	if len((*dr).readOrigins) == 0{
 		return errors.New("Origins were not provided, use ReadFloder or define the Origins")
 	} else{
@@ -109,14 +116,14 @@ func (dr *DataReader) Read() error{
 			(*dr).setLabelbyPath(i)
 			
 			if i == 0{
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//		
-				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i)
+	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+				fmt.Println("About to call ReadFolder")	
+				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i,i)
 			} else{
-				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i*(*dr).Readinfo.Labelsize[i-1].Size_l) //temporary solution
+				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i,i*(*dr).Readinfo.Labelsize[i-1].Size_l) //temporary solution
 
 			}
 		}
-		(*dr).Readinfo.SizeData = 150
 		return nil
 	}
 }
@@ -151,6 +158,7 @@ func (dr DataReader) verifycandidate(candidate []string) bool{
 func visit(files *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
+			fmt.Println("INSIDE THAT PROBLEMATIC IF")
 			log.Fatal(err)
 		}
 		*files = append(*files, path)
