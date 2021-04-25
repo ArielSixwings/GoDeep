@@ -27,7 +27,7 @@ func main() {
 		"../data/ImagesData/grass"}
 
 	datasetextractor.SetOrigins(origins,&datasetextractor)
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
+
 	fmt.Println("About to call Read")
 	datasetextractor.Read(false,false,true)
 	

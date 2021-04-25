@@ -8,7 +8,7 @@ import (
 func main() {
 	var datasetextractor extract.TextExtractor
 
-	origins := []string{"../data/StatisticData/titanic"}
+	origins := []string{"../data/GeneticData"}
 
 	datasetextractor.SetOrigins(origins,&datasetextractor)
 
