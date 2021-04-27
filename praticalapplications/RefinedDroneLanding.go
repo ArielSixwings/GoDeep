@@ -1,11 +1,11 @@
 package main
 
 import (
-	"../src/readerstrategy"
+	"../src/extractstrategy"
 	"../src/learnstrategy"
 	
 	"gocv.io/x/gocv"
-	"../src/imagehandler/imageprocessing"
+	"../src/process"
 	"../src/imagehandler/computervision"
 
 	
@@ -17,7 +17,7 @@ import (
 
 func main() {
 	var datasetextractor extract.ImageExtractor
-	var datatransformer imageprocessing.ImageProcessing
+	var datatransformer process.ImageProcessing
 	var datavision computervision.ComputerVison
 	var datalearner learnstrategy.DataLearner
 

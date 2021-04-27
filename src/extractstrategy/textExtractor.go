@@ -66,3 +66,7 @@ func (st TextExtractor)  PresentData(Menssage string, index int, time int) {
 func (st TextExtractor)  SaveData(i int,Name string) {
 	fmt.Println("Thats a mission for Peter and Moreno!: ", i,Name)
 }
+
+func (st *TextExtractor) BuildLabel() {
+	return 
+}

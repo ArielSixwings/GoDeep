@@ -24,6 +24,7 @@ func main() {
 	datatransformer.ConvertData()
 	datatransformer.PrintFeatures()
 
+	datasetextractor.Readinfo.SizeData = 890
 	datalearner.Build(&datatransformer.Information,datasetextractor.Readinfo,445)
 
 	knn := &nonparametric.Knn{}

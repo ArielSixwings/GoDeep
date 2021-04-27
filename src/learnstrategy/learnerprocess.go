@@ -3,6 +3,7 @@ package learnstrategy
 import (
 	"errors"
 	"../basicdata"
+	"fmt"
 )
 func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
 	ds.Strategy = ls
@@ -119,6 +120,7 @@ func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
  */
 func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInformation,groupsize int) error {
 	var j int = 0
+	var k int = 0
 	var proportion int
 	proportion = ri.SizeData/groupsize
 	for i := 0; i < ri.SizeData; i++ {
@@ -129,14 +131,30 @@ func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInf
 		}
 	}
 
+	fmt.Println(k)
+	fmt.Println((*features)[k].Label)
 	for i := 0; i < groupsize; i++ {
-		if i < (1+j)*ri.Labelsize[j].Size_l/proportion {
-			(*ds).train[i].Label = ri.Labelsize[j].Label
-			(*ds).test[i].Label = ri.Labelsize[j].Label
+		if len(ri.Labelsize) > 1{
+			if i < (1+j)*ri.Labelsize[j].Size_l/proportion {
+				(*ds).train[i].Label = ri.Labelsize[j].Label
+				(*ds).test[i].Label = ri.Labelsize[j].Label
 		} else {
 			j++
-			(*ds).train[i].Label = ri.Labelsize[j].Label
-			(*ds).test[i].Label = ri.Labelsize[j].Label
+				(*ds).train[i].Label = ri.Labelsize[j].Label
+				(*ds).test[i].Label = ri.Labelsize[j].Label
+		}
+/*--------------------------------------------------------------------------------------------------------*/
+
+		} else {
+			if i < groupsize/2 {
+				(*ds).train[i].Label = (*features)[k].Label
+				(*ds).test[i].Label = (*features)[k].Label
+		} 	else {
+				k = len(*features) - 1
+				(*ds).train[i].Label = (*features)[k].Label
+				(*ds).test[i].Label = (*features)[k].Label
+				fmt.Println((*ds).train[i].Label)
+			}		
 		}
 	}
 	return nil

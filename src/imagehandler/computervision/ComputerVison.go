@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"math"
 	"../../basicdata"
-	"../imageprocessing"
+	"../../process"
 	"errors"
 
 )
 
-func (cv *ComputerVison) GetBaseImages(ip *imageprocessing.ImageProcessing){
+func (cv *ComputerVison) GetBaseImages(ip *process.ImageProcessing){
 	(*cv).BaseImages = (*ip).NormalizedGLCMs
 }
 
