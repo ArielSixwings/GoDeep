@@ -1,4 +1,4 @@
-package geneticextractor
+package extract
 
 import (
 	"bufio"
@@ -166,19 +166,3 @@ func (st *GeneticExtractor) GenerateStringChild(pathDataSetPai string) error {
 	}
 	return err
 }
-
-//Apagar
-/*func main() {
-
-	//var a []string
-	//var b []string
-	var c []string
-	//fmt.Printf("%s", a)
-	//b = generateStringFather(&a)
-	//fmt.Printf("%s", b)
-	c, err := generateStringChild("teste.txt")
-
-	//gerarStringPai(&a)
-	fmt.Printf("%s %s", c, err)
-	generateDataSet(c, "teste2.txt", 64000)
-}*/

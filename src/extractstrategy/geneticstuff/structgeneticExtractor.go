@@ -1,4 +1,4 @@
-package geneticextractor
+package extract
 
 type GeneticExtractor struct {
 	fathers []string
