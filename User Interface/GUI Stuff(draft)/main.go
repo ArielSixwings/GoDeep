@@ -16,4 +16,5 @@ func main() {
 	app.Load(core.NewQUrl3("UserInterface.qml", 0))
 
 	gui.QGuiApplication_Exec()
+
 }

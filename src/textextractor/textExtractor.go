@@ -95,6 +95,7 @@ func (ft *FolderExtractor) ScanFolder(folder string, index ...int) {
 		i++
 	}
 }
+ 
 func (ft FolderExtractor) PrintNameFolder() {
 	for j := 0; j < len(ft.files); j++ {
 		fmt.Print((ft).files[j])
