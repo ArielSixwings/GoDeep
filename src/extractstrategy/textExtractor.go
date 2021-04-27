@@ -6,17 +6,16 @@ import (
 	"os"
 )
 func (st *TextExtractor) GetData(index int) []string {
-	return (*st).texts[index]
+	return (*st).Texts[index]
 }
 
 func (st TextExtractor) PrintFile() {
-	for j := 0; j < len(st.texts)-1; j++ {
-		for i := 0; i < 250; i++ {
-			if len(st.texts[j][i]) == 0 {
-				fmt.Println("posicao zerada")
+	for i := 0; i < len(st.Texts); i++ {
+		for j := 0; j < len(st.Texts[i]); j++ {
+			if len(st.Texts[i][j]) == 0 {
 				break
 			}
-			fmt.Println("arquivo:", j, "linha:", i, "  ", st.texts[j][i])
+			fmt.Println("file:", i+1, "line:", j+1, "  ", st.Texts[i][j])
 		}
 	}
 }
@@ -38,7 +37,7 @@ func (st *TextExtractor) ReadData(path string,dataindex int) error{
 		temp = append(temp, scanner.Text())
 	}
 	for i := 0; i < len(temp); i++ {
-		(*st).texts[dataindex][i] = temp[i]
+		(*st).Texts[dataindex][i] = temp[i]
 	}
 
 	temp = temp[:0]
@@ -48,10 +47,10 @@ func (st *TextExtractor) ReadData(path string,dataindex int) error{
 
 func (st *TextExtractor) Allocate() error{
 	
-	(*st).texts = make([][]string,(*st).Readinfo.SizeData)
+	(*st).Texts = make([][]string,(*st).Readinfo.SizeData)
 	
 	for i := 0; i < (*st).Readinfo.SizeData; i++ {
-		(*st).texts[i] = make([]string, 1000)
+		(*st).Texts[i] = make([]string, 1500)
 	}
 	return nil
 }

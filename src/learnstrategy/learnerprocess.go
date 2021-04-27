@@ -140,10 +140,6 @@ func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInf
 		}
 	}
 	return nil
-
-	//ie imageextractor.ImageExtractor
-	//len(ie.Images)
-	//len((*cv).Information)
 }
 
 /**

@@ -38,8 +38,8 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	} else {
 		if (*dr).Readinfo.SizeData == 0{
 			(*dr).Readinfo.SizeData = 3*(len(files)-1) //temporary solution
+			
 			dr.Strategy.Allocate()
-			fmt.Println("Allocate was done: ",(*dr).Readinfo.SizeData)
 		}
 	}
 
@@ -57,7 +57,7 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 
 		if (*dr).Print {
 
-			fmt.Println("geting image:     ", name)
+			fmt.Println("geting file:     ", name)
 
 		}
 
@@ -72,9 +72,9 @@ func (dr *DataReader) getFolderName(index int){
 		(*dr).split = make([][]string,len((*dr).readOrigins))
 	}
 	(*dr).split[index] = append(strings.Split((*dr).readOrigins[index], "/"))
-	for i := 0; i < len((*dr).split[index]); i++ {
-		fmt.Println((*dr).split[index][i])
-	}
+	// for i := 0; i < len((*dr).split[index]); i++ {
+	// 	fmt.Println((*dr).split[index][i])
+	// }
 }
 
 func (dr *DataReader) SetOrigins(origins []string,rs readStrategy) ([]bool,error){
@@ -116,8 +116,6 @@ func (dr *DataReader) Read(	format bool, show bool, print bool) error{
 			(*dr).setLabelbyPath(i)
 			
 			if i == 0{
-	//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++//
-				fmt.Println("About to call ReadFolder")	
 				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i,i)
 			} else{
 				(*dr).Readinfo.Labelsize[i].Size_l = (*dr).ReadFolder(i,i*(*dr).Readinfo.Labelsize[i-1].Size_l) //temporary solution

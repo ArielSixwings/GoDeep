@@ -1,10 +1,10 @@
-package imageprocessing
+package process
 
 import (
 	"gocv.io/x/gocv"
 	"fmt"
 	"errors"
-	"../../readerstrategy"
+	"../extractstrategy"
 
 )
 

@@ -2,7 +2,5 @@ package extract
 
 type TextExtractor struct {
 	DataReader
-	texts 	[][]string
+	Texts 	[][]string
 }
-
-//files []string

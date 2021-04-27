@@ -1,4 +1,4 @@
-package imageprocessing
+package process
 
 import (
 	"gocv.io/x/gocv"

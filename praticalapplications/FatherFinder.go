@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../src/readerstrategy"
+	"../src/extractstrategy"
 	"fmt"
 )
 
@@ -14,6 +14,5 @@ func main() {
 
 	fmt.Println("About to call Read")
 	datasetextractor.Read(false,false,true)
-	datasetextractor.PrintFile()
-	
+	datasetextractor.PrintFile()	
 }

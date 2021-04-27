@@ -10,7 +10,6 @@ type readStrategy interface {
 	PresentData(Menssage string, index int, time int)
 	SaveData(i int,Name string) 
 }
-//func (ie *ImageExtractor)  ReadData(path string, show bool, colorfull bool, i int){
 
 type readerParameters struct{
 	Format bool
