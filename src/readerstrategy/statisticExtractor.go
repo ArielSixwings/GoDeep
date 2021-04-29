@@ -1,5 +1,9 @@
+<<<<<<< HEAD:src/statistics/statisticExtractor/statisticExtractor.go
 //package statisticextractor
 package main
+=======
+package extract
+>>>>>>> e34586d9a1faa0f75c402e00b8f167f3931b67af:src/readerstrategy/statisticExtractor.go
 
 import (
 	"fmt"
@@ -115,10 +119,6 @@ func convertData(data_1 []string, data_2 []string, data_3 []string, data_4 []str
 		pData4SliceFloat64 = append(pData4SliceFloat64, pData4Float64)
 	}
 
-	//fmt.Println(pData1SliceFloat64)
-	//fmt.Println(pData2SliceFloat64)
-	//fmt.Println(pData3SliceFloat64)
-
 	return pData1SliceFloat64, pData2SliceFloat64, pData3SliceFloat64, pData4SliceFloat64
 
 }
@@ -139,6 +139,7 @@ func sortData(data_4 []string, tamData int) ([]string) {
 	}
 
 	return sortedData
+<<<<<<< HEAD:src/statistics/statisticExtractor/statisticExtractor.go
 }
 
 func main() {
@@ -183,4 +184,6 @@ func main() {
 	fmt.Println()
 
 	fmt.Println(sortedData)
+=======
+>>>>>>> e34586d9a1faa0f75c402e00b8f167f3931b67af:src/readerstrategy/statisticExtractor.go
 }

@@ -6,29 +6,6 @@ import (
 	"os"
 	"strings"
 )
-
-// Funcao que le o conteudo do arquivo e retorna um slice the string com todas as linhas do arquivo
-func scanText(caminhoDoArquivo string) ([]string, error) {
-	var linhas []string
-	// Abre o arquivo
-	arquivo, err := os.Open(caminhoDoArquivo)
-	// Caso tenha encontrado algum erro ao tentar abrir o arquivo retorne o erro encontrado
-	if err != nil {
-		return nil, err
-	}
-	// Garante que o arquivo sera fechado apos o uso
-	defer arquivo.Close()
-
-	// Cria um scanner que le cada linha do arquivo
-
-	scanner := bufio.NewScanner(arquivo)
-	for scanner.Scan() {
-		linhas = append(linhas, scanner.Text())
-	}
-
-	// Retorna as linhas lidas e um erro se ocorrer algum erro no scanner
-	return linhas, scanner.Err()
-}
 func score(s1 []string, s2 []string, match int, mismatch int, gap int, i int, j int) int {
 	var score = 0
 	if s1[i-1] != "_" && s2[j-1] != "_" {
@@ -122,12 +99,6 @@ func get_score(s1 string, s2 string, match int, mismatch int, gap int) int {
 			F[i][j] = max3(Choice1, Choice2, Choice3)
 		}
 	}
-	/*for i := 0; i <= len(r2); i++ {
-		for j := 0; j <= len(r1); j++ {
-			fmt.Printf("%d ", F[i][j])
-		}
-		fmt.Printf(" \n")
-	}*/
 
 	if r1 == r2 {
 		return F[len(r1)][len(r2)]
@@ -180,18 +151,4 @@ func Alimented(A string, B string, gap int) (string, string) {
 		j = j - 1
 	}
 	return AlignmentA, AlignmentB
-}
-
-func main() {
-	c, err := scanText("./tapes/fathers.txt")
-	d, err := scanText("./tapes/childs.txt")
-	//fmt.Printf("%s ", c[0], err)
-	fmt.Println(err)
-	var J int
-	for i := 0; i < len(c); i++ {
-		J = get_score(c[45], d[i], 1, -1, -2)
-		if J > 0 {
-			fmt.Printf("%d, posicao: %d\n", J, i)
-		}
-	}
 }
