@@ -5,7 +5,6 @@ import (
 	"../src/learnstrategy"
 	"../src/process"
 	"../src/learnstrategy/nonparametric"
-	//"fmt"
 )
 
 func main() {
@@ -18,7 +17,7 @@ func main() {
 	datasetextractor.SetOrigins(origins,&datasetextractor)
 
 	datasetextractor.Read(false,false,false)
-	//datasetextractor.PrintFile()
+	datasetextractor.PrintFile()
 	
 	datatransformer.Texts = datasetextractor.Texts
 	datatransformer.ConvertData()

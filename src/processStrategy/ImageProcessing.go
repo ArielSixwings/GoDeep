@@ -21,9 +21,8 @@ func (ip *ImageProcessing) getGLCM( index int,delta_r int, delta_c int) error{
 		return errors.New("glcm vector wasn't provided")
 	}
 	
-	auxGLCM			:= make([][]float64,256)
+	auxGLCM	:= make([][]float64,256)
 	
-	//var sum float64 = 0
 	var max float64 = 0.0
 
 	var GLCM_row uint8 = 0
@@ -37,7 +36,6 @@ func (ip *ImageProcessing) getGLCM( index int,delta_r int, delta_c int) error{
 		}
 
 	}
-	
 
 	for r := 0; r < ((*ip).FilteredImages[index].Rows()-delta_r)	; r++ {
 		for c := 0; c < ((*ip).FilteredImages[index].Cols()-delta_c); c++ {
@@ -52,14 +50,11 @@ func (ip *ImageProcessing) getGLCM( index int,delta_r int, delta_c int) error{
 			if auxGLCM[r][c] > max{
 				max = auxGLCM[r][c]
 			}
-			//sum+= auxGLCM[r][c]
 		}
-	}	
-
+	}
 	for r := 0; r < (*ip).GLCMs[index].Rows()	; r++ {
 		for c := 0; c < (*ip).GLCMs[index].Cols(); c++ {
 			(*ip).GLCMs[index].SetUCharAt(r,c,uint8(255*(auxGLCM[r][c]/max)))
-			// auxGLCM[GLCM_row][GLCM_col] = auxGLCM[GLCM_row][GLCM_col]/sum
 		}
 	}
 	return nil
