@@ -1,6 +1,7 @@
-import QtQuick 2.9
-import QtQuick.Controls 2.2
+import QtQuick 2.11
+import QtQuick.Controls 2.4
 import QtQuick.Window 2.2
+import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.3
 //import "UsPage.qml"
@@ -24,9 +25,20 @@ ApplicationWindow{
         id:us_Page
         UsPage{}
     }
-    function load_page(){
+    /*component{
+        id:document_Dialog
+        DocumentDialog{}
+    }*/
+    function load_page(page){
+        switch (page){
+            case 'page 1':
             mystackview.push(us_Page);
+            break;
+            /*case 'page 2':
+            mystackview.push(document_Dialog);
+            break;*/
         }
+    }
 }
 
 //}
