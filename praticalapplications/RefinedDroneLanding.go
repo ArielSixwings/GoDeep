@@ -5,8 +5,8 @@ import (
 	"../src/learnstrategy"
 	
 	"gocv.io/x/gocv"
-	"../src/process"
-	"../src/imagehandler/computervision"
+	"../src/processStrategy"
+	"../src/DataAnalysis"
 
 	
 	"../src/learnstrategy/nonparametric"
@@ -26,14 +26,26 @@ func main() {
 		"../data/ImagesData/asphalt", 
 		"../data/ImagesData/grass"}
 
+	var glcm process.GLCM
+	var normalize process.Normalize
+
 	datasetextractor.SetOrigins(origins,&datasetextractor)
 
 	fmt.Println("About to call Read")
 	datasetextractor.Read(false,false,true)
 	
+	// datatransformer.GroupGLCM(true, true)
+	// datatransformer.GroupNormalizedGLCM(0.0, 255.0, normtype,true ,true) //(*ip).getNormalizedGLCM(i,0.0,255.0,typ)
+	
 	datatransformer.GetImages(&datasetextractor)
-	datatransformer.GroupGLCM(true, true)
-	datatransformer.GroupNormalizedGLCM(0.0, 255.0, normtype,true ,true)	
+	
+	glcm.SetParameters(1,0)
+	datatransformer.SetProcessStrategy(glcm)
+	datatransformer.ProcessGroup(true)
+	
+	normalize.SetParameters(0.0, 255.0, normtype)
+	datatransformer.SetProcessStrategy(normalize)
+	datatransformer.ProcessGroup(true)
 	
 	datavision.GetBaseImages(&datatransformer)
 	datavision.GroupFeature(true,computervision.EnergyFeature,computervision.CorrelationFeature,computervision.ContrastFeature)

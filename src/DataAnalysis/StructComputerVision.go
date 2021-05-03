@@ -1,7 +1,7 @@
 package computervision
 
 import(
-	"../../basicdata"
+	"../basicdata"
 	"gocv.io/x/gocv"
 )
 

@@ -3,8 +3,8 @@ package computervision
 import (
 	"fmt"
 	"math"
-	"../../basicdata"
-	"../../process"
+	"../basicdata"
+	"../processStrategy"
 	"errors"
 
 )

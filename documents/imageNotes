@@ -1,0 +1,17 @@
+6. Components of an Image Processing System
+• Image sensors: physical device that is sensitive to the
+energy radiated by the object we wish to image.
+• Specialized hardware: digitizer plus hardware that
+performs other primitive operations.
+• Computer: general-purpose computer.
+• Software: consists of specialized modules that perform
+specific tasks.
+• Mass storage capability: when dealing with
+thousands, or even millions, of images, providing
+adequate storage in an image processing system can be a
+challenge.
+• Image displays: are mainly color monitors.
+• Hardcopy: devices for recording images (include laser
+printers, film cameras, heat-sensitive devices, inkjet
+units, and digital units, such as CD-ROM disks).
+• Networking: image transmission.
