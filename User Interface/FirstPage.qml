@@ -19,8 +19,16 @@ ApplicationWindow{
 			selectExisting: true
 			selectFolder: true
 			nameFilters: ["All files (*)"]
-			onAccepted:{ fileNameTextField.text=fileUrl; console.log(fileNameTextField.text) }
-			onRejected:{ fileNameTextField.text="CANCELED"; console.log("Invalid file")}
+			onAccepted:{ 
+				fileNameTextField.text=fileUrl 
+				console.log(fileNameTextField.text) 
+				home.sendBool(true)
+			}
+			onRejected:{ 
+				fileNameTextField.text="CANCELED" 
+				console.log("Invalid file")
+				home.sendBool(false)
+			}
 		}
 
 		header: TabBar{
