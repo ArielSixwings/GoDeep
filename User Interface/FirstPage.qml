@@ -4,7 +4,8 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.3
-import "../src/extractstrategy" as Extractor
+//import CustomQmlTypes 1.0	
+//import "../src/extractstrategy" as Extractor
 
 ApplicationWindow{
 	id: home
@@ -20,17 +21,19 @@ ApplicationWindow{
 			selectFolder: true
 			nameFilters: ["All files (*)"]
 			onAccepted:{ 
-				fileNameTextField.text=fileUrl 
+				fileNameTextField.text=fileUrl
+				console.log("23399784##27") 
 				console.log(fileNameTextField.text) 
-				home.sendBool(true)
 			}
 			onRejected:{ 
 				fileNameTextField.text="CANCELED" 
 				console.log("Invalid file")
-				home.sendBool(false)
 			}
 		}
 
+		// ItemTemplate {
+		// 	id:root
+		// }
 		header: TabBar{
 			id: bar
 			TabButton{
@@ -189,7 +192,10 @@ ApplicationWindow{
 						y:85*2+35
 						width: 100
 						height: 40
-						onClicked:{ openFileDialog.open();}
+						onClicked:{ 
+							openFileDialog.open()
+							//root.sendString(fileNameTextField.text)
+						}
 					}
 				}
 			}

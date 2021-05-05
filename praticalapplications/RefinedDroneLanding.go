@@ -16,18 +16,21 @@ import (
 )
 
 func main() {
-	var datasetextractor extract.ImageExtractor
-	var datatransformer process.ImageProcessing
-	var datavision computervision.ComputerVison
-	var datalearner learnstrategy.DataLearner
+	var (
+		datasetextractor extract.ImageExtractor
+		datatransformer process.ImageProcessing
+		datavision computervision.ComputerVison
+		datalearner learnstrategy.DataLearner
 
-	var normtype gocv.NormType = gocv.NormMinMax
+		normtype gocv.NormType = gocv.NormMinMax
+
+		glcm process.GLCM
+		normalize process.Normalize
+	)
+
 	origins := []string{"../data/ImagesData/danger", 
 		"../data/ImagesData/asphalt", 
 		"../data/ImagesData/grass"}
-
-	var glcm process.GLCM
-	var normalize process.Normalize
 
 	datasetextractor.SetOrigins(origins,&datasetextractor)
 

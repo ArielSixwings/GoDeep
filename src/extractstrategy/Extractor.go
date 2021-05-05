@@ -75,7 +75,7 @@ func (dr *DataReader) getFolderName(index int){
 }
 
 func (dr *DataReader) SetOrigins(origins []string,rs readStrategy) ([]bool,error){
-	fmt.Println("we called it!")
+
 	(*dr).SetReadStrategy(rs)
 	
 	var originsIntegrity bool = true
