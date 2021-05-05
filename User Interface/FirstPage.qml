@@ -34,39 +34,40 @@ ApplicationWindow{
 		// ItemTemplate {
 		// 	id:root
 		// }
-		header: TabBar{
-			id: bar
-			TabButton{
-				text: 'Home'
-				font.pixelSize: 30
-				icon.name: "IconHome"
-				icon.source:"./ImagesUI/HomeIcon.png"
+		header:
+			TabBar{
+				id: bar
+				TabButton{
+					text: 'Home'
+					font.pixelSize: 30
+					icon.name: "IconHome"
+					icon.source:"./ImagesUI/HomeIcon.png"
+				}
+				TabButton{
+					text: 'Images'
+					font.pixelSize: 30
+					icon.name: "IconImage"
+					icon.source: "./ImagesUI/Images.png"
+				}
+				TabButton{
+					text:'Genetics'
+					font.pixelSize: 30
+					icon.name: "IconGenetic"
+					icon.source: "./ImagesUI/GeneticIcon.png"
+				}
+				TabButton{
+					text:'Statistics'
+					font.pixelSize: 30
+					icon.name: "StaticIcon"
+					icon.source: "./ImagesUI/StaticIcon.png"
+				}
+				TabButton{
+					text:'Help'
+					font.pixelSize: 30
+					icon.name: "HelpIcon"
+					icon.source: "./ImagesUI/Help.png"
+				}
 			}
-			TabButton{
-				text: 'Images'
-				font.pixelSize: 30
-				icon.name: "IconImage"
-				icon.source: "./ImagesUI/Images.png"
-			}
-			TabButton{
-				text:'Genetics'
-				font.pixelSize: 30
-				icon.name: "IconGenetic"
-				icon.source: "./ImagesUI/GeneticIcon.png"
-			}
-			TabButton{
-				text:'Statistics'
-				font.pixelSize: 30
-				icon.name: "StaticIcon"
-				icon.source: "./ImagesUI/StaticIcon.png"
-			}
-			TabButton{
-				text:'Help'
-				font.pixelSize: 30
-				icon.name: "HelpIcon"
-				icon.source: "./ImagesUI/Help.png"
-			}
-		}
 
 		StackLayout{
 			anchors.fill:parent

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	// "fmt"
 	"os"
 
 	"github.com/therecipe/qt/core"
@@ -18,10 +18,10 @@ func main() {
 	var app = qml.NewQQmlApplicationEngine(nil)
 	app.Load(core.NewQUrl3("UserInterface.qml", 0))
 
-	var (
-		key string
-		namefolder string
-	)
+	// var (
+	// 	key string
+	// 	namefolder string
+	// )
 	gui.QGuiApplication_Exec()
 
 	// for ; true;  {
