@@ -34,9 +34,6 @@ func main() {
 	fmt.Println("About to call Read")
 	datasetextractor.Read(false,false,true)
 	
-	// datatransformer.GroupGLCM(true, true)
-	// datatransformer.GroupNormalizedGLCM(0.0, 255.0, normtype,true ,true) //(*ip).getNormalizedGLCM(i,0.0,255.0,typ)
-	
 	datatransformer.GetImages(&datasetextractor)
 	
 	glcm.SetParameters(1,0)

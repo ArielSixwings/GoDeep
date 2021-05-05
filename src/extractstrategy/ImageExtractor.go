@@ -3,7 +3,13 @@ package extract
 import (
 	"path/filepath"
 	"gocv.io/x/gocv"
+	"fmt"
 )
+
+func (ie ImageExtractor) Sifufu() {
+	fmt.Println("que bagulho chato")
+}
+
 func (ie *ImageExtractor) Allocate() error{
 	
 	(*ie).Images = make([]gocv.Mat,(*ie).Readinfo.SizeData)
