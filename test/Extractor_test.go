@@ -2,6 +2,7 @@ package main
 
 import (
 	"testing"
+
 	"../src/extractstrategy"
 	"../src/learnstrategy"
 
@@ -12,15 +13,15 @@ import (
 	"../src/learnstrategy/nonparametric"
 )
 
-func TestGetData(t *testing.T) {
+func TestSetOrigins(t *testing.T) {
 	var datasetextractor extract.ImageExtractor
 	origins := []string{"../data/ImagesData/danger", 
 		"../data/ImagesData/asphalt", 
 		"../data/ImagesData/grass"}
 
-	if !datasetextractor.SetOrigins(origins,&datasetextractor) {
-		t.Error("Value unexpected")
-	}
+	_, err := datasetextractor.SetOrigins(origins,&datasetextractor)
 
-	
+	if err != nil {
+		t.Error("Unexpected value")
+	}
 }
