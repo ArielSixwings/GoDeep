@@ -3,11 +3,11 @@
 
 #include <QObject>
 
-class qmlintegration : public QObject
+class Qmlintegration : public QObject
 {
 	Q_Object
 public:
-	explicit qmlintegration(QObject *parent = nullptr);
+	explicit Qmlintegration(QObject *parent = nullptr);
 
 signals:
 
