@@ -4,8 +4,6 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.3
-//import CustomQmlTypes 1.0	
-//import "../src/extractstrategy" as Extractor
 
 ApplicationWindow{
 	id: home
@@ -31,9 +29,6 @@ ApplicationWindow{
 			}
 		}
 
-		// ItemTemplate {
-		// 	id:root
-		// }
 		header:
 			TabBar{
 				id: bar
@@ -41,31 +36,31 @@ ApplicationWindow{
 					text: 'Home'
 					font.pixelSize: 30
 					icon.name: "IconHome"
-					icon.source:"./ImagesUI/HomeIcon.png"
+					icon.source:"../ImagesUI/HomeIcon.png"
 				}
 				TabButton{
 					text: 'Images'
 					font.pixelSize: 30
 					icon.name: "IconImage"
-					icon.source: "./ImagesUI/Images.png"
+					icon.source: "../ImagesUI/Images.png"
 				}
 				TabButton{
 					text:'Genetics'
 					font.pixelSize: 30
 					icon.name: "IconGenetic"
-					icon.source: "./ImagesUI/GeneticIcon.png"
+					icon.source: "../ImagesUI/GeneticIcon.png"
 				}
 				TabButton{
 					text:'Statistics'
 					font.pixelSize: 30
 					icon.name: "StaticIcon"
-					icon.source: "./ImagesUI/StaticIcon.png"
+					icon.source: "../ImagesUI/StaticIcon.png"
 				}
 				TabButton{
 					text:'Help'
 					font.pixelSize: 30
 					icon.name: "HelpIcon"
-					icon.source: "./ImagesUI/Help.png"
+					icon.source: "../ImagesUI/Help.png"
 				}
 			}
 
@@ -92,7 +87,7 @@ ApplicationWindow{
 					width: 172
 					height: 187
 					visible: true
-					source: "./ImagesUI/gopher.png"
+					source: "../ImagesUI/gopher.png"
 					clip: false
 					fillMode: Image.PreserveAspectFit
 				}
@@ -104,7 +99,7 @@ ApplicationWindow{
 					font.pixelSize: 50
 					palette { button: "transparent" }
 					icon.name: "IconAbout"
-					icon.source: "./ImagesUI/IconAbout.png"
+					icon.source: "../ImagesUI/IconAbout.png"
 					onClicked: { load_page("page 1"); }
 				}
 			}
@@ -170,7 +165,7 @@ ApplicationWindow{
 						width:40
 						height:40
 						icon.name: "IconPrevious"
-						icon.source:"./ImagesUI/ButtonPrevious.png"
+						icon.source:"../ImagesUI/ButtonPrevious.png"
 						palette{ button:"transparent" }
 					}
 					Button{
@@ -180,14 +175,14 @@ ApplicationWindow{
 						width:40
 						height:40
 						icon.name: "IconNext"
-						icon.source:"./ImagesUI/ButtonNext.png"
+						icon.source:"../ImagesUI/ButtonNext.png"
 						palette{ button:"transparent" }
 					}
 					Button{
 						id:buttonAddImage
 						text: 'Add File'
 						icon.name: "IconAdd"
-						icon.source:"./ImagesUI/IconAdd.png"
+						icon.source:"../ImagesUI/IconAdd.png"
 						icon.color:"black"
 						x:900
 						y:85*2+35
@@ -195,7 +190,7 @@ ApplicationWindow{
 						height: 40
 						onClicked:{ 
 							openFileDialog.open()
-							//root.sendString(fileNameTextField.text)
+							qmlintegration.callFromQml()
 						}
 					}
 				}
@@ -218,7 +213,7 @@ ApplicationWindow{
 					Button{
 						id:buttonConfirmar1
 						icon.name: "IconConfirm"
-						icon.source:"./ImagesUI/IconConfirm.png"
+						icon.source:"../ImagesUI/IconConfirm.png"
 						icon.color:"black"
 						
 						palette{ button:"transparent" }
@@ -231,7 +226,7 @@ ApplicationWindow{
 						id:buttonAdd1
 						text: 'Add File'
 						icon.name: "IconAdd"
-						icon.source:"./ImagesUI/IconAdd.png"
+						icon.source:"../ImagesUI/IconAdd.png"
 						icon.color:"black"
 						x:900
 						y:85*2+35
@@ -276,7 +271,7 @@ ApplicationWindow{
 					Button{
 						id:buttonConfirmar2
 						icon.name: "IconConfirm2"
-						icon.source:"./ImagesUI/IconConfirm.png"
+						icon.source:"../ImagesUI/IconConfirm.png"
 						icon.color:"black"
 						palette{ button:"transparent" }
 						x:840
@@ -288,7 +283,7 @@ ApplicationWindow{
 						id:buttonAdd2
 						text: 'Add File'
 						icon.name: "IconAdd2"
-						icon.source:"./ImagesUI/IconAdd.png"
+						icon.source:"../ImagesUI/IconAdd.png"
 						icon.color:"black"
 						x:900
 						y:320+90+35

@@ -16,23 +16,9 @@ func main() {
 	gui.NewQGuiApplication(len(os.Args), os.Args)
 
 	var app = qml.NewQQmlApplicationEngine(nil)
-	app.Load(core.NewQUrl3("UserInterface.qml", 0))
+	app.Load(core.NewQUrl3("./qml/UserInterface.qml", 0))
 
-	// var (
-	// 	key string
-	// 	namefolder string
-	// )
+
 	gui.QGuiApplication_Exec()
-
-	// for ; true;  {
-	// 	fmt.Scanf("%s",key)
-	// 	fmt.Println(key)
-	// 	if key == "23399784##27"{
-	// 		fmt.Scanf("%s", &namefolder)
-	// 		fmt.Println(namefolder)
-	// 		break
-	// 	} 
-		
-	// }
 
 }
