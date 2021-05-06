@@ -4,13 +4,13 @@ import (
 	"testing"
 
 	"../src/extractstrategy"
-	"../src/learnstrategy"
+	//"../src/learnstrategy"
 
-	"gocv.io/x/gocv"
-	"../src/processStrategy"
-	"../src/DataAnalysis"
-
-	"../src/learnstrategy/nonparametric"
+	//"gocv.io/x/gocv"
+	//"../src/processStrategy"
+	
+	//"../src/DataAnalysis"
+	//"../src/learnstrategy/nonparametric"
 )
 
 func TestSetOrigins(t *testing.T) {
