@@ -1,0 +1,89 @@
+-->ExtractStrategy
+	\-->extractor:
+		====>SetReadStrategy
+		====>ReadFolder
+		====>getFolderName
+		====>SetOrigins
+		====>Read
+		====>setLabelbyPath
+		====>verifycandidate
+		====>verifyorigins
+		====>visit
+		====>FolderLength
+	\-->imageextractor:
+		====>Allocate
+		====>ReadData
+		====>PresentData
+		====>SaveData
+	\-->textstractor:
+		====>GetData
+		====>PrintFile
+		====>ReadData
+		====>Allocate
+		====>PresentData
+		====>SaveData
+
+-->ProcessStrategy
+	\-->glcm:
+		====>Process
+		====>Allocate
+		====>Verify
+		====>SetParameters
+	\-->imageprocessing:
+		====>SetProcessStrategy
+		====>GetImages
+		====>ProcessGroup
+	\-->normalize:
+		====>Process
+		====>Allocate
+		====>Verify
+		====>SetParameters
+	\-->statisticprocessing:
+		====>ConvertData
+		====>SortData
+		====>PrintFeatures
+
+-->DataAnalysis
+	\-->computervision:
+		====>GetBaseImages
+		====>AllocateCvStructs
+		====>correlation
+		====>homogeneity
+		====>contrast
+		====>energy
+		====>getMu
+		====>getSigma
+		====>selectfeature
+		====>GroupFeature
+		====>PrintFeatures
+
+-->LearStrategy
+	\-->iolearnstrategy:
+		====>Printresults
+		====>Printdists
+		====>Printinterest
+		====>Printfeatures
+	\-->learnstrategy:
+		====>SetLearnStrategy
+		====>ProcessLearn
+		====>Allocate
+		====>Getlabel
+		====>Getlen
+		====>Build
+		====>GetAccuracy
+	\-->learnstrategysort:
+		====>Sortdist
+	\-->nonparametric(file):
+		====>Calcdistance
+		====>CalcCenterdistance
+		====>AddInterest
+		====>GetGreatestOcorrence
+		====>Centroid
+		====>GroupCenterdists
+		====>Calcradius
+
+	-->nonparametric(Folder)
+		\-->kmeans:
+			====>Learn
+		\-->knn:
+			====>Learn

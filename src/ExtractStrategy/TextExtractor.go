@@ -58,15 +58,7 @@ func (st *TextExtractor) Allocate() error{
 func (st TextExtractor)  PresentData(Menssage string, index int, time int) {
 	fmt.Println("Thats a mission for Peter and Moreno!: ", Menssage,index,time)
 }
-/**
- * [SaveData description: Saves an image]
- * @param {[type]} Name  string   [name to be saved]
- * @param {[type]} Image gocv.Mat [the image to be saved]
- */
+
 func (st TextExtractor)  SaveData(i int,Name string) {
 	fmt.Println("Thats a mission for Peter and Moreno!: ", i,Name)
-}
-
-func (st *TextExtractor) BuildLabel() {
-	return 
 }

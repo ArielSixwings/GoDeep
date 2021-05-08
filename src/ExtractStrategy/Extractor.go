@@ -14,15 +14,6 @@ func (dr *DataReader) SetReadStrategy(rs readStrategy) {
 	dr.Strategy = rs
 }
 
-/**
- * [ReadFolder description: read all images at some folder]
- * @param {[type]} Images    *[]gocv.Mat [An Array of gocv.Mat that will be used to contain the images of the folder]
- * @param {[type]} folder    string      [folder name]
- * @param {[type]} print     bool        [if its true, print the names]
- * @param {[type]} show      bool        [if its true, show the images]
- * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
- */
-//func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) int{
 func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	
 	var files []string
@@ -147,6 +138,7 @@ func (dr DataReader) verifycandidate(candidate []string) bool{
 		return false
 	}
 }
+
 func (dr *DataReader) verifyorigins(origins []string) error{
 	if len(origins) == 0 {
 		return errors.New("no Origins provided")
@@ -154,11 +146,7 @@ func (dr *DataReader) verifyorigins(origins []string) error{
 		return nil
 	}
 }
-/**
- * [visit description:]
- * @param  {[type]} files *[]string        [array of files names]
- * @return {[type]} filepath.WalkFunc      [parameter used at filepath.Walk()]
- */
+
 func visit(files *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -170,11 +158,6 @@ func visit(files *[]string) filepath.WalkFunc {
 	}
 }
 
-/**
- * [FolderLength description: get the number of files in the folder]
- * @param {[type]} folder string [name of folder]
- * @return {[type]} int          [lenght of the folder(number of files)]
- */
 func FolderLength(folder string) int {
 	var files []string
 
