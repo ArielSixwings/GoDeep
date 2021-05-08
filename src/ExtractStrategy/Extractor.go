@@ -29,9 +29,9 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	var name string
 	var first bool = true
 	var i int
-	nametemp := []string{"\"./","\""}
+	nametemp := []string{"\"./","\""} //that is a tecnical detail, necessary to use the name that we will get as a path to read
 
-	err := filepath.Walk((*dr).readOrigins[folderindex], visit(&files))
+	err := filepath.Walk((*dr).readOrigins[folderindex], visit(&files)) //get all files names at a folder
 
 	if err != nil {
 		panic(err)
@@ -45,10 +45,8 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 
 	for _, file := range files {
 
-		if first {	
+		if first {	//the first entry is the name of the folder, we don't want that entry
 			i = index
-
-			fmt.Println("at first 'if' :   ",file)
 			first = false
 			continue
 		}
@@ -56,9 +54,7 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 		name = strings.Join(nametemp, file)
 
 		if (*dr).Print {
-
 			fmt.Println("geting file:     ", name)
-
 		}
 
 		(*dr).Strategy.ReadData(file,i)
@@ -66,7 +62,7 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	}
 	return len(files)-1
 }
-//func (dr *DataReader) getFolderName(path string,index int){
+
 func (dr *DataReader) getFolderName(index int){
 	if len((*dr).split) == 0{
 		(*dr).split = make([][]string,len((*dr).readOrigins))
@@ -76,6 +72,11 @@ func (dr *DataReader) getFolderName(index int){
 
 func (dr *DataReader) SetOrigins(origins []string,rs readStrategy) ([]bool,error){
 
+	err := (*dr).verifyorigins(origins)
+	if err != nil {
+		return nil,err
+	}
+	
 	(*dr).SetReadStrategy(rs)
 	
 	var originsIntegrity bool = true
@@ -146,7 +147,13 @@ func (dr DataReader) verifycandidate(candidate []string) bool{
 		return false
 	}
 }
-
+func (dr *DataReader) verifyorigins(origins []string) error{
+	if len(origins) == 0 {
+		return errors.New("no Origins provided")
+	} else{
+		return nil
+	}
+}
 /**
  * [visit description:]
  * @param  {[type]} files *[]string        [array of files names]
