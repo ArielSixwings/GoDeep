@@ -2,7 +2,7 @@ package process
 
 import (
 	"fmt"
-	"../extractstrategy"
+	"../ExtractStrategy"
 
 )
 

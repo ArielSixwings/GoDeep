@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"math"
 	"../basicdata"
-	"../processStrategy"
+	"../ProcessStrategy"
 	"errors"
 
 )

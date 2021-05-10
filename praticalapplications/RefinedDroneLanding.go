@@ -1,15 +1,15 @@
 package main
 
 import (
-	"../src/extractstrategy"
-	"../src/learnstrategy"
+	"../src/ExtractStrategy"
+	"../src/LearnStrategy"
 	
 	"gocv.io/x/gocv"
-	"../src/processStrategy"
+	"../src/ProcessStrategy"
 	"../src/DataAnalysis"
 
 	
-	"../src/learnstrategy/nonparametric"
+	"../src/LearnStrategy/nonparametric"
 	"fmt"
 	
 

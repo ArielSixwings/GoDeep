@@ -26,7 +26,7 @@ type DataReader struct {
 	readOrigins []string
 	Readinfo 	cartesian.ReadInformation
 
-	observerList []observer
+	//observerList []observer
 }
 
 // type item struct {
