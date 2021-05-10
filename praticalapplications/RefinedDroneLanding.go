@@ -34,7 +34,6 @@ func main() {
 
 	datasetextractor.SetOrigins(origins,&datasetextractor)
 
-	fmt.Println("About to call Read")
 	datasetextractor.Read(false,false,true)
 	
 	datatransformer.GetImages(&datasetextractor)
