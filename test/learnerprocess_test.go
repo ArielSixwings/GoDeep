@@ -2,11 +2,11 @@ package main
 
 import (
 	"testing"
-	"../src/extractstrategy"
-	"../src/learnstrategy"
+	"../src/ExtractStrategy"
+	"../src/LearnStrategy"
 	
 	"gocv.io/x/gocv"
-	"../src/processStrategy"
+	"../src/ProcessStrategy"
 	"../src/DataAnalysis"
 )
 

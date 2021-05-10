@@ -2,7 +2,7 @@ package main
 
 import (
 	"testing"
-	"../src/processStrategy"
+	"../src/ProcessStrategy"
 )
 
 func TestGlcmSetParameters(t *testing.T) {

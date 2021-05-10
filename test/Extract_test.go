@@ -3,14 +3,8 @@ package main
 import (
 	"testing"
 
-	"../src/extractstrategy"
-	//"../src/learnstrategy"
-
-	//"gocv.io/x/gocv"
-	//"../src/processStrategy"
-	
-	//"../src/DataAnalysis"
-	//"../src/learnstrategy/nonparametric"
+	"../src/ExtractStrategy"
+	"../src/LearnStrategy"
 )
 
 var datasetextractor extract.ImageExtractor
