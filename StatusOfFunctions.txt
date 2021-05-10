@@ -1,0 +1,89 @@
+-->ExtractStrategy
+	\-->extractor:
+		====>SetReadStrategy      1 VERIFIED
+		====>ReadFolder           2
+		====>getFolderName        3
+		====>SetOrigins           4
+		====>Read                 5
+		====>setLabelbyPath       6
+		====>verifycandidate      7
+		====>verifyorigins        8
+		====>visit                9
+		====>FolderLength         10
+	\-->imageextractor:
+		====>Allocate             11
+		====>ReadData             12
+		====>PresentData          13
+		====>SaveData             14
+	\-->textstractor:
+		====>GetData              15
+		====>PrintFile            16
+		====>ReadData             17
+		====>Allocate             18
+		====>PresentData          19
+		====>SaveData             20
+
+-->ProcessStrategy
+	\-->glcm:
+		====>Process              21
+		====>Allocate             22
+		====>Verify               23   
+		====>SetParameters        24
+	\-->imageprocessing: 
+		====>SetProcessStrategy   25
+		====>GetImages            26
+		====>ProcessGroup         27
+	\-->normalize:
+		====>Process              28
+		====>Allocate             29
+		====>Verify               30
+		====>SetParameters        31  
+	\-->statisticprocessing:
+		====>ConvertData          32
+		====>SortData             33
+		====>PrintFeatures        34
+
+-->DataAnalysis
+	\-->computervision:
+		====>GetBaseImages        35
+		====>AllocateCvStructs    36
+		====>correlation          37
+		====>homogeneity          38
+		====>contrast             39
+		====>energy               40
+		====>getMu                41   
+		====>getSigma             42
+		====>selectfeature        43
+		====>GroupFeature         44
+		====>PrintFeatures        45
+
+-->LearStrategy
+	\-->iolearnstrategy:
+		====>Printresults         46
+		====>Printdists           47
+		====>Printinterest        48
+		====>Printfeatures        49
+	\-->learnstrategy: 
+		====>SetLearnStrategy     50
+		====>ProcessLearn         51
+		====>Allocate             52
+		====>Getlabel             53 
+		====>Getlen               54
+		====>Build                55 
+		====>GetAccuracy          56
+	\-->learnstrategysort:
+		====>Sortdist             57
+	\-->nonparametric(file):
+		====>Calcdistance         58
+		====>CalcCenterdistance   59
+		====>AddInterest          60
+		====>GetGreatestOcorrence 61
+		====>Centroid             62
+		====>GroupCenterdists     63
+		====>Calcradius           64
+
+	-->nonparametric(Folder)
+		\-->kmeans:
+			====>Learn            65
+		\-->knn:
+			====>Learn            66

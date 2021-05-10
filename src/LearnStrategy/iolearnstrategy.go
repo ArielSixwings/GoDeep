@@ -4,11 +4,6 @@ import (
 	"fmt"
 )
 
-/**
- * [Printresults description: print at the terminal the computed results, with Success rate]
- * @struct {[type]}  ds DataSet [thats a DataSet method]
- * @return {[type]}  error            [gets errors]
- */
 func (ds DataLearner) Printresults(){
 
 	var total , right float64
@@ -30,11 +25,6 @@ func (ds DataLearner) Printresults(){
 	fmt.Println("Success rate = ",100*(right/total),"%")
 }
 
-/**
- * [func description: print at the terminal the computed distances]
- * @struct {[type]}  ds DataSet [thats a DataSet method]
- * @return {[type]}  error            [gets errors]
- */
 func (ds DataLearner) Printdists(){
 	
 	fmt.Println("These are the distances between the data set groups")
@@ -48,22 +38,12 @@ func (ds DataLearner) Printdists(){
 	}	
 }
 
-/**
- * [Printinterest description: print interest group]
- * @struct {[type]}  ds DataSet [thats a DataSet method]
- * @return {[type]}  error            [gets errors]
- */
 func (ds DataLearner) Printinterest(){
 	for i := 0; i < len(ds.interestgroup); i++ {
 		fmt.Println(ds.interestgroup[i])
 	}
 }
 
-/**
- * [Printfeatures description: print groups features]
- * @struct {[type]}  ds DataSet [thats a DataSet method]
- * @return {[type]}  error            [gets errors]
- */
 func (ds DataLearner) Printfeatures() error{
 	
 	fmt.Println("These are the train features")

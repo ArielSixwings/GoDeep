@@ -14,24 +14,15 @@ func (dr *DataReader) SetReadStrategy(rs readStrategy) {
 	dr.Strategy = rs
 }
 
-/**
- * [ReadFolder description: read all images at some folder]
- * @param {[type]} Images    *[]gocv.Mat [An Array of gocv.Mat that will be used to contain the images of the folder]
- * @param {[type]} folder    string      [folder name]
- * @param {[type]} print     bool        [if its true, print the names]
- * @param {[type]} show      bool        [if its true, show the images]
- * @param {[type]} colorfull bool        [if its is true take a 3 chanel rbg image]
- */
-//func (ie *ImageExtractor) ReadFolder(folder string, print bool, show bool, colorfull bool,index ...int) int{
 func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	
 	var files []string
 	var name string
 	var first bool = true
 	var i int
-	nametemp := []string{"\"./","\""}
+	nametemp := []string{"\"./","\""} //that is a tecnical detail, necessary to use the name that we will get as a path to read
 
-	err := filepath.Walk((*dr).readOrigins[folderindex], visit(&files))
+	err := filepath.Walk((*dr).readOrigins[folderindex], visit(&files)) //get all files names at a folder
 
 	if err != nil {
 		panic(err)
@@ -45,10 +36,8 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 
 	for _, file := range files {
 
-		if first {	
+		if first {	//the first entry is the name of the folder, we don't want that entry
 			i = index
-
-			fmt.Println("at first 'if' :   ",file)
 			first = false
 			continue
 		}
@@ -56,9 +45,7 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 		name = strings.Join(nametemp, file)
 
 		if (*dr).Print {
-
 			fmt.Println("geting file:     ", name)
-
 		}
 
 		(*dr).Strategy.ReadData(file,i)
@@ -66,7 +53,7 @@ func (dr *DataReader) ReadFolder(folderindex int,index int) int{
 	}
 	return len(files)-1
 }
-//func (dr *DataReader) getFolderName(path string,index int){
+
 func (dr *DataReader) getFolderName(index int){
 	if len((*dr).split) == 0{
 		(*dr).split = make([][]string,len((*dr).readOrigins))
@@ -75,7 +62,12 @@ func (dr *DataReader) getFolderName(index int){
 }
 
 func (dr *DataReader) SetOrigins(origins []string,rs readStrategy) ([]bool,error){
-	fmt.Println("we called it!")
+
+	err := (*dr).verifyorigins(origins)
+	if err != nil {
+		return nil,err
+	}
+	
 	(*dr).SetReadStrategy(rs)
 	
 	var originsIntegrity bool = true
@@ -147,11 +139,44 @@ func (dr DataReader) verifycandidate(candidate []string) bool{
 	}
 }
 
-/**
- * [visit description:]
- * @param  {[type]} files *[]string        [array of files names]
- * @return {[type]} filepath.WalkFunc      [parameter used at filepath.Walk()]
- */
+func (dr *DataReader) verifyorigins(origins []string) error{
+	if len(origins) == 0 {
+		return errors.New("no Origins provided")
+	} else{
+		return nil
+	}
+}
+
+// func (i *item) updateAvailability() {
+// 	fmt.Printf("Item %s is now in stock\n", i.name)
+// 	i.inStock = true
+// 	i.notifyAll()
+// }
+
+// func (dr *DataReader) register(obs observer) {
+// 	dr.observerList = append(dr.observerList, obs)
+// }
+
+// func (dr *DataReader) deregister(obs observer) {
+// 	dr.observerList = removeFromslice(dr.observerList, obs)
+// }
+
+// func (dr *DataReader) notifyAll() {
+// 	for _, observer := range dr.observerList {
+// 		observer.update(dr.name)
+// 	}
+// }
+
+// func removeFromslice(observerList []observer, observerToRemove observer) []observer {
+// 	observerListLength := len(observerList)
+// 	for i, observer := range observerList {
+// 		if observerToRemove.getID() == observer.getID() {
+// 			observerList[observerListLength-1], observerList[i] = observerList[i], observerList[observerListLength-1]
+// 			return observerList[:observerListLength-1]
+// 		}
+// 	}
+// 	return observerList
+// }
 func visit(files *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
@@ -163,11 +188,6 @@ func visit(files *[]string) filepath.WalkFunc {
 	}
 }
 
-/**
- * [FolderLength description: get the number of files in the folder]
- * @param {[type]} folder string [name of folder]
- * @return {[type]} int          [lenght of the folder(number of files)]
- */
 func FolderLength(folder string) int {
 	var files []string
 

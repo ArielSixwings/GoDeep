@@ -46,15 +46,6 @@ func (ds *DataLearner) RedzoneRule(i int) bool{
 	}
 }
 
-// func (ds *DataSet) MaxCaoszoneRule(i int) bool{
-
-// 	if (*ds).RedzoneRule(i,0,1) && (*ds).Maxcentroid(i) {
-// 		return false
-// 	}else{
-// 		return true
-// 	}
-// }
-
 func (ds *DataLearner) MinCaoszoneRule(i int) bool{
 
 	if (*ds).RedzoneRule(i) && ((*ds).allcentroid.Minradius > (*ds).euclidiandistance((*ds).train[i].Features,(*ds).allcentroid.Features))  {

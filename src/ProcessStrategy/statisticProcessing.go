@@ -7,7 +7,6 @@ import(
 	"strings"
 )
 
-//func (sp *StatisticProcessing) splitText(fileContents []string) ([]string, []string, []string, []string){
 func (sp *StatisticProcessing) ConvertData(){
 	
 	split := make([]string,len((*sp).Texts[0]))

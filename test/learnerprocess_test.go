@@ -1,21 +1,16 @@
 package main
 
 import (
+	"testing"
 	"../src/ExtractStrategy"
 	"../src/LearnStrategy"
 	
 	"gocv.io/x/gocv"
 	"../src/ProcessStrategy"
 	"../src/DataAnalysis"
-
-	
-	"../src/LearnStrategy/nonparametric"
-	"fmt"
-	
-
 )
 
-func main() {
+func TestBuild(t *testing.T) {
 	var (
 		datasetextractor extract.ImageExtractor
 		datatransformer process.ImageProcessing
@@ -50,11 +45,9 @@ func main() {
 	datavision.GroupFeature(true,computervision.EnergyFeature,computervision.CorrelationFeature,computervision.ContrastFeature)
 	datavision.PrintFeatures()
 
-	datalearner.Build(&datavision.Information,datasetextractor.Readinfo,75)
-	datalearner.Printfeatures()
+	err := datalearner.Build(&datavision.Information,datasetextractor.Readinfo,75)
 
-	knn := &nonparametric.Knn{}
-	datalearner.SetLearnStrategy(knn)
-	datalearner.ProcessLearn()
-	datalearner.Printresults()
+	if err != nil {
+		t.Error("Unexpected value")
+	}
 }

@@ -6,11 +6,6 @@ import (
 	"math"
 )
 
-/**
- * [get the distance from each entry of the test group to the train group]
- * @struct {[type]} ds *DataSet) Calcdistance( 	[the data set]
- * @return {error} 	 											[gets errors]
- */
 func (ds *DataLearner) Calcdistance() error {
 
 	var sum float64 = 0.0
@@ -47,14 +42,8 @@ func (ds *DataLearner) Calcdistance() error {
 	}
 
 	return nil
-
 }
 
-/**
- * [get the distance from each entry of the test group to the centroid of each label of the train group]
- * @struct {[type]} ds *DataSet) CalcCenterdistance( 	[the data set]
- * @return {error} 													[gets errors]
- */
 func (ds *DataLearner) CalcCenterdistance() error {
 
 	var currentdist float64
@@ -96,11 +85,6 @@ func (ds *DataLearner) CalcCenterdistance() error {
 	return nil
 }
 
-/**
- * [add the interest group based on the k nearest neighbors]
- * @struct {[type]} ds *DataSet) AddInterest(t_size int ,k int [description]
- * @return {error} 	 											[gets errors]
- */
 func (ds *DataLearner) AddInterest(t_size int, k int) error {
 
 	if len((*ds).interestgroup) == 0 {
@@ -120,11 +104,6 @@ func (ds *DataLearner) AddInterest(t_size int, k int) error {
 	return nil
 }
 
-/**
- * [get the greatest ocorrence at the interest group]
- * @struct {[type]} ds *DataSet) GetGreatestOcorrence( [description]
- * @return {error} 	 											[gets errors]
- */
 func (ds *DataLearner) GetGreatestOcorrence(k int) error {
 
 	if len((*ds).result) == 0 {
@@ -151,11 +130,6 @@ func (ds *DataLearner) GetGreatestOcorrence(k int) error {
 	return nil
 }
 
-/**
- * [compute the centroid of each group]
- * @struct {[type]} ds *DataSet) Centroid( [description]
- * @return {error} 	 											[gets errors]
- */
 func (ds *DataLearner) Centroid() error {
 
 	if len((*ds).train) == 0 {
@@ -224,11 +198,6 @@ func (ds *DataLearner) Centroid() error {
 	return nil
 }
 
-/**
- * [comput the distance between each group centroid]
- * @struct {[type]} ds *DataSet) GroupCenterdists( [description]
- * @return {error} 	 											[gets errors]
- */
 func (ds *DataLearner) GroupCenterdists() error {
 
 	if len((*ds).centroid) == 0 {

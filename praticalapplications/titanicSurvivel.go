@@ -1,10 +1,10 @@
 package main
 
 import (
-	"../src/extractstrategy"
-	"../src/learnstrategy"
-	"../src/processStrategy"
-	"../src/learnstrategy/nonparametric"
+	"../src/ExtractStrategy"
+	"../src/LearnStrategy"
+	"../src/ProcessStrategy"
+	"../src/LearnStrategy/nonparametric"
 )
 
 func main() {

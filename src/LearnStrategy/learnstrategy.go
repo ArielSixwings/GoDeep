@@ -11,11 +11,7 @@ func (ds *DataLearner) SetLearnStrategy(ls learnStrategy) {
 func (ds *DataLearner) ProcessLearn(){
 	ds.Strategy.Learn(ds)
 }
-/**
- * [use make build in fucntion to allocate setioncs of the DataSet based on the allocate flag]
- * @struct {[type]} ds *DataSet) Allocate(allflag Groupflag, allsize int,secondsize ...int [description]
- * @return {error} 	 											[gets errors]
- */
+
 func (ds *DataLearner) Allocate(allflag Groupflag, allsize int, secondsize ...int) error {
 	if allsize == 0 {
 		return errors.New("invalid size of length 0, can't allocate")
@@ -66,11 +62,6 @@ func (ds *DataLearner) Allocate(allflag Groupflag, allsize int, secondsize ...in
 	}
 }
 
-/**
- * [get the label of the ith entry at the selected group]
- * @struct {[type]} ds DataSet) Gettrainstring(i int [description]
- * @return {string,error} 	 											[gets errors]
- */
 func (ds DataLearner) Getlabel(labelflag Groupflag, i int) (string, error) {
 	switch Labelflag {
 	case Trainflag:
@@ -89,11 +80,6 @@ func (ds DataLearner) Getlabel(labelflag Groupflag, i int) (string, error) {
 	}
 }
 
-/**
- * [get the length of the section selected by the flag]
- * @struct {[type]} ds DataSet) Getlen(lenflag Groupflag [description]
- * @return {int,error} 	 											[gets errors]
- */
 func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
 	switch lenflag {
 	case Trainflag:
@@ -108,16 +94,6 @@ func (ds DataLearner) Getlen(lenflag Groupflag) (int, error) {
 	}
 }
 
-/**
- * [Build description]
- * @struct {[type]} ds        *DataSet [description]
- * @param {[type]} feature_X []float64      [description]
- * @param {[type]} feature_Y []float64      [description]
- * @param {[type]} feature_Z []float64      [description]
- * @param {[type]} ls        []Sizelabel    [description]
- * @param {[type]} group     Groupflag      [description]
- * @param {[type]} size      int            [description]
- */
 func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInformation,groupsize int) error {
 	var j int = 0
 	var k int = 0
@@ -143,7 +119,6 @@ func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInf
 				(*ds).train[i].Label = ri.Labelsize[j].Label
 				(*ds).test[i].Label = ri.Labelsize[j].Label
 		}
-/*--------------------------------------------------------------------------------------------------------*/
 
 		} else {
 			if i < groupsize/2 {
@@ -160,11 +135,6 @@ func (ds *DataLearner) Build(features *[]cartesian.Features,ri cartesian.ReadInf
 	return nil
 }
 
-/**
- * [check if the learned label provided by some external IA process is corret]
- * @struct {[type]}ds *DataSet) GetAccuracy( [description]
- * @return {error} 	 											[gets errors]
- */
 func (ds *DataLearner) GetAccuracy() error {
 
 	if len((*ds).result) == 0 {
