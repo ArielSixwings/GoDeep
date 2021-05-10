@@ -5,7 +5,7 @@ import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.3
 import "../src/extractstrategy" as Extractor
-
+import "./main" as Main
 ApplicationWindow{
 	id: home
 		visible: true
@@ -30,6 +30,10 @@ ApplicationWindow{
 				home.sendBool(false)
 			}
 		}
+		/*Component{
+		id:main_go
+		main{}
+	}*/
 
 		header: TabBar{
 			id: bar
@@ -276,6 +280,17 @@ ApplicationWindow{
 						y:320+90+35
 						width: 40
 						height: 40
+						onClicked:{ 						
+							fileNameTextField2.text=palavra() 
+							console.log(fileNameTextField.text) 							
+						}
+					}
+					TextField{
+						id:fileNameTextField2
+						x:840
+						y:320+90+35+50
+						width: 150
+						height: 40
 					}
 					Button{
 						id:buttonAdd2
@@ -418,7 +433,5 @@ ApplicationWindow{
 					anchors.fill:parent
 				}
 			}
-	 
-
 		}
 	}

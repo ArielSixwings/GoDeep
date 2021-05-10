@@ -3,7 +3,7 @@ package main
 import (
 	"../src/extractstrategy"
 	"../src/learnstrategy"
-	"../src/process"
+	"../src/processStrategy"
 	"../src/learnstrategy/nonparametric"
 )
 

@@ -7,18 +7,13 @@ import (
 	"github.com/therecipe/qt/gui"
 	"github.com/therecipe/qt/qml"
 )
-
-func soma()int{
-	var soma int
-	soma=10+10
-	return soma
+func palavra()string{
+	var palavra string
+	palavra="teste"
+	return palavra
 }
 
-
-
-
-
-func main() {
+/*func main() {
 	
 	gui.NewQGuiApplication(len(os.Args), os.Args)
 
@@ -27,4 +22,4 @@ func main() {
 
 	gui.QGuiApplication_Exec()
 
-}
+}*/
