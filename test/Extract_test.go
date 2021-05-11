@@ -4,7 +4,7 @@ import (
 	"testing"
 
 	"../src/ExtractStrategy"
-	"../src/LearnStrategy"
+	//"../src/LearnStrategy"
 )
 
 var datasetextractor extract.ImageExtractor
