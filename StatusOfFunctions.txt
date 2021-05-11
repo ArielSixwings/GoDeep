@@ -1,15 +1,17 @@
+NUMBER OF VERIFIED FUNCTIONS: 23/64
+
 -->ExtractStrategy
 	\-->extractor:
-		====>SetReadStrategy      1 VERIFIED
-		====>ReadFolder           2
-		====>getFolderName        3
-		====>SetOrigins           4
-		====>Read                 5
-		====>setLabelbyPath       6
-		====>verifycandidate      7
-		====>verifyorigins        8
-		====>visit                9
-		====>FolderLength         10
+		====>SetReadStrategy      1  VERIFIED
+		====>ReadFolder           2  VERIFIED
+		====>getFolderName        3  VERIFIED
+		====>SetOrigins           4  VERIFIED
+		====>Read                 5  VERIFIED
+		====>setLabelbyPath       6  VERIFIED
+		====>verifycandidate      7  (it is a verification function)
+		====>verifyorigins        8  (it is a verification function)
+		====>visit                9  VERIFIED
+		====>FolderLength         10 VERIFIED
 	\-->imageextractor:
 		====>Allocate             11
 		====>ReadData             12
@@ -18,16 +20,16 @@
 	\-->textstractor:
 		====>GetData              15
 		====>PrintFile            16
-		====>ReadData             17
+		====>ReadData             17  VERIFIED
 		====>Allocate             18
 		====>PresentData          19
 		====>SaveData             20
 
 -->ProcessStrategy
 	\-->glcm:
-		====>Process              21
+		====>Process              21 VERIFIED
 		====>Allocate             22
-		====>Verify               23   
+		====>Verify               23 (it is a verification function)   
 		====>SetParameters        24
 	\-->imageprocessing: 
 		====>SetProcessStrategy   25
@@ -54,7 +56,7 @@
 		====>getMu                41   
 		====>getSigma             42
 		====>selectfeature        43
-		====>GroupFeature         44
+		====>GroupFeature         44  VERIFIED
 		====>PrintFeatures        45
 
 -->LearStrategy
@@ -66,21 +68,21 @@
 	\-->learnstrategy: 
 		====>SetLearnStrategy     50
 		====>ProcessLearn         51
-		====>Allocate             52
-		====>Getlabel             53 
-		====>Getlen               54
+		====>Allocate             52  VERIFIED
+		====>Getlabel             53  VERIFIED
+		====>Getlen               54  VERIFIED
 		====>Build                55 
-		====>GetAccuracy          56
+		====>GetAccuracy          56  VERIFIED
 	\-->learnstrategysort:
-		====>Sortdist             57
+		====>Sortdist             57  VERIFIED
 	\-->nonparametric(file):
-		====>Calcdistance         58
-		====>CalcCenterdistance   59
-		====>AddInterest          60
-		====>GetGreatestOcorrence 61
-		====>Centroid             62
-		====>GroupCenterdists     63
-		====>Calcradius           64
+		====>Calcdistance         58  VERIFIED
+		====>CalcCenterdistance   59  VERIFIED
+		====>AddInterest          60  VERIFIED
+		====>GetGreatestOcorrence 61  VERIFIED
+		====>Centroid             62  VERIFIED
+		====>GroupCenterdists     63  VERIFIED
+		====>Calcradius           64  VERIFIED
 
 	-->nonparametric(Folder)
 		\-->kmeans:
