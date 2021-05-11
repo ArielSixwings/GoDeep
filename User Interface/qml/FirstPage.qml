@@ -4,12 +4,6 @@ import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 import QtQuick.Controls.Styles 1.1
 import QtQuick.Layouts 1.3
-<<<<<<< HEAD:User Interface/FirstPage.qml
-import "../src/extractstrategy" as Extractor
-import "./main" as Main
-=======
-
->>>>>>> f38e59d775d67e046f7ce64bb5b24dc8670440b7:User Interface/qml/FirstPage.qml
 ApplicationWindow{
 	id: home
 		visible: true
