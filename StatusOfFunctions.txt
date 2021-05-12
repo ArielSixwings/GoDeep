@@ -29,7 +29,7 @@ NUMBER OF VERIFIED FUNCTIONS: 23/64
 	\-->glcm:
 		====>Process              21 VERIFIED
 		====>Allocate             22
-		====>Verify               23 (it is a verification function)   
+		====>Verify               23 (it is a verification )function)   
 		====>SetParameters        24
 	\-->imageprocessing: 
 		====>SetProcessStrategy   25

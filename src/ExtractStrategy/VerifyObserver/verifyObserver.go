@@ -5,16 +5,12 @@ import (
 	"errors"
 )
 
-type verifier struct {
+type Verifier struct {
 	id string
 }
 
-func (c *verifier) update(itemName string) {
-	fmt.Printf("Sending email to verifier %s for item %s\n", c.id, itemName)
-}
-
-func (c *verifier) getID() string {
+func (v *Verifier) getID() string {
 	return c.id
 }
 
-func (c *verifier) verify()
+func (v *Verifier) verify()

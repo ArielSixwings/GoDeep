@@ -6,13 +6,33 @@ import (
 	"image/color"
 )
 
-func PaintCircle(Image gocv.Mat, center image.Point, radius int, color color.RGBA, thickness int) {
-	gocv.Circle(&Image, center, radius, color, thickness)
-
-	//func Circle(img *Mat, center image.Point, radius int, c color.RGBA := color.RGBA, thickness int)
-
-
 func main(){
-	var Image = gocv.NewMatWithSize(256, 256, gocv.MatTypeCV8U)
-	PaintCircle(Image.GetUCharAt(128,128),50 Image.)
+	var Image = gocv.IMRead("background.jpg", gocv.IMReadUnchanged)
+	var center image.Point
+	var thecolor color.RGBA
+	var thesize image.Rectangle
+
+	thesize.Min.X = 32 
+	thesize.Min.Y = 480
+	thesize.Max.X = 64
+	thesize.Max.Y = 224
+	
+	thecolor.R = 255
+	thecolor.G = 0
+	thecolor.B = 0
+	thecolor.A = 1
+	
+	center.X = 428
+	center.Y = 128
+	
+	window := gocv.NewWindow("the image") //basic window
+	
+	window.IMShow(Image)               //show the image
+	window.WaitKey(0)
+	
+	gocv.Circle(&Image, center, 40, thecolor, 80)
+	gocv.Rectangle(&Image, thesize, thecolor, 32)
+	
+	window.IMShow(Image)               //show the image
+	window.WaitKey(0)
 }

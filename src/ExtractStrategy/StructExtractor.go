@@ -25,12 +25,4 @@ type DataReader struct {
 	split 		[][]string
 	readOrigins []string
 	Readinfo 	cartesian.ReadInformation
-
-	//observerList []observer
 }
-
-// type item struct {
-    
-//     name         string
-//     inStock      bool
-// }
