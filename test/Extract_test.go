@@ -20,6 +20,7 @@ func TestSetOrigins(t *testing.T) {
 	if err != nil {
 		t.Error("Unexpected value")
 	}
+
 }
 
 func TestRead(t *testing.T) {
