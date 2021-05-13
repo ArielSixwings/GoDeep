@@ -10,9 +10,6 @@ import (
 
 	
 	"../src/LearnStrategy/nonparametric"
-	"fmt"
-	
-
 )
 
 func main() {

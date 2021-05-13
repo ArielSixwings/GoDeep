@@ -147,36 +147,6 @@ func (dr *DataReader) verifyorigins(origins []string) error{
 	}
 }
 
-// func (i *item) updateAvailability() {
-// 	fmt.Printf("Item %s is now in stock\n", i.name)
-// 	i.inStock = true
-// 	i.notifyAll()
-// }
-
-// func (dr *DataReader) register(obs observer) {
-// 	dr.observerList = append(dr.observerList, obs)
-// }
-
-// func (dr *DataReader) deregister(obs observer) {
-// 	dr.observerList = removeFromslice(dr.observerList, obs)
-// }
-
-// func (dr *DataReader) notifyAll() {
-// 	for _, observer := range dr.observerList {
-// 		observer.update(dr.name)
-// 	}
-// }
-
-// func removeFromslice(observerList []observer, observerToRemove observer) []observer {
-// 	observerListLength := len(observerList)
-// 	for i, observer := range observerList {
-// 		if observerToRemove.getID() == observer.getID() {
-// 			observerList[observerListLength-1], observerList[i] = observerList[i], observerList[observerListLength-1]
-// 			return observerList[:observerListLength-1]
-// 		}
-// 	}
-// 	return observerList
-// }
 func visit(files *[]string) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
