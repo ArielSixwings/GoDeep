@@ -4,11 +4,10 @@ import (
 	"gocv.io/x/gocv"
 	"image"
 	"image/color"
+	"fmt"
 )
 
 func PresentProcessedData(data Features){
-	
-	
 	var(
 		thebackground = gocv.IMRead("../src/basicdata/background.jpg", gocv.IMReadUnchanged)
 		theRectangle image.Rectangle
@@ -57,5 +56,42 @@ func PresentProcessedData(data Features){
 	window := gocv.NewWindow("Processed Data")
 	window.IMShow(thebackground)
 	window.WaitKey(100)
+}
 
+func PresentGeneticData(tape string, index int){
+	var(
+		thebackground = gocv.IMRead("../src/basicdata/dnabackground.png", gocv.IMReadUnchanged)
+		
+		theRectangle image.Rectangle
+
+		thecolor color.RGBA
+	)
+
+	theRectangle.Min.X = 76 
+	theRectangle.Max.X = 140
+	theRectangle.Max.Y = 60 
+
+	for i := 0; i < 26; i++ {
+		
+		theRectangle.Min.Y = theRectangle.Max.Y+10
+		theRectangle.Max.Y = theRectangle.Min.Y+5
+		
+		switch tape[index+i] {
+		case 'A':
+			adenina(&thecolor)
+		case 'C':
+			citosina(&thecolor)
+		case 'T':
+			timina(&thecolor)
+		case 'G':
+			guanina(&thecolor)	
+		default:
+			fmt.Println("Gap at genetic read")
+		}
+		gocv.Rectangle(&thebackground, theRectangle, thecolor, 5)
+	}
+
+	window := gocv.NewWindow("Genetic Data")
+	window.IMShow(thebackground)
+	window.WaitKey(100)
 }

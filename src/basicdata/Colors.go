@@ -52,3 +52,31 @@ func pink(thecolor *color.RGBA){
 	(*thecolor).B = 147
 	(*thecolor).A = 1
 }
+
+func adenina(thecolor *color.RGBA){
+	(*thecolor).R = 104
+	(*thecolor).G = 216
+	(*thecolor).B = 216
+	(*thecolor).A = 1
+}
+
+func citosina(thecolor *color.RGBA){
+	(*thecolor).R = 255
+	(*thecolor).G = 40
+	(*thecolor).B = 116
+	(*thecolor).A = 1
+}
+
+func timina(thecolor *color.RGBA){
+	(*thecolor).R = 164
+	(*thecolor).G = 116
+	(*thecolor).B = 170
+	(*thecolor).A = 1
+}
+
+func guanina(thecolor *color.RGBA){
+	(*thecolor).R = 255
+	(*thecolor).G = 180
+	(*thecolor).B = 0
+	(*thecolor).A = 1
+}

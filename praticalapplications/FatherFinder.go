@@ -1,7 +1,7 @@
 package main
 
 import (
-	"../src/extractstrategy"
+	"../src/ExtractStrategy"
 	"fmt"
 )
 

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"../basicdata"
 )
 func (st *TextExtractor) GetData(index int) []string {
 	return (*st).Texts[index]
@@ -38,6 +39,9 @@ func (st *TextExtractor) ReadData(path string,dataindex int) error{
 	}
 	for i := 0; i < len(temp); i++ {
 		(*st).Texts[dataindex][i] = temp[i]
+		if (*st).Print {
+			cartesian.PresentGeneticData((*st).Texts[dataindex][i],30)
+		}
 	}
 
 	temp = temp[:0]
