@@ -87,5 +87,6 @@ func (sp StatisticProcessing) PrintFeatures() {
 			break
 		}
 		fmt.Println(i,"     ",sp.Information[i])
+		cartesian.PresentProcessedData(sp.Information[i])
 	}
 }

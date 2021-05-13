@@ -1,4 +1,4 @@
-package rgbacolor
+package cartesian
 
 import(
 	"image/color"
