@@ -4,16 +4,13 @@ import (
 	"gocv.io/x/gocv"
 	"image"
 	"image/color"
-	"fmt"
 )
 
 func PresentProcessedData(data Features){
 	
-	var thebackground gocv.Mat
-	thebackground = gocv.IMRead("background.jpg", gocv.IMReadUnchanged)
 	
 	var(
-		
+		thebackground = gocv.IMRead("../src/basicdata/background.jpg", gocv.IMReadUnchanged)
 		theRectangle image.Rectangle
 
 		centergender image.Point
@@ -27,7 +24,7 @@ func PresentProcessedData(data Features){
 	theRectangle.Min.X = 64 
 	theRectangle.Min.Y = 936
 	theRectangle.Max.X = 128
-	theRectangle.Max.Y = 936 //- int(data.Features[1]*2.0)
+	theRectangle.Max.Y = 936 - int(data.Features[2]*10.0)
 
 	centergender.X = 700
 	centergender.Y = 750
@@ -35,19 +32,30 @@ func PresentProcessedData(data Features){
 	centerclass.X = 700
 	centerclass.Y = 250
 
-
-	
 	purple(&rectanglecolor)
-	pink(&colorgender)
-	gold(&colorclass)
 	
-	//gocv.Circle(&background, centergender, 120, colorgender, 100)
-	//gocv.Circle(&background, centerclass, 90, colorclass, 190)
-	//gocv.Rectangle(&background, theRectangle, rectanglecolor, 64)
+	if data.Features[1] == 1{
+		blue(&colorgender)
+	} else{
+		pink(&colorgender)
+	}
 
-	fmt.Println("antes de new window")
+	if data.Features[0] == 2{
+		gold(&colorclass)
+	}else{
+		if data.Features[0] == 1{
+			silver(&colorclass)
+		}else{
+			copper(&colorclass)
+		}
+	}
+	
+	gocv.Circle(&thebackground, centergender, 120, colorgender, 250)
+	gocv.Circle(&thebackground, centerclass, 90, colorclass, 190)
+	gocv.Rectangle(&thebackground, theRectangle, rectanglecolor, 64)
+
 	window := gocv.NewWindow("Processed Data")
-	fmt.Println("depois de new window")
 	window.IMShow(thebackground)
 	window.WaitKey(100)
+
 }
