@@ -2,7 +2,6 @@ package nonparametric
 
 import (
 	"../"
-
 )
 
 type Knn struct {

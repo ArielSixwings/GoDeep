@@ -31,7 +31,7 @@ func main() {
 
 	datasetextractor.SetOrigins(origins,&datasetextractor)
 
-	datasetextractor.Read(false,false,true)
+	datasetextractor.Read(true,true,true)
 	
 	datatransformer.GetImages(&datasetextractor)
 	

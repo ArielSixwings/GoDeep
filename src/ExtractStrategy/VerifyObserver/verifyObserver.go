@@ -23,20 +23,23 @@ type ReadOriginsVerifier struct{
 }
 
 type ReadinfoVerifier struct{
-	this cartesian.ReadInformation
+	Readinfo cartesian.ReadInformation
 }
 
 type ImagesVerifier struct{
-	this []gocv.Mat
+	ReadinfoVerifier
+	images []gocv.Mat
 }
 
 type TextExtractorVerifier struct{
-	this [][]string
+	ReadinfoVerifier
+	Texts [][]string
 }
 
 
 func (this *ReaderParametersVerifier) verify(){}
 func (this *SplitVerifier) verify(){}
+
 func (this *ReadOriginsVerifier) verify()errors{
 	if len((*this).origins) == 0{
 		if len((*this).candidate) == 0 {
@@ -56,7 +59,20 @@ func (this *ReadOriginsVerifier) verify()errors{
 		}		
 	}
 }
-func (this *ReadinfoVerifier) verify(){}
-func (this *ImagesVerifier) verify(){}
-func (this *TextExtractorVerifier) verify(){}
+
+func (this *ImagesVerifier) verify(){
+	if len((*this).images) == (*this).Readinfo.SizeData  {
+		return nil 
+	} else{
+		return errors.New("the data weren't properly read or the SizeData weren't properly defined")
+	}
+}
+
+func (this *TextExtractorVerifier) verify(){
+	if len((*this).Texts) == (*this).Readinfo.SizeData  {
+		return nil 
+	} else{
+		return errors.New("the data weren't properly read or the SizeData weren't properly defined")
+	}	
+}
 
